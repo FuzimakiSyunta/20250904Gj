@@ -8,10 +8,14 @@ GameScene::~GameScene() {}
 
 void GameScene::Initialize() {
 
+	
 	dxCommon_ = DirectXCommon::GetInstance();
 	input_ = Input::GetInstance();
 	audio_ = Audio::GetInstance();
 	debugText_ = DebugText::GetInstance();
+
+	ball_ = new Ball();
+	ball_->Initialize(textureHandle_);
 }
 
 void GameScene::Update() {}
@@ -28,7 +32,7 @@ void GameScene::Draw() {
 	/// <summary>
 	/// ここに背景スプライトの描画処理を追加できる
 	/// </summary>
-
+	ball_->Draw();
 	// スプライト描画後処理
 	Sprite::PostDraw();
 	// 深度バッファクリア
