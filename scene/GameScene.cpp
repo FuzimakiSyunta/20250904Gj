@@ -16,6 +16,10 @@ void GameScene::Initialize() {
 	//プレイヤー
 	player_ = std::make_unique<Player>();
 	player_->Initialize(input_, { 100.0f, 200.0f }, 32.0f);
+
+	//ビリヤード台
+	billiardstable_ = std::make_unique<Billiardstable>();
+	billiardstable_->Initialize();
 }
 
 void GameScene::Update() {
@@ -61,6 +65,7 @@ void GameScene::Draw() {
 	/// ここに前景スプライトの描画処理を追加できる
 	/// </summary>
 	player_->Draw();
+	billiardstable_->Draw();
 
 	// デバッグテキストの描画
 	debugText_->DrawAll(commandList);
