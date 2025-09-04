@@ -9,7 +9,6 @@
 #include "Sprite.h"
 #include "ViewProjection.h"
 #include "WorldTransform.h"
-#include "Player.h"
 #include "Billiardstable.h"
 #include "Ball.h"
 
