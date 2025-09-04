@@ -13,6 +13,7 @@ void Player::Initialize(Input* input, const Vector2& startPos, float radius) {
 }
 
 void Player::Update() {
+    vel_ = { 0,0 };
     // 左
     if (input_->PushKey(DIK_A)) {
         pos.x -= speed;
@@ -30,6 +31,8 @@ void Player::Update() {
         pos.y += speed;
     }
 
+    pos.x += vel_.x;
+    pos.y += vel_.y;
 
     playerSprite_->SetSize({ radius_ * 2.0f, radius_ * 2.0f }); // 半径を反映
     // スプライトに座標を反映

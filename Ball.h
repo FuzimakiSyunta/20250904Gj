@@ -1,8 +1,8 @@
-#pragma once
-
 #include "Sprite.h"
 #include "TextureManager.h"
-
+#include "Vector2.h"
+#include <vector>
+#include"Player.h"
 class Ball {
 public:
     Ball();
@@ -12,6 +12,8 @@ public:
     void Update();
     void Draw();
 
+    void CheckPlayerCollision(Player& player); // ƒvƒŒƒCƒ„[‚Æ‚ÌÕ“Ë
+
 private:
     static const int kBallCount = 10;
     Vector2 pos_[kBallCount];
@@ -19,6 +21,6 @@ private:
     Sprite* sprite_[kBallCount];
     uint32_t textureHandle_ = 0u;
 
-    void MoveBalls();           // š ’e‚ÌˆÚ“®‚ğŠÖ”‰»
-    void CheckCollisions();     // š Õ“Ë”»’è
+    void MoveBalls();
+    void CheckCollisions();
 };

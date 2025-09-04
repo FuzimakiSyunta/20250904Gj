@@ -7,13 +7,23 @@ class Player
 {
 public:
 	
+	
+
 	void Initialize(Input* input, const Vector2& startPos = { 0,0 }, float radius = 16.0f);
 
 	void Update();
 
 	void Draw();
 
-	Vector2 GetPos() { return pos; }
+	Vector2 GetPos() const { return pos; }      // const Cüq‚ğ’Ç‰Á
+	
+	float GetRadius() const { return radius_; } // const Cüq‚ğ’Ç‰Á
+	Vector2 GetVel() const { return vel_; }
+	void SetVel(float x, float y) { vel_ = { x, y }; }
+	void SetPos(float x, float y) { pos = { x, y }; }
+
+
+
 private:
 #pragma region ‰æ‘œ“Ç‚İ‚İ
 	Input* input_ = nullptr;
@@ -29,6 +39,7 @@ private:
 	const float speed = 2.6f;
 	const Vector2 center = { 5, 5 };
 	float radius_ = 16.0f;
-
+	Vector2 vel_ = { 0.0f, 0.0f };
+	
 };
 

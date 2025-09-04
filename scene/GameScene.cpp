@@ -24,6 +24,8 @@ void GameScene::Initialize() {
 
 void GameScene::Update() {
 	player_->Update();
+	ball_->Update();
+	ball_->CheckPlayerCollision(*player_);
 }
 
 void GameScene::Draw() {
