@@ -14,11 +14,17 @@ void GameScene::Initialize() {
 	audio_ = Audio::GetInstance();
 	debugText_ = DebugText::GetInstance();
 
+	//プレイヤー
+	player_ = std::make_unique<Player>();
+	player_->Initialize(input_, { 100.0f, 200.0f }, 32.0f);
+
 	ball_ = new Ball();
 	ball_->Initialize(textureHandle_);
 }
 
-void GameScene::Update() {}
+void GameScene::Update() {
+	player_->Update();
+}
 
 void GameScene::Draw() {
 
@@ -58,10 +64,11 @@ void GameScene::Draw() {
 	/// <summary>
 	/// ここに前景スプライトの描画処理を追加できる
 	/// </summary>
+	player_->Draw();
 
 	// デバッグテキストの描画
 	debugText_->DrawAll(commandList);
-	//
+	
 	// スプライト描画後処理
 	Sprite::PostDraw();
 

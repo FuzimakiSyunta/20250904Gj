@@ -10,6 +10,8 @@
 #include "ViewProjection.h"
 #include "WorldTransform.h"
 #include "Ball.h"
+#include "Player.h"
+
 /// <summary>
 /// ゲームシーン
 /// </summary>
@@ -46,6 +48,9 @@ class GameScene {
 	Input* input_ = nullptr;
 	Audio* audio_ = nullptr;
 	DebugText* debugText_ = nullptr;
+
+	std::unique_ptr<Player> player_;
+
 	Ball* ball_ = nullptr;
 	uint32_t textureHandle_ = 0;
 	/// <summary>
