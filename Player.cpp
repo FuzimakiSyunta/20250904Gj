@@ -16,8 +16,8 @@ void Player::Initialize(Input* input, const Vector2& startPos, float radius) {
 
     // –îˆói‰Šú‰ñ“]45‹j
     playerArrowTexture = TextureManager::Load("arrow.png");
-    playerArrowSprite_.reset(Sprite::Create(playerArrowTexture, pos));
-    playerArrowSprite_->SetPosition(pos);
+    playerArrowSprite_.reset(Sprite::Create(playerArrowTexture, ArrowpPos, { 1,1,1,1 }, {0.5,0.5}));
+    playerArrowSprite_->SetPosition(ArrowpPos);
    
 }
 
@@ -39,7 +39,7 @@ void Player::Update() {
 
     if (dragging_ && input_->IsPressMouse(0)) {
         dragCurrent_ = mousePos;
-
+        
         // --- –îˆó‚Ì‰ñ“]‚ÆŠg‘å ---
         Vector2 diff = { dragStart_.x - dragCurrent_.x, dragStart_.y - dragCurrent_.y };
         float length = sqrtf(diff.x * diff.x + diff.y * diff.y);
@@ -51,9 +51,8 @@ void Player::Update() {
         // ‘å‚«‚³iˆø‚Á’£‚è‹——£‚ÅŠg‘åj
         float scale = std::clamp(length / 100.0f, 0.5f, 3.0f);
         playerArrowSprite_->SetSize({ radius_ * 2.0f * scale, radius_ * 2.0f * scale });
-
-        // ˆÊ’u‚ÍƒvƒŒƒCƒ„[‚É‡‚í‚¹‚é
-        playerArrowSprite_->SetPosition(pos);
+        Vector2 offset = { 10.0f, 30.0f };
+        playerArrowSprite_->SetPosition({ pos.x + offset.x, pos.y + offset.y });
     }
 
     if (dragging_ && !input_->IsPressMouse(0)) {

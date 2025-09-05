@@ -37,6 +37,7 @@ private:
 #pragma region ç¿ïWä÷òA
 
 	Vector2 pos = {250,1050};
+	Vector2 ArrowpPos = {pos};
 	Vector2 localPos;
 	const float speed = 10.6f;
 	const Vector2 center = { 5, 5 };
