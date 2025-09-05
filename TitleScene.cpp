@@ -13,17 +13,22 @@ void TitleScene::Initialize()
 	dxCommon_ = DirectXCommon::GetInstance();
 	input_ = Input::GetInstance();
 	audio_ = Audio::GetInstance();
+	//背景の画像のデータ取得
 	uint32_t textureTitle = TextureManager::Load("uvChecker.png");
+	//画像の座標
 	pos = { 400,400 };
 	titleSprite = Sprite::Create(textureTitle, pos, { 1,1,1,1 }, { 0.5f,0.5f });
 }
 
 void TitleScene::Update()
 {
+	//マウスの座標を取得
 	GetCursorPos(&mousePosition); 
 	HWND hwnd = WinApp::GetInstance()->GetHwnd(); 
 	ScreenToClient(hwnd, &mousePosition);
+	//--------------------//
 	
+	//ボタンやクリックをしたら次のシーンに行くための処理
 	if (input_->PushKey(DIK_SPACE)||
 		mousePosition.x >= 400 && mousePosition.x <= 700 && mousePosition.y >= 200 && mousePosition.y <= 500 && input_->IsPressMouse(WM_LBUTTONDOWN == 0))
 	{
