@@ -20,13 +20,13 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 	// ゲームウィンドウの作成
 	win = WinApp::GetInstance();
-	win->CreateGameWindow();
+	win->CreateGameWindow("ビリヤード");
 
 	// DirectX初期化処理
 	dxCommon = DirectXCommon::GetInstance();
 	dxCommon->Initialize(win);
 
-#pragma region 汎用機能初期化
+#pragma region 汎用機能初期化 
 	// 入力の初期化
 	input = Input::GetInstance();
 	input->Initialize();

@@ -9,7 +9,10 @@
 #include "Sprite.h"
 #include "ViewProjection.h"
 #include "WorldTransform.h"
+#include "Billiardstable.h"
+#include "Ball.h"
 #include "PredictionLine.h"
+
 
 /// <summary>
 /// ゲームシーン
@@ -48,6 +51,11 @@ class GameScene {
 	Audio* audio_ = nullptr;
 	DebugText* debugText_ = nullptr;
 
+	std::unique_ptr<Player> player_;
+	std::unique_ptr<Billiardstable> billiardstable_;
+
+	Ball* ball_ = nullptr;
+	uint32_t textureHandle_ = 0;
 	std::unique_ptr<PredictionLine> predictionLine;
 
 	/// <summary>

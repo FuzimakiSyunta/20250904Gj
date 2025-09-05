@@ -8,15 +8,30 @@ GameScene::~GameScene() {}
 
 void GameScene::Initialize() {
 
+	
 	dxCommon_ = DirectXCommon::GetInstance();
 	input_ = Input::GetInstance();
 	audio_ = Audio::GetInstance();
 	debugText_ = DebugText::GetInstance();
+
+	//プレイヤー
+	player_ = std::make_unique<Player>();
+	player_->Initialize(input_, { 300.0f, 450.0f }, 32.0f);
+
+	ball_ = new Ball();
+	ball_->Initialize(textureHandle_);
+
+	//ビリヤード台
+	billiardstable_ = std::make_unique<Billiardstable>();
+	billiardstable_->Initialize();
 	predictionLine = std::make_unique<PredictionLine>();
 	predictionLine->Initialize();
 }
 
 void GameScene::Update() {
+	player_->Update();
+	ball_->Update();
+	ball_->CheckPlayerCollision(*player_);
 	predictionLine->Update();
 }
 
@@ -32,6 +47,8 @@ void GameScene::Draw() {
 	/// <summary>
 	/// ここに背景スプライトの描画処理を追加できる
 	/// </summary>
+	billiardstable_->Draw();
+	
 
 	predictionLine->Draw();
 
@@ -60,10 +77,12 @@ void GameScene::Draw() {
 	/// <summary>
 	/// ここに前景スプライトの描画処理を追加できる
 	/// </summary>
+	player_->Draw();
+	ball_->Draw();
 
 	// デバッグテキストの描画
 	debugText_->DrawAll(commandList);
-	//
+	
 	// スプライト描画後処理
 	Sprite::PostDraw();
 
