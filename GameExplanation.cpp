@@ -1,39 +1,41 @@
-#include "TitleScene.h"
-
-TitleScene::TitleScene()
+#include "GameExplanation.h"
+GameExplanation::GameExplanation()
 {
 }
 
-TitleScene::~TitleScene()
+GameExplanation::~GameExplanation()
 {
 }
 
-void TitleScene::Initialize()
+void GameExplanation::Initialize()
 {
 	dxCommon_ = DirectXCommon::GetInstance();
 	input_ = Input::GetInstance();
 	audio_ = Audio::GetInstance();
-	uint32_t textureTitle = TextureManager::Load("uvChecker.png");
+
+	uint32_t Explanationtexture = TextureManager::Load("sample.png");
 	pos = { 400,400 };
-	titleSprite = Sprite::Create(textureTitle, pos, { 1,1,1,1 }, { 0.5f,0.5f });
+	explanationSprite = Sprite::Create(Explanationtexture, pos, { 1,1,1,1 }, { 0.5f,0.5f });
+	sceneCooltime = 0;
 }
 
-void TitleScene::Update()
+void GameExplanation::Update()
 {
-	GetCursorPos(&mousePosition); 
-	HWND hwnd = WinApp::GetInstance()->GetHwnd(); 
+	GetCursorPos(&mousePosition);
+	HWND hwnd = WinApp::GetInstance()->GetHwnd();
 	ScreenToClient(hwnd, &mousePosition);
-	
-	if (input_->PushKey(DIK_SPACE)||
-		mousePosition.x >= 400 && mousePosition.x <= 700 && mousePosition.y >= 200 && mousePosition.y <= 500 && input_->IsPressMouse(WM_LBUTTONDOWN == 0))
+	if (isSceneEnd_ == false)
+	{
+		sceneCooltime++;
+	}
+	if (input_->PushKey(DIK_SPACE)&&sceneCooltime>10||
+		mousePosition.x >= 400 && mousePosition.x <= 700 && mousePosition.y >= 200 && mousePosition.y <= 500 && input_->IsPressMouse(WM_LBUTTONDOWN == 0)&&sceneCooltime>10)
 	{
 		isSceneEnd_ = true;
 	}
-
-
 }
 
-void TitleScene::Draw()
+void GameExplanation::Draw()
 {
 	// コマンドリストの取得
 	ID3D12GraphicsCommandList* commandList = dxCommon_->GetCommandList();
@@ -45,7 +47,7 @@ void TitleScene::Draw()
 	/// <summary>
 	/// ここに背景スプライトの描画処理を追加できる
 	/// </summary>
-	titleSprite->Draw();
+	explanationSprite->Draw();
 	// スプライト描画後処理
 	Sprite::PostDraw();
 	// 深度バッファクリア
