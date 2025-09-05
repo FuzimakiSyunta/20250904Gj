@@ -8,7 +8,7 @@ void PredictionLine::Initialize()
 {
 	pos = { 400,400 };
 	uint32_t arrowTexture = TextureManager::Load("arrow.png");
-	arrowSprite = Sprite::Create(arrowTexture, pos, { 1,1,1,1 }, { 0.5f,0.5f });
+	arrowSprite = Sprite::Create(arrowTexture, pos, { 1,1,1,1 }, { 0.0f,0.5f });
 	arrowSprite->SetPosition(Vector2(pos));
 
 	isLocked = false;
@@ -97,24 +97,25 @@ void PredictionLine::MouseProcess()
 		
 		
 		if (!isCharging && frame >= endframe) {
-			// プレイヤーの中心座標
-			Vector2 center = player_->GetPos();
-			if (frame == endframe) {
-				cueStartPos = center;
-			}
+			Vector2 target = player_->GetPos(); // 白い球の中心
 
 
-			// マウス位置からプレイヤーへの方向ベクトル
-			Vector2 toMouse = Subtract(mousePos, center);
-			float angle = atan2f(toMouse.y, toMouse.x); // ラジアンで角度取得
+			Vector2 arrowPos = mousePos; // 矢印をマウスの位置に置く
+			arrowSprite->SetPosition(arrowPos);
 
-			// プレイヤーの周囲に配置（円周上）
-			float radius = 90.0f;
-			Vector2 offset = { cosf(angle) * radius, sinf(angle) * radius };
-			cueCurrentPos = Add(center, offset);
 
-			// 矢印の向きをマウス方向に合わせる
-			arrowSprite->SetRotation(angle + PI / 2);
+
+			//float radius = 90.0f; // キューの長さや距離に応じて調整
+			//Vector2 offset = { cosf(angle) * radius, sinf(angle) * radius };
+			//Vector2 cuePos = Add(center, offset);
+
+			Vector2 toTarget = Subtract(target, arrowPos);
+			float angle = atan2f(toTarget.y, toTarget.x);
+			arrowSprite->SetRotation(angle-PI/2); // 画像が右向きなら補正不要
+
+
+
+
 		}
 	}
 
