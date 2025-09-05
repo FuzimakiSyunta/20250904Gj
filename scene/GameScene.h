@@ -9,6 +9,7 @@
 #include "Sprite.h"
 #include "ViewProjection.h"
 #include "WorldTransform.h"
+#include "PredictionLine.h"
 
 /// <summary>
 /// ゲームシーン
@@ -46,6 +47,8 @@ class GameScene {
 	Input* input_ = nullptr;
 	Audio* audio_ = nullptr;
 	DebugText* debugText_ = nullptr;
+
+	std::unique_ptr<PredictionLine> predictionLine;
 
 	/// <summary>
 	/// ゲームシーン用

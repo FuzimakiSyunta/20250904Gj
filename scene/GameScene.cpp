@@ -12,9 +12,13 @@ void GameScene::Initialize() {
 	input_ = Input::GetInstance();
 	audio_ = Audio::GetInstance();
 	debugText_ = DebugText::GetInstance();
+	predictionLine = std::make_unique<PredictionLine>();
+	predictionLine->Initialize();
 }
 
-void GameScene::Update() {}
+void GameScene::Update() {
+	predictionLine->Update();
+}
 
 void GameScene::Draw() {
 
@@ -28,6 +32,8 @@ void GameScene::Draw() {
 	/// <summary>
 	/// ここに背景スプライトの描画処理を追加できる
 	/// </summary>
+
+	predictionLine->Draw();
 
 	// スプライト描画後処理
 	Sprite::PostDraw();
