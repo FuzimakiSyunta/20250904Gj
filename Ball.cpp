@@ -57,6 +57,17 @@ void Ball::Initialize(uint32_t) {
 void Ball::Update() {
     MoveBalls();
     CheckCollisions();
+    // 全部落ちたらリスポーン
+    bool allDead = true;
+    for (int i = 0; i < kBallCount; i++) {
+        if (isAlive_[i]) {
+            allDead = false;
+            break;
+        }
+    }
+    if (allDead) {
+        Respawn();
+    }
 }
 
 void Ball::Draw() {
@@ -276,7 +287,7 @@ void Ball::CheckPlayerCollision(Player& player) {
 
 int Ball::CheckPocketCollisions() {
     Vector2 pockets[6] = {
-        {202,250}, {1000,250}, {202,632},
+        {202,265}, {1000,250}, {202,632},
         {1010,632}, {600,280}, {600,632}
     };
 
@@ -300,4 +311,28 @@ int Ball::CheckPocketCollisions() {
     }
 
     return totalDamage; // ★ 複数分まとめて返す
+}
+
+void Ball::Respawn() {
+    int index = 0;
+    const float startX = 700.0f;
+    const float startY = 460.0f;
+    const float gap = 40.0f;
+
+    int rowCounts[4] = { 1,2,3,4 };
+    for (int col = 0; col < 4; col++) {
+        int count = rowCounts[col];
+        for (int row = 0; row < count; row++) {
+            float offsetY = (row - (count - 1) / 2.0f) * gap;
+            float x = startX + col * gap;
+            float y = startY + offsetY;
+
+            pos_[index] = { x, y };
+            sprite_[index] = Sprite::Create(ballTextureHandle_[index], pos_[index]);
+            sprite_[index]->SetSize({ 32.0f, 32.0f });
+            isAlive_[index] = true;          // 復活
+            vel_[index] = { 0.0f, 0.0f };    // 静止状態にリセット
+            index++;
+        }
+    }
 }

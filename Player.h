@@ -36,7 +36,7 @@ private:
 	Vector2 localPos;
 	const float speed = 10.6f;
 	const Vector2 center = { 5, 5 };
-	float radius_ = 16.0f;
+	float radius_ = 10.0f;
 	Vector2 vel_ = { 0.0f, 0.0f };
 	bool dragging_;
 	Vector2 dragStart_;

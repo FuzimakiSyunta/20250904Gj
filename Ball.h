@@ -15,6 +15,8 @@ public:
     void CheckPlayerCollision(Player& player); // ƒvƒŒƒCƒ„[‚Æ‚ÌÕ“Ë
     int CheckPocketCollisions(); // š ’Ç‰Á
 
+	void Respawn(); // š ’Ç‰Á
+
 private:
     static const int kBallCount = 10;
     Vector2 pos_[kBallCount];

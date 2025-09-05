@@ -82,7 +82,7 @@ void Player::Update() {
     if (pos.y > bottom) { pos.y = bottom; vel_.y *= -1.0f; }
 
     // --- プレイヤースプライト更新 ---
-    playerSprite_->SetSize({ radius_ * 2.0f, radius_ * 2.0f });
+    playerSprite_->SetSize({ 32.0f, 32.0f }); // 常に固定サイズ
     playerSprite_->SetPosition(pos);
 }
 
