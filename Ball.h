@@ -19,7 +19,8 @@ private:
     Vector2 pos_[kBallCount];
     Vector2 vel_[kBallCount];
     Sprite* sprite_[kBallCount];
-    uint32_t textureHandle_ = 0u;
+
+    uint32_t ballTextureHandle_[kBallCount] = { 0u };
 
     // ★ デバッグ可視化用 ---------------------
     uint32_t debugCircleTex_ = 0u; // 赤丸(DebugCircle.png)のテクスチャ

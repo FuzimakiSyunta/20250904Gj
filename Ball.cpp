@@ -14,32 +14,43 @@ Ball::~Ball() {
         delete sprite_[i];
 }
 
-void Ball::Initialize(uint32_t /*textureHandle*/) {
-    textureHandle_ = TextureManager::Load("ball.png");
-    debugCircleTex_ = TextureManager::Load("DebugCircle.png"); // ★ 赤丸画像ロード
+void Ball::Initialize(uint32_t) {
+    // 10枚の画像をロード
+    ballTextureHandle_[0] = TextureManager::Load("1.png");
+    ballTextureHandle_[1] = TextureManager::Load("2.png");
+    ballTextureHandle_[2] = TextureManager::Load("3.png");
+    ballTextureHandle_[3] = TextureManager::Load("4.png");
+    ballTextureHandle_[4] = TextureManager::Load("5.png");
+    ballTextureHandle_[5] = TextureManager::Load("6.png");
+    ballTextureHandle_[6] = TextureManager::Load("7.png");
+    ballTextureHandle_[7] = TextureManager::Load("8.png");
+    ballTextureHandle_[8] = TextureManager::Load("9.png");
+    ballTextureHandle_[9] = TextureManager::Load("10.png");
+
+    debugCircleTex_ = TextureManager::Load("DebugCircle.png");
 
     int index = 0;
     const float startX = 700.0f;
     const float startY = 460.0f;
-    const float ballSize = 11.0f;
     const float gap = 40.0f;
 
+    // 三角形の配置
     int rowCounts[4] = { 1,2,3,4 };
-    for (int col = 0; col < 5; col++) {
+    for (int col = 0; col < 4; col++) {
         int count = rowCounts[col];
         for (int row = 0; row < count; row++) {
             float offsetY = (row - (count - 1) / 2.0f) * gap;
             float x = startX + col * gap;
             float y = startY + offsetY;
 
+            // 画像を割り当て
             pos_[index] = { x, y };
-            sprite_[index] = Sprite::Create(textureHandle_, pos_[index]);
-            isAlive_[index] = true;   // ★ 生存フラグをON
+            sprite_[index] = Sprite::Create(ballTextureHandle_[index], pos_[index]);
+            sprite_[index]->SetSize({ 32.0f, 32.0f });
+            isAlive_[index] = true;
             index++;
         }
     }
-
-   // vel_[0] = { -10.0f, 0.0f }; // デモ用：1個だけ動かす
 }
 
 void Ball::Update() {
@@ -70,7 +81,7 @@ void Ball::Draw() {
 
     for (int j = 0; j < 6; j++) {
         Sprite* debug = Sprite::Create(debugCircleTex_, pockets[j]);
-        debug->Draw();
+        //debug->Draw();
         
     }
 }
