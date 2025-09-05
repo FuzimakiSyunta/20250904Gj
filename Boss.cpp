@@ -18,12 +18,14 @@ void Boss::Update() {
         if (shakeTimer_ <= 0) {
             isShaking_ = false;
             bossSprite_->SetPosition(basePos_);
+			bossDamegeSprite_->SetPosition(basePos_);
         }
         else {
             // ƒ‰ƒ“ƒ_ƒ€‚É—h‚ç‚·
             float offsetX = (rand() % 100 / 100.0f - 0.5f) * 2 * shakeStrength_;
             float offsetY = (rand() % 100 / 100.0f - 0.5f) * 2 * shakeStrength_;
             bossSprite_->SetPosition({ basePos_.x + offsetX, basePos_.y + offsetY });
+			bossDamegeSprite_->SetPosition({ basePos_.x + offsetX, basePos_.y + offsetY });
         }
     }
 
@@ -39,7 +41,7 @@ void Boss::Update() {
 }
 
 void Boss::Draw() {
-    if (bossSprite_) {
+    if (bossSprite_&&!isShaking_) {
         bossSprite_->Draw();
     }
     if (isShaking_ && bossDamegeSprite_) {
