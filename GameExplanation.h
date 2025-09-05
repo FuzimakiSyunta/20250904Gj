@@ -8,19 +8,19 @@
 #include "Sprite.h"
 #include "ViewProjection.h"
 #include "WorldTransform.h"
-#include "Scene.h""
-class TitleScene
+#include "Scene.h"
+class GameExplanation
 {
 public:
 	/// <summary>
 	/// コンストラクタ
 	/// </summary>
-	TitleScene();
+	GameExplanation();
 
 	/// <summary>
 	/// デストラクタ
 	/// </summary>
-	~TitleScene();
+	~GameExplanation();
 
 	/// <summary>
 	/// 初期化
@@ -38,17 +38,19 @@ public:
 	void Draw();
 
 	bool IsSceneEnd() { return isSceneEnd_; }
-	Scene::SceneType NextScene() { return Scene::SceneType::kGameExplanation; }
+	Scene::SceneType NextScene() { return Scene::SceneType::kGamePlay; }
 
 private:
 	DirectXCommon* dxCommon_ = nullptr;
 	Input* input_ = nullptr;
 	Audio* audio_ = nullptr;
 	DebugText* debugText_ = nullptr;
-	bool isSceneEnd_ = false;
 
-	Sprite* titleSprite = nullptr;
+	Sprite* explanationSprite = nullptr;
 	Vector2 pos;
+	bool isSceneEnd_ = false;
 	POINT mousePosition;
+
+	int sceneCooltime; //シーンに移り変わった時一瞬だけクールタイムを用意し連続で移り変わらないようにする
 };
 
