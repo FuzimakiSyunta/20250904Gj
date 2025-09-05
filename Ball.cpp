@@ -81,13 +81,13 @@ void Ball::MoveBalls() {
 
     // 壁の位置（任意に設定可能）
     //左
-    const float leftMax = 210.0f;
+    const float leftMax = 205.0f;
     //右
-    const float rightMax = 1000.0f;
+    const float rightMax = 1005.0f;
     //上
-    const float topMax = 270.0f;
+    const float topMax = 265.0f;
     //下
-    const float bottomMax = 650.0f;
+    const float bottomMax = 655.0f;
 
     // 壁の反射係数
     const float xBounce = -1.0f; // 左右

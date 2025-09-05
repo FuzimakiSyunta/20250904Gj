@@ -24,12 +24,17 @@ void GameScene::Initialize() {
 	//ビリヤード台
 	billiardstable_ = std::make_unique<Billiardstable>();
 	billiardstable_->Initialize();
+
+	//ボス
+	boss_ = std::make_unique<Boss>();
+	boss_->Initialize(input_);
 }
 
 void GameScene::Update() {
 	player_->Update();
 	ball_->Update();
 	ball_->CheckPlayerCollision(*player_);
+	boss_->Update();
 }
 
 void GameScene::Draw() {
@@ -73,6 +78,7 @@ void GameScene::Draw() {
 	/// </summary>
 	player_->Draw();
 	ball_->Draw();
+	boss_->Draw();
 
 	// デバッグテキストの描画
 	debugText_->DrawAll(commandList);

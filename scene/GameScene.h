@@ -11,6 +11,7 @@
 #include "WorldTransform.h"
 #include "Billiardstable.h"
 #include "Ball.h"
+#include "Boss.h"
 
 
 /// <summary>
@@ -52,6 +53,7 @@ class GameScene {
 
 	std::unique_ptr<Player> player_;
 	std::unique_ptr<Billiardstable> billiardstable_;
+	std::unique_ptr<Boss> boss_;
 
 	Ball* ball_ = nullptr;
 	uint32_t textureHandle_ = 0;
