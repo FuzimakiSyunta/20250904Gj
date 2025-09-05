@@ -29,8 +29,10 @@ private:
 	Input* input_ = nullptr;
 	//テクスチャハンドル
 	uint32_t playerTexture_ = 0;
+	uint32_t playerArrowTexture = 0;
 	//スプライト
 	std::unique_ptr<Sprite> playerSprite_ = nullptr;
+	std::unique_ptr<Sprite> playerArrowSprite_ = nullptr;
 
 #pragma region 座標関連
 
@@ -40,6 +42,8 @@ private:
 	const Vector2 center = { 5, 5 };
 	float radius_ = 16.0f;
 	Vector2 vel_ = { 0.0f, 0.0f };
-	
+	bool dragging_;
+	Vector2 dragStart_;
+	Vector2 dragCurrent_;
 };
 
