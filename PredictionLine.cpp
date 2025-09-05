@@ -2,6 +2,7 @@
 #include <TextureManager.h>
 #include <WinApp.h>
 #include <algorithm>
+#include <Player.h>
 
 void PredictionLine::Initialize()
 {
@@ -16,46 +17,49 @@ void PredictionLine::Initialize()
 	wasCharging = false;
 	frame = 0.0f;
 	endframe = 20.0f;
-	cueStartPos = { 400.0f,400.0f };
-
+	cueStartPos = player_->GetPos();
+	//cueStartPos.x = cueStartPos.x - 90;
+	angle = 0.0f;
+	rotationSpeed = 1.0f;
 }
 
 void PredictionLine::Update()
 {
 	MouseProcess();
+	//Rotate();
 }
 
 void PredictionLine::MouseProcess()
 {
-	//ãƒžã‚¦ã‚¹ä½ç½®å–å¾—
+	//ƒ}ƒEƒXˆÊ’uŽæ“¾ 
 	GetCursorPos(&mousePosition);
 	HWND hwnd = WinApp::GetInstance()->GetHwnd();
 	ScreenToClient(hwnd, &mousePosition);
 
 	Vector2 mousePos((float)mousePosition.x, (float)mousePosition.y);
 
-	//ãƒžã‚¦ã‚¹ãƒœã‚¿ãƒ³ã®çŠ¶æ…‹
+	//ƒ}ƒEƒXƒ{ƒ^ƒ“‚Ìó‘Ô
 	SHORT mouseState = GetAsyncKeyState(VK_LBUTTON);
 	isMouseDown = (mouseState & 0x8000) != 0;
 	if (isMouseDown&&frame>=endframe) {
-		//æŠ¼ã—ã¦ã„ã‚‹çŠ¶æ…‹
+		//‰Ÿ‚µ‚Ä‚¢‚éó‘Ô
 		if (!isCharging) {
-			dragStartPos = mousePos; //åˆå›žã ã‘è¨˜éŒ²
+			dragStartPos = mousePos; //‰‰ñ‚¾‚¯‹L˜^
 			moveDir = Normalize(Subtract(cueStartPos, dragStartPos));
 
 		}
 		isCharging = true;
 		
-		//ãƒžã‚¦ã‚¹ä½ç½®ã¨æ£’ã®ä½ç½®ã®æ–¹å‘ãƒ™ã‚¯ãƒˆãƒ«
+		//ƒ}ƒEƒXˆÊ’u‚Æ–_‚ÌˆÊ’u‚Ì•ûŒüƒxƒNƒgƒ‹
 		
 		Vector2 dragDelta = Subtract(mousePos, dragStartPos);
 		float projectedLength = dragDelta.x * moveDir.x + dragDelta.y * moveDir.y;
 
-		//ç¾åœ¨ã®æ£’ã®ä½ç½®ã¨åˆæœŸä½ç½®ã®å·®
+		//Œ»Ý‚Ì–_‚ÌˆÊ’u‚Æ‰ŠúˆÊ’u‚Ì·
 		Vector2 cueDelta = Subtract(cueCurrentPos, cueStartPos);
 		float cueDirection = cueDelta.x * moveDir.x + cueDelta.y * moveDir.y;
 
-		//æ–¹å‘ã«å¿œã˜ã¦projectedLengthã‚’åˆ¶é™
+		//•ûŒü‚É‰ž‚¶‚ÄprojectedLength‚ð§ŒÀ
 		if (cueDirection >= 0.0f && projectedLength < 0.0f) {
 			projectedLength = 0.0f;
 		}
@@ -66,7 +70,7 @@ void PredictionLine::MouseProcess()
 		float maxPullDistance = 240.0f;
 		projectedLength = std::clamp(projectedLength, 0.0f, maxPullDistance);
 
-		//ç”»åƒã®ãšã‚Œé‡ã‚’è¨ˆç®—
+		//‰æ‘œ‚Ì‚¸‚ê—Ê‚ðŒvŽZ
 		Vector2 dragOffset = Multiply(projectedLength, moveDir);
 		cueCurrentPos = Add(cueStartPos, dragOffset);
 	}
@@ -83,32 +87,62 @@ void PredictionLine::MouseProcess()
 			cueCurrentPos.x = startReleasePos.x + (cueStartPos.x - startReleasePos.x) * easing;
 			cueCurrentPos.y = startReleasePos.y + (cueStartPos.y - startReleasePos.y) * easing;
 
-			//è¿‘ã¥ã„ãŸã‚‰ä½ç½®ã‚’å›ºå®š
+			//‹ß‚Ã‚¢‚½‚çˆÊ’u‚ðŒÅ’è
 			if (t >= 1.0f)
 			{
 				cueCurrentPos = cueStartPos;
-				/*	isCharging = false;*/
 			}
 			
 		}
 		
 		
-		if (!isCharging) {
-			Vector2 spritePos = cueCurrentPos; //ã‚¹ãƒ—ãƒ©ã‚¤ãƒˆã®ç¾åœ¨ã®ä½ç½®
-			Vector2 toMouse = Subtract(mousePos, spritePos);
-
-			if (Length(toMouse) > 0.0f) {
-				Vector2 dir = Normalize(toMouse);
-				float angle = atan2f(dir.y, dir.x); //ãƒ©ã‚¸ã‚¢ãƒ³ã§è§’åº¦ã‚’å–å¾—
-
-				arrowSprite->SetRotation(angle + PI / 2);
+		if (!isCharging && frame >= endframe) {
+			// ƒvƒŒƒCƒ„[‚Ì’†SÀ•W
+			Vector2 center = player_->GetPos();
+			if (frame == endframe) {
+				cueStartPos = center;
 			}
+
+
+			// ƒ}ƒEƒXˆÊ’u‚©‚çƒvƒŒƒCƒ„[‚Ö‚Ì•ûŒüƒxƒNƒgƒ‹
+			Vector2 toMouse = Subtract(mousePos, center);
+			float angle = atan2f(toMouse.y, toMouse.x); // ƒ‰ƒWƒAƒ“‚ÅŠp“xŽæ“¾
+
+			// ƒvƒŒƒCƒ„[‚ÌŽüˆÍ‚É”z’ui‰~Žüãj
+			float radius = 90.0f;
+			Vector2 offset = { cosf(angle) * radius, sinf(angle) * radius };
+			cueCurrentPos = Add(center, offset);
+
+			// –îˆó‚ÌŒü‚«‚ðƒ}ƒEƒX•ûŒü‚É‡‚í‚¹‚é
+			arrowSprite->SetRotation(angle + PI / 2);
 		}
 	}
 
 	finalSpritePos = cueCurrentPos;
-	//æ£’ã®ä½ç½®ã‚’æ›´æ–°
+	//–_‚ÌˆÊ’u‚ðXV
 	arrowSprite->SetPosition(finalSpritePos);
+	
+
+}
+
+void PredictionLine::Rotate()
+{
+	
+
+	angle += rotationSpeed;
+	if (angle > 2 * PI) {
+		angle -= 2 * PI; // ƒ‰ƒbƒvˆ—iŠp“x‚ª–³ŒÀ‚É‘‚¦‚È‚¢‚æ‚¤‚Éj
+	}
+
+
+	Vector2 center = player_->GetPos();
+	float radius = 90.0f;
+	Vector2 offset = { cosf(angle) * radius, sinf(angle) * radius };
+	cueCurrentPos = Add(center, offset);
+	arrowSprite->SetRotation(angle + PI / 2);
+	arrowSprite->SetPosition(cueCurrentPos);
+
+
 }
 
 void PredictionLine::Draw()

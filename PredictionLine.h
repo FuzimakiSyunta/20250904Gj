@@ -2,6 +2,9 @@
 #include <Vector2.h>
 #include <Sprite.h>
 #include <cassert>
+
+class Player;
+
 class PredictionLine
 {
 public:
@@ -12,6 +15,9 @@ public:
 	void MouseProcess();
 
 	void Draw();
+
+	void SetPlayer(Player* player) { player_ = player; }
+	void Rotate();
 
 	Vector2 Normalize(const Vector2& v)
 	{
@@ -82,19 +88,24 @@ private:
 	bool isCharging;
 	Vector2 cueStartPos;
 	Vector2 cueCurrentPos;
-	float chargeSpeed; //蠑輔″騾溷ｺｦ
-	float releaseSpeed; //謌ｻ繧矩溷ｺｦ
+	float chargeSpeed; 
+	float releaseSpeed;
 
-	Vector2 dragStartPos; //繝槭え繧ｹ繧偵け繝ｪ繝�繧ｯ縺励◆菴咲ｽｮ繧定ｨ倬鹸
+	Vector2 dragStartPos; //マウスをクリックした位置を記録するための変数
 	bool wasCharging;
 	Vector2 finalSpritePos;
 	Vector2 moveDir;
 
-	//繧､繝ｼ繧ｸ繝ｳ繧ｰ縺ｫ蠢�隕√↑螟画焚
+	Player* player_;
+
+	//イージング用の関数
 	float frame;
 	float endframe;
 	float easing;
 	Vector2 startReleasePos;
 	bool isMouseDown;
+
+	float angle; // 初期角度
+	float rotationSpeed; // ラジアン/秒（回転速度）
 };
 

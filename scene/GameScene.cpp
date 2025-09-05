@@ -25,7 +25,9 @@ void GameScene::Initialize() {
 	billiardstable_ = std::make_unique<Billiardstable>();
 	billiardstable_->Initialize();
 	predictionLine = std::make_unique<PredictionLine>();
+	predictionLine->SetPlayer(player_.get());
 	predictionLine->Initialize();
+	
 }
 
 void GameScene::Update() {
