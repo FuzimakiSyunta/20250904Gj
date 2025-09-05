@@ -71,10 +71,10 @@ void Player::Update() {
     pos += vel_;
 
     // --- ‰æ–Ê’[‚Å”½ŽË ---
-    const float left = radius_;
-    const float right = 1280 - radius_;
-    const float top = radius_;
-    const float bottom = 720 - radius_;
+    const float left = 205.0f;
+    const float right = 1005.0f;
+    const float top = 265.0f;
+    const float bottom = 655.0f;
 
     if (pos.x < left) { pos.x = left; vel_.x *= -1.0f; }
     if (pos.x > right) { pos.x = right; vel_.x *= -1.0f; }
