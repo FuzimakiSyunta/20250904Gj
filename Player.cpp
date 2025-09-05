@@ -24,6 +24,13 @@ void Player::Initialize(Input* input, const Vector2& startPos, float radius) {
 void Player::Update() {
     Vector2 mousePos = input_->GetMousePosition();
 
+    // --- WASDキーで移動 ---
+    const float accel = 0.5f; // 加速度
+    if (input_->PushKey(DIK_W)) { vel_.y -= accel; }
+    if (input_->PushKey(DIK_S)) { vel_.y += accel; }
+    if (input_->PushKey(DIK_A)) { vel_.x -= accel; }
+    if (input_->PushKey(DIK_D)) { vel_.x += accel; }
+
     // --- マウスドラッグ ---
     if (input_->IsTriggerMouse(0)) {
         dragging_ = true;
