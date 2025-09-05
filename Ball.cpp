@@ -170,50 +170,97 @@ void Ball::CheckCollisions() {
 }
 
 void Ball::CheckPlayerCollision(Player& player) {
-    const float radius = 16.0f;
-    const float restitution = 1.9f; // 反発係数
+    const float ballRadius = 16.0f;
+    const float ballMinDist = ballRadius * 2.0f;
+    const float ballFriction = 0.99f; // 摩擦係数
+
     Vector2 playerPos = player.GetPos();
     float playerRadius = player.GetRadius();
 
+    // === プレイヤーとの衝突処理 ===
     for (int i = 0; i < kBallCount; i++) {
         float dx = pos_[i].x - playerPos.x;
         float dy = pos_[i].y - playerPos.y;
         float distSq = dx * dx + dy * dy;
-        float minDist = radius + playerRadius;
+        float minDist = ballRadius + playerRadius;
 
         if (distSq < minDist * minDist) {
             float dist = std::sqrt(distSq);
             if (dist < 0.0001f) dist = 0.0001f;
 
-            // 法線ベクトル
             float nx = dx / dist;
             float ny = dy / dist;
 
-            // 相対速度
             float rvx = vel_[i].x - player.GetVel().x;
             float rvy = vel_[i].y - player.GetVel().y;
             float vn = rvx * nx + rvy * ny;
 
             if (vn < 0.0f) {
-                // 衝突インパルス（ボールとプレイヤーで質量比をつけてもOK）
-                float impulse = -vn * restitution;
+                float impulse = -vn * 1.0f; // 反発係数1.0
 
-                // ボールに反映
+                // ボールの速度
                 vel_[i].x += impulse * nx;
                 vel_[i].y += impulse * ny;
 
-                // プレイヤーにも少しだけ影響を与える（重い扱い）
-                float playerImpulseFactor = 0.2f; // ← プレイヤーの重さを調整
-                player.SetVel(player.GetVel().x - impulse * playerImpulseFactor * nx,
-                    player.GetVel().y - impulse * playerImpulseFactor * ny);
+                // プレイヤーの速度（重めに設定）
+                float playerImpulseFactor = 0.2f;
+                player.SetVel(
+                    player.GetVel().x - impulse * playerImpulseFactor * nx,
+                    player.GetVel().y - impulse * playerImpulseFactor * ny
+                );
             }
 
-            // めり込み解消（お互いに動かす）
+            // めり込み解消
             float overlap = (minDist - dist) * 0.5f;
             pos_[i].x += nx * overlap;
             pos_[i].y += ny * overlap;
             player.SetPos(playerPos.x - nx * overlap, playerPos.y - ny * overlap);
         }
+    }
+
+    // === ボール同士の衝突処理（完全弾性衝突） ===
+    for (int i = 0; i < kBallCount; i++) {
+        for (int j = i + 1; j < kBallCount; j++) {
+            float dx = pos_[j].x - pos_[i].x;
+            float dy = pos_[j].y - pos_[i].y;
+            float distSq = dx * dx + dy * dy;
+
+            if (distSq < ballMinDist * ballMinDist) {
+                float dist = std::sqrt(distSq);
+                if (dist < 0.0001f) dist = 0.0001f;
+
+                float nx = dx / dist;
+                float ny = dy / dist;
+
+                // 相対速度
+                float rvx = vel_[i].x - vel_[j].x;
+                float rvy = vel_[i].y - vel_[j].y;
+                float vn = rvx * nx + rvy * ny;
+
+                if (vn < 0.0f) {
+                    // === 等質量の完全弾性衝突 ===
+                    vel_[i].x -= vn * nx;
+                    vel_[i].y -= vn * ny;
+                    vel_[j].x += vn * nx;
+                    vel_[j].y += vn * ny;
+                }
+
+                // めり込み解消
+                float overlap = (ballMinDist - dist) * 0.5f;
+                pos_[i].x -= nx * overlap;
+                pos_[i].y -= ny * overlap;
+                pos_[j].x += nx * overlap;
+                pos_[j].y += ny * overlap;
+            }
+        }
+
+        // 摩擦による減速
+        vel_[i].x *= ballFriction;
+        vel_[i].y *= ballFriction;
+
+        // 速度が十分小さい場合は停止
+        if (std::abs(vel_[i].x) < 0.01f) vel_[i].x = 0.0f;
+        if (std::abs(vel_[i].y) < 0.01f) vel_[i].y = 0.0f;
     }
 }
 
