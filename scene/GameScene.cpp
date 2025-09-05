@@ -34,7 +34,12 @@ void GameScene::Update() {
 	player_->Update();
 	ball_->Update();
 	ball_->CheckPlayerCollision(*player_);
+	damage = ball_->CheckPocketCollisions();
+	if (damage > 0) {
+		boss_->TakeDamage(damage);
+	}
 	boss_->Update();
+	
 }
 
 void GameScene::Draw() {
