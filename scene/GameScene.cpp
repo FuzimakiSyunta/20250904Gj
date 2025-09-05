@@ -16,7 +16,7 @@ void GameScene::Initialize() {
 
 	//プレイヤー
 	player_ = std::make_unique<Player>();
-	player_->Initialize(input_, { 100.0f, 200.0f }, 32.0f);
+	player_->Initialize(input_, { 300.0f, 450.0f }, 32.0f);
 
 	ball_ = new Ball();
 	ball_->Initialize(textureHandle_);

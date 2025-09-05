@@ -19,18 +19,19 @@ void Ball::Initialize(uint32_t /*textureHandle*/) {
     debugCircleTex_ = TextureManager::Load("DebugCircle.png"); // ★ 赤丸画像ロード
 
     int index = 0;
-    const float startX = 300.0f;
-    const float startY = 100.0f;
-    const float ballSize = 32.0f;
-    const float gap = 5.0f;
+    const float startX = 700.0f;
+    const float startY = 460.0f;
+    const float ballSize = 11.0f;
+    const float gap = 40.0f;
 
-    int rowCounts[4] = { 4,3,2,1 };
-    for (int row = 0; row < 4; row++) {
-        int count = rowCounts[row];
-        for (int col = 0; col < count; col++) {
-            float offsetX = (col - count / 2.0f) * (ballSize + gap);
-            float x = startX + offsetX;
-            float y = startY + row * (ballSize + gap);
+    int rowCounts[4] = { 1,2,3,4 };
+    for (int col = 0; col < 5; col++) {
+        int count = rowCounts[col];
+        for (int row = 0; row < count; row++) {
+            float offsetY = (row - (count - 1) / 2.0f) * gap;
+            float x = startX + col * gap;
+            float y = startY + offsetY;
+
             pos_[index] = { x, y };
             sprite_[index] = Sprite::Create(textureHandle_, pos_[index]);
             isAlive_[index] = true;   // ★ 生存フラグをON
@@ -38,7 +39,7 @@ void Ball::Initialize(uint32_t /*textureHandle*/) {
         }
     }
 
-    vel_[0] = { 2.0f, 1.5f }; // デモ用：1個だけ動かす
+   // vel_[0] = { -10.0f, 0.0f }; // デモ用：1個だけ動かす
 }
 
 void Ball::Update() {
@@ -77,16 +78,46 @@ void Ball::Draw() {
 
 void Ball::MoveBalls() {
     const float radius = 16.0f;
-    const float screenWidth = 540;
-    const float screenHeight = 800;
+
+    // 壁の位置（任意に設定可能）
+    //左
+    const float leftMax = 210.0f;
+    //右
+    const float rightMax = 1000.0f;
+    //上
+    const float topMax = 270.0f;
+    //下
+    const float bottomMax = 650.0f;
+
+    // 壁の反射係数
+    const float xBounce = -1.0f; // 左右
+    const float yBounce = -1.0f; // 上下
 
     for (int i = 0; i < kBallCount; i++) {
         pos_[i].x += vel_[i].x;
         pos_[i].y += vel_[i].y;
 
-        // 壁で反射
-        if (pos_[i].x < radius || pos_[i].x > screenWidth - radius) vel_[i].x *= -1;
-        if (pos_[i].y < radius || pos_[i].y > screenHeight - radius) vel_[i].y *= -1;
+        // 左壁
+        if (pos_[i].x < leftMax + radius) {
+            pos_[i].x = leftMax + radius;
+            vel_[i].x *= xBounce;
+        }
+        // 右壁
+        else if (pos_[i].x > rightMax - radius) {
+            pos_[i].x = rightMax - radius;
+            vel_[i].x *= xBounce;
+        }
+
+        // 上壁
+        if (pos_[i].y < topMax + radius) {
+            pos_[i].y = topMax + radius;
+            vel_[i].y *= yBounce;
+        }
+        // 下壁
+        else if (pos_[i].y > bottomMax - radius) {
+            pos_[i].y = bottomMax - radius;
+            vel_[i].y *= yBounce;
+        }
     }
 }
 
@@ -140,6 +171,7 @@ void Ball::CheckCollisions() {
 
 void Ball::CheckPlayerCollision(Player& player) {
     const float radius = 16.0f;
+    const float restitution = 1.9f; // 反発係数
     Vector2 playerPos = player.GetPos();
     float playerRadius = player.GetRadius();
 
@@ -153,25 +185,30 @@ void Ball::CheckPlayerCollision(Player& player) {
             float dist = std::sqrt(distSq);
             if (dist < 0.0001f) dist = 0.0001f;
 
+            // 法線ベクトル
             float nx = dx / dist;
             float ny = dy / dist;
 
+            // 相対速度
             float rvx = vel_[i].x - player.GetVel().x;
             float rvy = vel_[i].y - player.GetVel().y;
             float vn = rvx * nx + rvy * ny;
 
             if (vn < 0.0f) {
-                // さらに強く弾く
-                float impulse = -vn * 6.0f; // 倍率を 4 → 6 に増加
+                // 衝突インパルス（ボールとプレイヤーで質量比をつけてもOK）
+                float impulse = -vn * restitution;
+
+                // ボールに反映
                 vel_[i].x += impulse * nx;
                 vel_[i].y += impulse * ny;
 
-                // プレイヤーへの影響は控えめ
-                player.SetVel(player.GetVel().x - impulse * 0.2f * nx,
-                    player.GetVel().y - impulse * 0.2f * ny);
+                // プレイヤーにも少しだけ影響を与える（重い扱い）
+                float playerImpulseFactor = 0.2f; // ← プレイヤーの重さを調整
+                player.SetVel(player.GetVel().x - impulse * playerImpulseFactor * nx,
+                    player.GetVel().y - impulse * playerImpulseFactor * ny);
             }
 
-            // めり込み解消
+            // めり込み解消（お互いに動かす）
             float overlap = (minDist - dist) * 0.5f;
             pos_[i].x += nx * overlap;
             pos_[i].y += ny * overlap;
