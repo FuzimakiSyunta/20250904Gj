@@ -34,9 +34,9 @@ private:
 
 #pragma region ç¿ïWä÷òA
 
-	Vector2 pos = {0,0};
+	Vector2 pos = {250,1050};
 	Vector2 localPos;
-	const float speed = 2.6f;
+	const float speed = 10.6f;
 	const Vector2 center = { 5, 5 };
 	float radius_ = 16.0f;
 	Vector2 vel_ = { 0.0f, 0.0f };
