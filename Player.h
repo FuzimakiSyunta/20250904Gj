@@ -7,8 +7,6 @@ class Player
 {
 public:
 	
-	
-
 	void Initialize(Input* input, const Vector2& startPos = { 0,0 }, float radius = 16.0f);
 
 	void Update();
@@ -21,8 +19,6 @@ public:
 	Vector2 GetVel() const { return vel_; }
 	void SetVel(float x, float y) { vel_ = { x, y }; }
 	void SetPos(float x, float y) { pos = { x, y }; }
-
-
 
 private:
 #pragma region ‰æ‘œ“Ç‚İ‚İ

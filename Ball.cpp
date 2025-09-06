@@ -1,6 +1,7 @@
 #include "Ball.h"
 #include <cmath>
 #include"input/Input.h"
+
 Ball::Ball() {
     for (int i = 0; i < kBallCount; i++) {
         sprite_[i] = nullptr;
@@ -15,6 +16,7 @@ Ball::~Ball() {
 
 void Ball::Initialize(uint32_t /*textureHandle*/) {
     textureHandle_ = TextureManager::Load("ball.png");
+    debugCircleTex_ = TextureManager::Load("DebugCircle.png"); // ★ 赤丸画像ロード
 
     int index = 0;
     const float startX = 700.0f;
@@ -32,6 +34,7 @@ void Ball::Initialize(uint32_t /*textureHandle*/) {
 
             pos_[index] = { x, y };
             sprite_[index] = Sprite::Create(textureHandle_, pos_[index]);
+            isAlive_[index] = true;   // ★ 生存フラグをON
             index++;
         }
     }
@@ -42,12 +45,36 @@ void Ball::Initialize(uint32_t /*textureHandle*/) {
 void Ball::Update() {
     MoveBalls();
     CheckCollisions();
+    CheckPocketCollisions(); // ★ 追加
+
 }
 
 void Ball::Draw() {
-    for (int i = 0; i < kBallCount; i++)
-        if (sprite_[i]) sprite_[i]->SetPosition(pos_[i]), sprite_[i]->Draw();
+    // ボール描画
+    for (int i = 0; i < kBallCount; i++) {
+        if (isAlive_[i] && sprite_[i]) {
+            sprite_[i]->SetPosition(pos_[i]);
+            sprite_[i]->Draw();
+        }
+    }
+
+    // デバッグ用：ポケット位置に赤丸を描画
+    Vector2 pockets[6] = {
+        {202,250},   // 左上
+        {1000,250},  // 右上
+        {202,632},   // 左下
+        {1000,632},  // 右下
+        {600,250},   // 上中央
+        {600,632}    // 下中央
+    };
+
+    for (int j = 0; j < 6; j++) {
+        Sprite* debug = Sprite::Create(debugCircleTex_, pockets[j]);
+        debug->Draw();
+        
+    }
 }
+
 
 void Ball::MoveBalls() {
     const float radius = 16.0f;
@@ -234,5 +261,32 @@ void Ball::CheckPlayerCollision(Player& player) {
         // 速度が十分小さい場合は停止
         if (std::abs(vel_[i].x) < 0.01f) vel_[i].x = 0.0f;
         if (std::abs(vel_[i].y) < 0.01f) vel_[i].y = 0.0f;
+    }
+}
+
+void Ball::CheckPocketCollisions() {
+    Vector2 pockets[6] = {
+        {202,250},   // 左上
+        {1000,250},  // 右上
+        {202,632},   // 左下
+        {1010,632},  // 右下
+        {600,280},   // 上中央
+        {600,632}    // 下中央
+    };
+
+    float pocketRadius = 38.0f;
+
+    for (int i = 0; i < kBallCount; i++) {
+        if (!isAlive_[i]) continue;
+
+        for (int j = 0; j < 6; j++) {
+            float dx = pos_[i].x - pockets[j].x;
+            float dy = pos_[i].y - pockets[j].y;
+            float distSq = dx * dx + dy * dy;
+            if (distSq < pocketRadius * pocketRadius) {
+                isAlive_[i] = false;
+                break;
+            }
+        }
     }
 }

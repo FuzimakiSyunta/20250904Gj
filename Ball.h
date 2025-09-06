@@ -21,6 +21,14 @@ private:
     Sprite* sprite_[kBallCount];
     uint32_t textureHandle_ = 0u;
 
+    // ★ デバッグ可視化用 ---------------------
+    uint32_t debugCircleTex_ = 0u; // 赤丸(DebugCircle.png)のテクスチャ
+    // ---------------------------------------
+    Vector2 pocketPos_[6];   // ← ImGuiで調整するポケット位置
+
+    bool isAlive_[kBallCount];  // ★ 追加：ボールが残っているかどうか
+
     void MoveBalls();
     void CheckCollisions();
+    void CheckPocketCollisions(); // ★ 追加
 };
