@@ -67,8 +67,12 @@ void Player::Update() {
     // --- マウスドラッグ中 ---
     if (!arrowFlying_ && !arrowReturning_ && dragging_ && input_->IsPressMouse(0)) {
         dragCurrent_ = mousePos;
-
+        
+        //矢印の回転と拡大
         Vector2 diff = { dragStart_.x - dragCurrent_.x, dragStart_.y - dragCurrent_.y };
+        float length = sqrtf(diff.x * diff.x + diff.y * diff.y);
+
+        // 回転
         float angle = atan2f(diff.y, diff.x);
         playerArrowSprite_->SetRotation(angle);
 
@@ -121,18 +125,17 @@ void Player::Update() {
         
     }
 
-
-    // --- 摩擦 ---
+    //摩擦
     vel_ *= 0.98f;
 
-    // --- 位置更新 ---
+    //位置更新
     pos += vel_;
 
-    // --- 画面端で反射 ---
-    const float left = 235.0f;
-    const float right = 1050.0f;
-    const float top = 280.0f;
-    const float bottom = 680.0f;
+    //画面端で反射
+    const float left = 205.0f;
+    const float right = 1005.0f;
+    const float top = 265.0f;
+    const float bottom = 655.0f;
 
     if (pos.x < left) { pos.x = left; vel_.x *= -1.0f; }
     if (pos.x > right) { pos.x = right; vel_.x *= -1.0f; }
@@ -143,12 +146,13 @@ void Player::Update() {
     if (invincibleTimer_ > 0) {
         invincibleTimer_--;
     }
-
-
-    playerSprite_->SetPosition({ pos.x + offset.x, pos.y + offset.y });
-    // --- ポケット判定 ---
-    CheckPocketCollision();
+    //  プレイヤースプライト更新 
+    playerSprite_->SetSize({ radius_ * 2.0f, radius_ * 2.0f });
+    playerSprite_->SetPosition(pos);
 }
+
+
+  
 
 void Player::Draw() {
     playerSprite_->Draw();
