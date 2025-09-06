@@ -13,6 +13,7 @@ public:
     void Draw();
 
     void CheckPlayerCollision(Player& player); // プレイヤーとの衝突
+    int CheckPocketCollisions(); // ★ 追加
 
 private:
     static const int kBallCount = 10;
@@ -31,5 +32,7 @@ private:
 
     void MoveBalls();
     void CheckCollisions();
-    void CheckPocketCollisions(); // ★ 追加
+    
+
+    int damage_[kBallCount]; // 各ボールのダメージ値
 };

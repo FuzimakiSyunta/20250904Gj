@@ -48,6 +48,7 @@ void Ball::Initialize(uint32_t) {
             sprite_[index] = Sprite::Create(ballTextureHandle_[index], pos_[index]);
             sprite_[index]->SetSize({ 32.0f, 32.0f });
             isAlive_[index] = true;
+            damage_[index] = index + 1;
             index++;
         }
     }
@@ -56,8 +57,6 @@ void Ball::Initialize(uint32_t) {
 void Ball::Update() {
     MoveBalls();
     CheckCollisions();
-    CheckPocketCollisions(); // ★ 追加
-
 }
 
 void Ball::Draw() {
@@ -275,17 +274,14 @@ void Ball::CheckPlayerCollision(Player& player) {
     }
 }
 
-void Ball::CheckPocketCollisions() {
+int Ball::CheckPocketCollisions() {
     Vector2 pockets[6] = {
-        {202,250},   // 左上
-        {1000,250},  // 右上
-        {202,632},   // 左下
-        {1010,632},  // 右下
-        {600,280},   // 上中央
-        {600,632}    // 下中央
+        {202,250}, {1000,250}, {202,632},
+        {1010,632}, {600,280}, {600,632}
     };
 
     float pocketRadius = 38.0f;
+    int totalDamage = 0;
 
     for (int i = 0; i < kBallCount; i++) {
         if (!isAlive_[i]) continue;
@@ -294,10 +290,14 @@ void Ball::CheckPocketCollisions() {
             float dx = pos_[i].x - pockets[j].x;
             float dy = pos_[i].y - pockets[j].y;
             float distSq = dx * dx + dy * dy;
+
             if (distSq < pocketRadius * pocketRadius) {
                 isAlive_[i] = false;
+                totalDamage += damage_[i]; // ★ ダメージを加算
                 break;
             }
         }
     }
+
+    return totalDamage; // ★ 複数分まとめて返す
 }
