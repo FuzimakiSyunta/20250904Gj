@@ -33,6 +33,7 @@ private:
 #pragma region À•WŠÖ˜A
 
 	Vector2 pos = {250,1050};
+	Vector2 ArrowpPos = {pos};
 	Vector2 localPos;
 	const float speed = 10.6f;
 	const Vector2 center = { 5, 5 };
@@ -41,5 +42,10 @@ private:
 	bool dragging_;
 	Vector2 dragStart_;
 	Vector2 dragCurrent_;
+
+	bool arrowFlying_ = false;
+	Vector2 arrowVel_;
+	bool arrowReturning_ = false; // –îˆó‚ª–ß‚Á‚Ä‚¢‚éÅ’†‚©
+
 };
 
