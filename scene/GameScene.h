@@ -57,6 +57,8 @@ class GameScene {
 	int damage = 0; // ボールのダメージ値を受け取る変数
 	std::unique_ptr<Field> field_;
 
+	int testDamage = 0;
+
 	Ball* ball_ = nullptr;
 	uint32_t textureHandle_ = 0;
 	/// <summary>

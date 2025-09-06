@@ -337,3 +337,13 @@ void Ball::Respawn() {
         }
     }
 }
+
+std::vector<Vector2> Ball::GetBallsPos()
+{
+    std::vector<Vector2> results(kBallCount);
+    for (int i = 0; i < kBallCount; i++)
+    {
+        results[i]=pos_[i];
+    }
+    return results;
+}
