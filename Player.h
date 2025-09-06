@@ -46,5 +46,10 @@ private:
 	bool dragging_;
 	Vector2 dragStart_;
 	Vector2 dragCurrent_;
+
+	bool arrowFlying_ = false;
+	Vector2 arrowVel_;
+	bool arrowReturning_ = false; // –îˆó‚ª–ß‚Á‚Ä‚¢‚éÅ’†‚©
+
 };
 
