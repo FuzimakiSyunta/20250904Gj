@@ -17,9 +17,9 @@ void Player::Initialize(Input* input, const Vector2& startPos, float radius) {
 
     // 矢印（初期回転45°）
     playerArrowTexture = TextureManager::Load("arrow.png");
-    playerArrowSprite_.reset(Sprite::Create(playerArrowTexture, ArrowpPos, { 1,1,1,1 }, {0.5,0.5}));
+    playerArrowSprite_.reset(Sprite::Create(playerArrowTexture, ArrowpPos, { 1,1,1,1 }, { 0.5,0.5 }));
     playerArrowSprite_->SetPosition(ArrowpPos);
-   
+
 }
 
 void Player::Update() {
@@ -40,7 +40,7 @@ void Player::Update() {
 
     if (dragging_ && input_->IsPressMouse(0)) {
         dragCurrent_ = mousePos;
-        
+
         // --- 矢印の回転と拡大 ---
         Vector2 diff = { dragStart_.x - dragCurrent_.x, dragStart_.y - dragCurrent_.y };
         float length = sqrtf(diff.x * diff.x + diff.y * diff.y);
@@ -94,5 +94,5 @@ void Player::Draw() {
     }
     playerSprite_->Draw();
     // 右クリック押下中のみ矢印表示
-    
+
 }
