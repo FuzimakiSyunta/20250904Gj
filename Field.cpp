@@ -37,28 +37,34 @@ void Field::HandleBallPocket()
 		if (CheckCollision(ballPositions[i], pockets[0]))
 		{
 			AreaProcess(areaNumber[0]);  //左上のポケットが落ちた時のエリア効果
+			isDamage = true;
 		}
 		else if (CheckCollision(ballPositions[i], pockets[2]))
 		{
 			AreaProcess(areaNumber[1]); //左下のポケットが落ちた時のエリア効果
+			isDamage = true;
 		}
 		else if (CheckCollision(ballPositions[i], pockets[3]))
 		{
 			AreaProcess(areaNumber[2]); //右下のポケットが落ちた時のエリア効果
+			isDamage = true;
 		}
 		else if (CheckCollision(ballPositions[i], pockets[1]))
 		{
 			AreaProcess(areaNumber[3]); //右上のポケットが落ちた時のエリア効果
+			isDamage = true;
 		}
 		else if (CheckCollision(ballPositions[i], pockets[4]))
 		{
 			AreaProcess(areaNumber[0]);
 			AreaProcess(areaNumber[3]); //真ん中上のポケットが落ちた時のエリア効果
+			isDamage = true;
 		}
 		else if (CheckCollision(ballPositions[i], pockets[5]))
 		{
 			AreaProcess(areaNumber[1]);
 			AreaProcess(areaNumber[2]); //真ん中下のポケットが落ちた時のエリア効果
+			isDamage = true;
 		}
 	}
 	
@@ -124,15 +130,15 @@ int Field::AreaProcess(int number)
 	//	testSprite->SetPosition(pos);
 	//}
 	//とりあえず今適応できる効果をここに追加(すべて揃ったらこれらは削除して上記のコメントアウトを解除する)
-	if (number <= 40 )
+	if (number <= 30 && isDamage == false)
 	{
 		damage_ = 0;
 	}
-	else if (number >= 40 && number <= 80 )
+	else if (number >= 30 && number <= 80 && isDamage == false)
 	{
-		damage_ = damage_ * 20;
+		damage_ = damage_ * 3;
 	}
-	else if (number >= 80 )
+	else if (number >= 80 && isDamage == false)
 	{
 		damage_ = damage_;
 	}
