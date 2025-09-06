@@ -101,10 +101,10 @@ void Player::Update() {
     pos += vel_;
 
     // --- 画面端で反射 ---
-    const float left = 205.0f;
-    const float right = 1005.0f;
-    const float top = 265.0f;
-    const float bottom = 655.0f;
+    const float left = 235.0f;
+    const float right = 1050.0f;
+    const float top = 280.0f;
+    const float bottom = 680.0f;
 
     if (pos.x < left) { pos.x = left; vel_.x *= -1.0f; }
     if (pos.x > right) { pos.x = right; vel_.x *= -1.0f; }
@@ -118,6 +118,8 @@ void Player::Update() {
     //  プレイヤースプライト更新 
     playerSprite_->SetSize({ radius_ * 2.0f, radius_ * 2.0f });
     playerSprite_->SetPosition(pos);
+
+    CheckPocketCollision();
 }
 
 
