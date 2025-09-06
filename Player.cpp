@@ -14,6 +14,7 @@ void Player::Initialize(Input* input, const Vector2& startPos, float radius) {
     playerSprite_.reset(Sprite::Create(playerTexture_, pos));
     playerSprite_->SetPosition(pos);
 
+
     // –îˆói‰Šú‰ñ“]45‹j
     playerArrowTexture = TextureManager::Load("arrow.png");
     playerArrowSprite_.reset(Sprite::Create(playerArrowTexture, ArrowpPos, { 1,1,1,1 }, {0.5,0.5}));
