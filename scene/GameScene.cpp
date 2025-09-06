@@ -32,6 +32,7 @@ void GameScene::Initialize() {
 	//フィールドのエリア
 	field_ = std::make_unique<Field>();
 	field_->Initialize();
+	field_->SetBalls(ball_);
 }
 
 void GameScene::Update() {
@@ -40,10 +41,13 @@ void GameScene::Update() {
 	ball_->CheckPlayerCollision(*player_);
 	damage = ball_->CheckPocketCollisions();
 	if (damage > 0) {
-		boss_->TakeDamage(damage);
+		field_->SetDamage(damage);
+		field_->Update();
+		testDamage = field_->GetDamage();
+		boss_->TakeDamage(testDamage);
+		field_->GenerateRandomNumber();
 	}
 	boss_->Update();
-	field_->Update();
 }
 
 void GameScene::Draw() {
