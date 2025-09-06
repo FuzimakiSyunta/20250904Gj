@@ -1,33 +1,33 @@
-#include "Player.h"
+ï»¿#include "Player.h"
 #include <algorithm>
 #include <cmath>
 
 void Player::Initialize(Input* input, const Vector2& startPos, float radius) {
     input_ = input;
     pos = startPos;
-    drawRadius_ = radius;              // —á: 16 ¨ ’¼Œa32px‚Å•`‰æ
-    collisionRadius_ = radius * 0.6f;  // š “–‚½‚è”»’è‚¾‚¯60%‚Ék¬
+    drawRadius_ = radius;              // ä¾‹: 16 â†’ ç›´å¾„32pxã§æç”»
+    collisionRadius_ = radius * 0.6f;  // â˜… å½“ãŸã‚Šåˆ¤å®šã ã‘60%ã«ç¸®å°
     vel_ = { 0.0f, 0.0f };
 
     dragging_ = false;
 
-    // ƒvƒŒƒCƒ„[
+    // ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼
     playerTexture_ = TextureManager::Load("PlayerBall.png");
     playerSprite_.reset(Sprite::Create(playerTexture_, pos, { 1,1,1,1 }, { 0.5f, 0.5f }));
     playerSprite_->SetPosition(pos);
 
-    // –îˆóiPivot‚ğ‰º’[‚Éİ’èAƒTƒCƒYŒÅ’èj
+    // çŸ¢å°ï¼ˆPivotã‚’ä¸‹ç«¯ã«è¨­å®šã€ã‚µã‚¤ã‚ºå›ºå®šï¼‰
     playerArrowTexture = TextureManager::Load("arrow.png");
     playerArrowSprite_.reset(Sprite::Create(playerArrowTexture, pos, { 1,1,1,1 }, { 0.0f, -1.0f }));
     playerArrowSprite_->SetSize({ radius_ * 2.0f, radius_ * 2.0f });
     playerArrowSprite_->SetPosition(pos);
 
-    // === HPƒo[ ===
+    // === HPãƒãƒ¼ ===
     barWidth = 400.0f;
     barHeight = 20.0f;
-    screenWidth = 1280.0f;   // ‰æ–Ê•
-    barX = (screenWidth - barWidth) / 2.0f; // ’†‰›
-    barY = 750.0f;           // YˆÊ’uw’è
+    screenWidth = 1280.0f;   // ç”»é¢å¹…
+    barX = (screenWidth - barWidth) / 2.0f; // ä¸­å¤®
+    barY = 750.0f;           // Yä½ç½®æŒ‡å®š
     hpBackTex_ = TextureManager::Load("PlayerHP_Back.png");
     hpGaugeTex_ = TextureManager::Load("PlayerHP.png");
 
@@ -36,7 +36,7 @@ void Player::Initialize(Input* input, const Vector2& startPos, float radius) {
 
     hpBackSprite_->SetSize({ barWidth, barHeight });
     hpGaugeSprite_->SetSize({ barWidth, barHeight });
-    // ƒXƒvƒ‰ƒCƒg‚ÌƒTƒCƒY‚Æ”¼Œa‚ğ“ˆê
+    // ã‚¹ãƒ—ãƒ©ã‚¤ãƒˆã®ã‚µã‚¤ã‚ºã¨åŠå¾„ã‚’çµ±ä¸€
     playerSprite_->SetSize({ 32, 32 });
 
 }
@@ -51,20 +51,20 @@ void Player::TakeDamage(int damage) {
 void Player::Update() {
     Vector2 mousePos = input_->GetMousePosition();
 
-    // --- WASDƒL[‚ÅˆÚ“® ---
+    // --- WASDã‚­ãƒ¼ã§ç§»å‹• ---
     const float accel = 0.5f;
     if (input_->PushKey(DIK_W)) { vel_.y -= accel; }
     if (input_->PushKey(DIK_S)) { vel_.y += accel; }
     if (input_->PushKey(DIK_A)) { vel_.x -= accel; }
     if (input_->PushKey(DIK_D)) { vel_.x += accel; }
 
-    // --- ƒ}ƒEƒXƒhƒ‰ƒbƒOŠJn ---
+    // --- ãƒã‚¦ã‚¹ãƒ‰ãƒ©ãƒƒã‚°é–‹å§‹ ---
     if (input_->IsTriggerMouse(0)) {
         dragging_ = true;
         dragStart_ = mousePos;
     }
 
-    // --- ƒ}ƒEƒXƒhƒ‰ƒbƒO’† ---
+    // --- ãƒã‚¦ã‚¹ãƒ‰ãƒ©ãƒƒã‚°ä¸­ ---
     if (!arrowFlying_ && !arrowReturning_ && dragging_ && input_->IsPressMouse(0)) {
         dragCurrent_ = mousePos;
 
@@ -80,7 +80,7 @@ void Player::Update() {
         if (dragging_ && !input_->IsPressMouse(0)) {
             dragging_ = false;
 
-            // --- –îˆó‚ğƒvƒŒƒCƒ„[‚É–ß‚·ˆ—ŠJn ---
+            // --- çŸ¢å°ã‚’ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã«æˆ»ã™å‡¦ç†é–‹å§‹ ---
             arrowReturning_ = true;
         }
     }
@@ -88,29 +88,29 @@ void Player::Update() {
     if (arrowReturning_) {
         Vector2 arrowPos = playerArrowSprite_->GetPosition();
 
-        // ƒvƒŒƒCƒ„[ˆÊ’u‚Ö•âŠÔ‚µ‚Ä–ß‚·
+        // ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ä½ç½®ã¸è£œé–“ã—ã¦æˆ»ã™
         Vector2 dir = { pos.x - arrowPos.x, pos.y - arrowPos.y };
         float dist = sqrtf(dir.x * dir.x + dir.y * dir.y);
 
         if (dist < 5.0f) {
-            // –ß‚è‚«‚Á‚½‚ç‹…‚ğ”ò‚Î‚·
+            // æˆ»ã‚Šãã£ãŸã‚‰çƒã‚’é£›ã°ã™
             playerArrowSprite_->SetPosition(pos);
             arrowReturning_ = false;
 
-            // --- ‹…‚Ì”­Ëˆ— ---
-            // ƒ}ƒEƒX‚ÌˆÚ“®•ûŒü‚Ì‹t•ûŒü‚É”ò‚Î‚·
+            // --- çƒã®ç™ºå°„å‡¦ç† ---
+            // ãƒã‚¦ã‚¹ã®ç§»å‹•æ–¹å‘ã®é€†æ–¹å‘ã«é£›ã°ã™
             Vector2 mouseDir = { dragCurrent_.x - dragStart_.x, dragCurrent_.y - dragStart_.y };
             float len = sqrtf(mouseDir.x * mouseDir.x + mouseDir.y * mouseDir.y);
             if (len != 0) {
                 mouseDir.x /= len;
                 mouseDir.y /= len;
             }
-            float power = 10.0f; // ”­Ë‚Ì‹­‚³
-            vel_.x = -mouseDir.x * power; // ‹t•ûŒü‚É”ò‚Î‚·
+            float power = 10.0f; // ç™ºå°„ã®å¼·ã•
+            vel_.x = -mouseDir.x * power; // é€†æ–¹å‘ã«é£›ã°ã™
             vel_.y = -mouseDir.y * power;
         }
         else {
-            // –ß‚é“r’†
+            // æˆ»ã‚‹é€”ä¸­
             dir.x /= dist;
             dir.y /= dist;
             float returnSpeed = 20.0f;
@@ -122,13 +122,13 @@ void Player::Update() {
     }
 
 
-    // --- –€C ---
+    // --- æ‘©æ“¦ ---
     vel_ *= 0.98f;
 
-    // --- ˆÊ’uXV ---
+    // --- ä½ç½®æ›´æ–° ---
     pos += vel_;
 
-    // --- ‰æ–Ê’[‚Å”½Ë ---
+    // --- ç”»é¢ç«¯ã§åå°„ ---
     const float left = 235.0f;
     const float right = 1050.0f;
     const float top = 280.0f;
@@ -139,25 +139,25 @@ void Player::Update() {
     if (pos.y < top) { pos.y = top; vel_.y *= -1.0f; }
     if (pos.y > bottom) { pos.y = bottom; vel_.y *= -1.0f; }
 
-    // –³“GŠÔ‚ğŒ¸Z
+    // ç„¡æ•µæ™‚é–“ã‚’æ¸›ç®—
     if (invincibleTimer_ > 0) {
         invincibleTimer_--;
     }
 
 
     playerSprite_->SetPosition({ pos.x + offset.x, pos.y + offset.y });
-    // --- ƒ|ƒPƒbƒg”»’è ---
+    // --- ãƒã‚±ãƒƒãƒˆåˆ¤å®š ---
     CheckPocketCollision();
 }
 
 void Player::Draw() {
     playerSprite_->Draw();
-    // ¶ƒNƒŠƒbƒN‰Ÿ‰º’†‚Ì‚İ–îˆó•\¦
+    // å·¦ã‚¯ãƒªãƒƒã‚¯æŠ¼ä¸‹ä¸­ã®ã¿çŸ¢å°è¡¨ç¤º
     if (input_->IsPressMouse(0)) {
         playerArrowSprite_->Draw();
     }
 
-    // === HPƒQ[ƒW ===
+    // === HPã‚²ãƒ¼ã‚¸ ===
     if (hpBackSprite_) {
 
         hpBackSprite_->Draw();
@@ -166,7 +166,7 @@ void Player::Draw() {
         float hpPercent = (float)currentHp_ / maxHp_;
         hpGaugeSprite_->SetSize({ barWidth * hpPercent, barHeight });
 
-        // ˆÊ’u‚Í”wŒi‚Ì¶’[‚ÉŒÅ’è‚·‚é
+        // ä½ç½®ã¯èƒŒæ™¯ã®å·¦ç«¯ã«å›ºå®šã™ã‚‹
         hpGaugeSprite_->SetPosition({ barX, barY });
 
         hpGaugeSprite_->Draw();
@@ -174,15 +174,15 @@ void Player::Draw() {
 }
 
 void Player::CheckPocketCollision() {
-    if (invincibleTimer_ > 0) return; // –³“G’†‚ÍƒXƒLƒbƒv
+    if (invincibleTimer_ > 0) return; // ç„¡æ•µä¸­ã¯ã‚¹ã‚­ãƒƒãƒ—
 
     Vector2 pockets[6] = {
-        { 220, 290 },   // ¶ã
-        { 1000, 250 },  // ‰Eã
-        { 202, 632 },   // ¶‰º
-        { 1000, 632 },  // ‰E‰º
-        { 600, 250 },   // ã’†‰›
-        { 610, 660 }    // ‰º’†‰›
+        { 220, 290 },   // å·¦ä¸Š
+        { 1000, 250 },  // å³ä¸Š
+        { 202, 632 },   // å·¦ä¸‹
+        { 1000, 632 },  // å³ä¸‹
+        { 600, 250 },   // ä¸Šä¸­å¤®
+        { 610, 660 }    // ä¸‹ä¸­å¤®
     };
 
     float pocketRadius = 38.0f;
@@ -193,17 +193,17 @@ void Player::CheckPocketCollision() {
         float distSq = dx * dx + dy * dy;
 
         if (distSq < pocketRadius * pocketRadius) {
-            // š ƒ_ƒ[ƒW‚ğó‚¯‚é
+            // â˜… ãƒ€ãƒ¡ãƒ¼ã‚¸ã‚’å—ã‘ã‚‹
             TakeDamage(1);
-            invincibleTimer_ = 60; // –ñ1•b‚Ì–³“GŠÔi60fps‘z’èj
+            invincibleTimer_ = 60; // ç´„1ç§’ã®ç„¡æ•µæ™‚é–“ï¼ˆ60fpsæƒ³å®šï¼‰
 
-            // š ƒ‰ƒ“ƒ_ƒ€‚Å•Ê‚Ìƒ|ƒPƒbƒg‚ğ‘I‘ğ
+            // â˜… ãƒ©ãƒ³ãƒ€ãƒ ã§åˆ¥ã®ãƒã‚±ãƒƒãƒˆã‚’é¸æŠ
             int newPocket = i;
             while (newPocket == i) {
                 newPocket = rand() % 6;
             }
 
-            // ã‘¤ƒ|ƒPƒbƒg‚È‚ç­‚µ‰º‚ÉA‰º‘¤‚È‚ç­‚µã‚Éo‚·
+            // ä¸Šå´ãƒã‚±ãƒƒãƒˆãªã‚‰å°‘ã—ä¸‹ã«ã€ä¸‹å´ãªã‚‰å°‘ã—ä¸Šã«å‡ºã™
             Vector2 spawnPos = pockets[newPocket];
             if (spawnPos.y < 400) {
                 spawnPos.y += 50;
