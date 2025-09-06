@@ -88,9 +88,10 @@ void Player::Update() {
 
 
 void Player::Draw() {
-    playerSprite_->Draw();
-    // 右クリック押下中のみ矢印表示
     if (input_->IsPressMouse(0)) {
         playerArrowSprite_->Draw();
     }
+    playerSprite_->Draw();
+    // 右クリック押下中のみ矢印表示
+    
 }
