@@ -28,6 +28,10 @@ void GameScene::Initialize() {
 	//ボス
 	boss_ = std::make_unique<Boss>();
 	boss_->Initialize(input_);
+
+	//フィールドのエリア
+	field_ = std::make_unique<Field>();
+	field_->Initialize();
 }
 
 void GameScene::Update() {
@@ -39,7 +43,7 @@ void GameScene::Update() {
 		boss_->TakeDamage(damage);
 	}
 	boss_->Update();
-	
+	field_->Update();
 }
 
 void GameScene::Draw() {
@@ -55,7 +59,7 @@ void GameScene::Draw() {
 	/// ここに背景スプライトの描画処理を追加できる
 	/// </summary>
 	billiardstable_->Draw();
-	
+	field_->Draw();
 	// スプライト描画後処理
 	Sprite::PostDraw();
 	// 深度バッファクリア

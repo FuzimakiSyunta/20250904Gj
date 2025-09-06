@@ -104,6 +104,7 @@
     <ClCompile Include="base\WinApp.cpp" />
     <ClCompile Include="Billiardstable.cpp" />
     <ClCompile Include="Boss.cpp" />
+    <ClCompile Include="Field.cpp" />
     <ClCompile Include="GameExplanation.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Player.cpp" />
@@ -136,6 +137,7 @@
     <ClInclude Include="base\WinApp.h" />
     <ClInclude Include="Billiardstable.h" />
     <ClInclude Include="Boss.h" />
+    <ClInclude Include="Field.h" />
     <ClInclude Include="GameExplanation.h" />
     <ClInclude Include="input\Input.h" />
     <ClInclude Include="math\MathUtility.h" />
