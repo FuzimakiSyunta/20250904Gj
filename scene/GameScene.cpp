@@ -24,12 +24,30 @@ void GameScene::Initialize() {
 	//ビリヤード台
 	billiardstable_ = std::make_unique<Billiardstable>();
 	billiardstable_->Initialize();
+
+	//ボス
+	boss_ = std::make_unique<Boss>();
+	boss_->Initialize(input_);
+
+	//フィールドのエリア
+	field_ = std::make_unique<Field>();
+	field_->Initialize();
+	field_->SetBalls(ball_);
 }
 
 void GameScene::Update() {
 	player_->Update();
 	ball_->Update();
 	ball_->CheckPlayerCollision(*player_);
+	damage = ball_->CheckPocketCollisions();
+	if (damage > 0) {
+		field_->SetDamage(damage);
+		field_->Update();
+		testDamage = field_->GetDamage();
+		boss_->TakeDamage(testDamage);
+		field_->GenerateRandomNumber();
+	}
+	boss_->Update();
 }
 
 void GameScene::Draw() {
@@ -45,7 +63,7 @@ void GameScene::Draw() {
 	/// ここに背景スプライトの描画処理を追加できる
 	/// </summary>
 	billiardstable_->Draw();
-	
+	field_->Draw();
 	// スプライト描画後処理
 	Sprite::PostDraw();
 	// 深度バッファクリア
@@ -73,6 +91,7 @@ void GameScene::Draw() {
 	/// </summary>
 	player_->Draw();
 	ball_->Draw();
+	boss_->Draw();
 
 	// デバッグテキストの描画
 	debugText_->DrawAll(commandList);

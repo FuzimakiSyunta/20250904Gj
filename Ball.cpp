@@ -14,39 +14,61 @@ Ball::~Ball() {
         delete sprite_[i];
 }
 
-void Ball::Initialize(uint32_t /*textureHandle*/) {
-    textureHandle_ = TextureManager::Load("ball.png");
-    debugCircleTex_ = TextureManager::Load("DebugCircle.png"); // ★ 赤丸画像ロード
+void Ball::Initialize(uint32_t) {
+    // 10枚の画像をロード
+    ballTextureHandle_[0] = TextureManager::Load("1.png");
+    ballTextureHandle_[1] = TextureManager::Load("2.png");
+    ballTextureHandle_[2] = TextureManager::Load("3.png");
+    ballTextureHandle_[3] = TextureManager::Load("4.png");
+    ballTextureHandle_[4] = TextureManager::Load("5.png");
+    ballTextureHandle_[5] = TextureManager::Load("6.png");
+    ballTextureHandle_[6] = TextureManager::Load("7.png");
+    ballTextureHandle_[7] = TextureManager::Load("8.png");
+    ballTextureHandle_[8] = TextureManager::Load("9.png");
+    ballTextureHandle_[9] = TextureManager::Load("10.png");
+
+    debugCircleTex_ = TextureManager::Load("DebugCircle.png");
 
     int index = 0;
     const float startX = 700.0f;
     const float startY = 460.0f;
-    const float ballSize = 11.0f;
     const float gap = 40.0f;
 
+    // 三角形の配置
     int rowCounts[4] = { 1,2,3,4 };
-    for (int col = 0; col < 5; col++) {
+    for (int col = 0; col < 4; col++) {
         int count = rowCounts[col];
         for (int row = 0; row < count; row++) {
             float offsetY = (row - (count - 1) / 2.0f) * gap;
             float x = startX + col * gap;
             float y = startY + offsetY;
 
+            // 画像を割り当て
             pos_[index] = { x, y };
-            sprite_[index] = Sprite::Create(textureHandle_, pos_[index]);
-            isAlive_[index] = true;   // ★ 生存フラグをON
+            sprite_[index] = Sprite::Create(ballTextureHandle_[index], pos_[index], { 1,1,1,1 }, { 0.5f, 0.5f });
+            sprite_[index]->SetSize({ 32.0f, 32.0f });
+            isAlive_[index] = true;
+            damage_[index] = index + 1;
             index++;
         }
     }
-
-   // vel_[0] = { -10.0f, 0.0f }; // デモ用：1個だけ動かす
+    const float ballRadius = 16.0f; // 32x32 の半分
 }
 
 void Ball::Update() {
     MoveBalls();
     CheckCollisions();
-    CheckPocketCollisions(); // ★ 追加
-
+    // 全部落ちたらリスポーン
+    bool allDead = true;
+    for (int i = 0; i < kBallCount; i++) {
+        if (isAlive_[i]) {
+            allDead = false;
+            break;
+        }
+    }
+    if (allDead) {
+        Respawn();
+    }
 }
 
 void Ball::Draw() {
@@ -58,21 +80,21 @@ void Ball::Draw() {
         }
     }
 
-    // デバッグ用：ポケット位置に赤丸を描画
-    Vector2 pockets[6] = {
-        {202,250},   // 左上
-        {1000,250},  // 右上
-        {202,632},   // 左下
-        {1000,632},  // 右下
-        {600,250},   // 上中央
-        {600,632}    // 下中央
-    };
+    //// デバッグ用：ポケット位置に赤丸を描画
+    //Vector2 pockets[6] = {
+    //    {202,250},   // 左上
+    //    {1000,250},  // 右上
+    //    {202,632},   // 左下
+    //    {1000,632},  // 右下
+    //    {600,250},   // 上中央
+    //    {600,632}    // 下中央
+    //};
 
-    for (int j = 0; j < 6; j++) {
-        Sprite* debug = Sprite::Create(debugCircleTex_, pockets[j]);
-        debug->Draw();
-        
-    }
+    //for (int j = 0; j < 6; j++) {
+    //    Sprite* debug = Sprite::Create(debugCircleTex_, pockets[j]);
+    //    //debug->Draw();
+    //    
+    //}
 }
 
 
@@ -81,13 +103,13 @@ void Ball::MoveBalls() {
 
     // 壁の位置（任意に設定可能）
     //左
-    const float leftMax = 205.0f;
+    const float leftMax = 235.0f;
     //右
-    const float rightMax = 1005.0f;
+    const float rightMax = 1050.0f;
     //上
-    const float topMax = 265.0f;
+    const float topMax = 250.0f;
     //下
-    const float bottomMax = 655.0f;
+    const float bottomMax = 680.0f;
 
     // 壁の反射係数
     const float xBounce = -1.0f; // 左右
@@ -264,17 +286,14 @@ void Ball::CheckPlayerCollision(Player& player) {
     }
 }
 
-void Ball::CheckPocketCollisions() {
+int Ball::CheckPocketCollisions() {
     Vector2 pockets[6] = {
-        {202,250},   // 左上
-        {1000,250},  // 右上
-        {202,632},   // 左下
-        {1010,632},  // 右下
-        {600,280},   // 上中央
-        {600,632}    // 下中央
+        {202,265}, {1000,250}, {202,632},
+        {1010,632}, {600,280}, {600,632}
     };
 
     float pocketRadius = 38.0f;
+    int totalDamage = 0;
 
     for (int i = 0; i < kBallCount; i++) {
         if (!isAlive_[i]) continue;
@@ -283,10 +302,48 @@ void Ball::CheckPocketCollisions() {
             float dx = pos_[i].x - pockets[j].x;
             float dy = pos_[i].y - pockets[j].y;
             float distSq = dx * dx + dy * dy;
+
             if (distSq < pocketRadius * pocketRadius) {
                 isAlive_[i] = false;
+                totalDamage += damage_[i]; // ★ ダメージを加算
                 break;
             }
         }
     }
+
+    return totalDamage; // ★ 複数分まとめて返す
+}
+
+void Ball::Respawn() {
+    int index = 0;
+    const float startX = 700.0f;
+    const float startY = 460.0f;
+    const float gap = 40.0f;
+
+    int rowCounts[4] = { 1,2,3,4 };
+    for (int col = 0; col < 4; col++) {
+        int count = rowCounts[col];
+        for (int row = 0; row < count; row++) {
+            float offsetY = (row - (count - 1) / 2.0f) * gap;
+            float x = startX + col * gap;
+            float y = startY + offsetY;
+
+            pos_[index] = { x, y };
+            sprite_[index] = Sprite::Create(ballTextureHandle_[index], pos_[index]);
+            sprite_[index]->SetSize({ 32.0f, 32.0f });
+            isAlive_[index] = true;          // 復活
+            vel_[index] = { 0.0f, 0.0f };    // 静止状態にリセット
+            index++;
+        }
+    }
+}
+
+std::vector<Vector2> Ball::GetBallsPos()
+{
+    std::vector<Vector2> results(kBallCount);
+    for (int i = 0; i < kBallCount; i++)
+    {
+        results[i]=pos_[i];
+    }
+    return results;
 }

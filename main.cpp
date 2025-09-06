@@ -5,6 +5,8 @@
 #include "WinApp.h"
 #include "AxisIndicator.h"
 #include "PrimitiveDrawer.h"
+#include "TitleScene.h"
+#include "GameExplanation.h"
 
 // Windowsアプリでのエントリーポイント(main関数)
 int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
@@ -61,6 +63,14 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	gameScene = new GameScene();
 	gameScene->Initialize();
 
+	TitleScene* titleScene = new TitleScene();
+	titleScene->Initialize();
+
+	GameExplanation* gameExplanation = new GameExplanation();
+	gameExplanation->Initialize();
+
+	Scene::SceneType sceneNo = Scene::SceneType::kTitle;
+
 	// メインループ
 	while (true) {
 		// メッセージ処理
@@ -70,15 +80,43 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 		// 入力関連の毎フレーム処理
 		input->Update();
-		// ゲームシーンの毎フレーム処理
-		gameScene->Update();
+		switch (sceneNo) {
+		case Scene::SceneType::kTitle:
+			titleScene->Update();
+			if (titleScene->IsSceneEnd())
+			{
+				sceneNo = titleScene->NextScene();
+			}
+			break;
+		case Scene::SceneType::kGameExplanation:
+			gameExplanation->Update();
+			if (gameExplanation->IsSceneEnd())
+			{
+				sceneNo = gameExplanation->NextScene();
+			}
+			break;
+		case Scene::SceneType::kGamePlay:
+			// ゲームシーンの毎フレーム処理
+			gameScene->Update();
+			break;
+		}
 		// 軸表示の更新
 		axisIndicator->Update();
 
 		// 描画開始
 		dxCommon->PreDraw();
-		// ゲームシーンの描画
-		gameScene->Draw();
+		switch (sceneNo) {
+		case Scene::SceneType::kTitle:
+			titleScene->Draw();
+			break;
+		case Scene::SceneType::kGameExplanation:
+			gameExplanation->Draw();
+			break;
+		case Scene::SceneType::kGamePlay:
+			// ゲームシーンの描画
+			gameScene->Draw();
+			break;
+		}
 		// 軸表示の描画
 		axisIndicator->Draw();
 		// プリミティブ描画のリセット
