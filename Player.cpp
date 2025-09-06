@@ -152,10 +152,7 @@ void Player::Update() {
 }
 
 
-    playerSprite_->SetPosition({ pos.x + offset.x, pos.y + offset.y });
-    // --- ポケット判定 ---
-    CheckPocketCollision();
-}
+  
 
 void Player::Draw() {
     playerSprite_->Draw();
