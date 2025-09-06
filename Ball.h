@@ -15,6 +15,8 @@ public:
     void CheckPlayerCollision(Player& player); // プレイヤーとの衝突
     int CheckPocketCollisions(); // ★ 追加
 
+	void Respawn(); // ★ 追加
+
     std::vector<Vector2> GetBallsPos(); //各ボールの座標を代入
 
 private:

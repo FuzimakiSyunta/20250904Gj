@@ -93,9 +93,6 @@ void Boss::TakeDamage(int damage) {
     currentHp_ -= damage;
     if (currentHp_ < 0) currentHp_ = 0;
 
-    // デバッグ出力で確認
-    printf("Boss HP: %d / %d (Damage %d)\n", currentHp_, maxHp_, damage);
-
     if (currentHp_ == 0) {
         isDead_ = true;
         // 倒れた演出などをここに
