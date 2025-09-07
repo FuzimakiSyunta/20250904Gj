@@ -53,11 +53,15 @@ void Ball::Initialize(uint32_t) {
         }
     }
     const float ballRadius = 16.0f; // 32x32 の半分
+   
+
 }
 
 void Ball::Update() {
     MoveBalls();
     CheckCollisions();
+   
+   
     // 全部落ちたらリスポーン
     bool allDead = true;
     for (int i = 0; i < kBallCount; i++) {
@@ -70,11 +74,11 @@ void Ball::Update() {
         Respawn();
     }
 }
-
+//isAlive_[i] && sprite_[i]
 void Ball::Draw() {
     // ボール描画
     for (int i = 0; i < kBallCount; i++) {
-        if (isAlive_[i] && sprite_[i]) {
+        if (isAlive_[i] ==true) {
             sprite_[i]->SetPosition(pos_[i]);
             sprite_[i]->Draw();
         }
@@ -146,10 +150,20 @@ void Ball::MoveBalls() {
 void Ball::CheckCollisions() {
     const float radius = 16.0f;
     const float minDist = radius * 2.0f;
-    const float friction = 0.99f; // 摩擦係数（0.0～1.0） 1.0に近いほど滑る
+    const float friction = 0.99f; // 摩擦係数（0.0～1.0）
 
     for (int i = 0; i < kBallCount; i++) {
+
+        if (!isAlive_[i]) {
+            // ★ 消えたボールは移動を止める
+            vel_[i].x = 0.0f;
+            vel_[i].y = 0.0f;
+            continue;
+        }
+
         for (int j = i + 1; j < kBallCount; j++) {
+            if (!isAlive_[j]) continue; // ★ 消えてるボールは無視
+
             float dx = pos_[j].x - pos_[i].x;
             float dy = pos_[j].y - pos_[i].y;
             float distSq = dx * dx + dy * dy;
@@ -165,7 +179,7 @@ void Ball::CheckCollisions() {
                 float vn = rvx * nx + rvy * ny;
 
                 if (vn < 0.0f) {
-                    float impulse = -vn * 1.0f; // ここは控えめ
+                    float impulse = -vn * 1.0f; // 弾き返し
                     vel_[i].x -= impulse * nx;
                     vel_[i].y -= impulse * ny;
                     vel_[j].x += impulse * nx;
@@ -191,9 +205,11 @@ void Ball::CheckCollisions() {
     }
 }
 
+
+
+
 void Ball::CheckPlayerCollision(Player& player) {
     const float ballRadius = 16.0f;
-    const float ballMinDist = ballRadius * 2.0f;
     const float ballFriction = 0.99f; // 摩擦係数
 
     Vector2 playerPos = player.GetPos();
@@ -201,6 +217,8 @@ void Ball::CheckPlayerCollision(Player& player) {
 
     // === プレイヤーとの衝突処理 ===
     for (int i = 0; i < kBallCount; i++) {
+        if (!isAlive_[i]) continue; // ★ 消えたボールは無視
+
         float dx = pos_[i].x - playerPos.x;
         float dy = pos_[i].y - playerPos.y;
         float distSq = dx * dx + dy * dy;
@@ -239,52 +257,8 @@ void Ball::CheckPlayerCollision(Player& player) {
             player.SetPos(playerPos.x - nx * overlap, playerPos.y - ny * overlap);
         }
     }
-
-    // === ボール同士の衝突処理（完全弾性衝突） ===
-    for (int i = 0; i < kBallCount; i++) {
-        for (int j = i + 1; j < kBallCount; j++) {
-            float dx = pos_[j].x - pos_[i].x;
-            float dy = pos_[j].y - pos_[i].y;
-            float distSq = dx * dx + dy * dy;
-
-            if (distSq < ballMinDist * ballMinDist) {
-                float dist = std::sqrt(distSq);
-                if (dist < 0.0001f) dist = 0.0001f;
-
-                float nx = dx / dist;
-                float ny = dy / dist;
-
-                // 相対速度
-                float rvx = vel_[i].x - vel_[j].x;
-                float rvy = vel_[i].y - vel_[j].y;
-                float vn = rvx * nx + rvy * ny;
-
-                if (vn < 0.0f) {
-                    // === 等質量の完全弾性衝突 ===
-                    vel_[i].x -= vn * nx;
-                    vel_[i].y -= vn * ny;
-                    vel_[j].x += vn * nx;
-                    vel_[j].y += vn * ny;
-                }
-
-                // めり込み解消
-                float overlap = (ballMinDist - dist) * 0.5f;
-                pos_[i].x -= nx * overlap;
-                pos_[i].y -= ny * overlap;
-                pos_[j].x += nx * overlap;
-                pos_[j].y += ny * overlap;
-            }
-        }
-
-        // 摩擦による減速
-        vel_[i].x *= ballFriction;
-        vel_[i].y *= ballFriction;
-
-        // 速度が十分小さい場合は停止
-        if (std::abs(vel_[i].x) < 0.01f) vel_[i].x = 0.0f;
-        if (std::abs(vel_[i].y) < 0.01f) vel_[i].y = 0.0f;
-    }
 }
+
 
 int Ball::CheckPocketCollisions() {
     Vector2 pockets[6] = {
@@ -305,6 +279,7 @@ int Ball::CheckPocketCollisions() {
 
             if (distSq < pocketRadius * pocketRadius) {
                 isAlive_[i] = false;
+               
                 totalDamage += damage_[i]; // ★ ダメージを加算
                 break;
             }
@@ -329,7 +304,7 @@ void Ball::Respawn() {
             float y = startY + offsetY;
 
             pos_[index] = { x, y };
-            sprite_[index] = Sprite::Create(ballTextureHandle_[index], pos_[index]);
+            sprite_[index] = Sprite::Create(ballTextureHandle_[index], pos_[index],{ 1,1,1,1 }, { 0.5f, 0.5f });
             sprite_[index]->SetSize({ 32.0f, 32.0f });
             isAlive_[index] = true;          // 復活
             vel_[index] = { 0.0f, 0.0f };    // 静止状態にリセット
@@ -338,6 +313,15 @@ void Ball::Respawn() {
     }
 }
 
+bool Ball::AreAllBallsStopped()
+const {
+    for (int i = 0; i < kBallCount; i++) {
+        if (!isAlive_[i]) continue; // 消えているボールは無視
+        if (std::abs(vel_[i].x) > 0.001f || std::abs(vel_[i].y) > 0.001f)
+            return false; // まだ動いているボールがある
+    }
+    return true;
+}
 std::vector<Vector2> Ball::GetBallsPos()
 {
     std::vector<Vector2> results(kBallCount);
@@ -347,3 +331,4 @@ std::vector<Vector2> Ball::GetBallsPos()
     }
     return results;
 }
+
