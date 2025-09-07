@@ -1,4 +1,4 @@
-#include "Player.h"
+ï»¿#include "Player.h"
 #include <algorithm>
 #include <cmath>
 #include "DamageText.h"
@@ -6,28 +6,28 @@
 void Player::Initialize(Input* input, const Vector2& startPos, float radius) {
     input_ = input;
     pos = startPos;
-    drawRadius_ = radius;              // —á: 16 ¨ ’¼Œa32px‚Å•`‰æ
-    collisionRadius_ = radius * 0.6f;  // š “–‚½‚è”»’è‚¾‚¯60%‚Ék¬
+    drawRadius_ = radius;              // ä¾‹: 16 â†’ ç›´å¾„32pxã§æç”»
+    collisionRadius_ = radius * 0.6f;  // â˜… å½“ãŸã‚Šåˆ¤å®šã ã‘60%ã«ç¸®å°
     vel_ = { 0.0f, 0.0f };
 
     dragging_ = false;
 
-    // ƒvƒŒƒCƒ„[
+    // ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼
     playerTexture_ = TextureManager::Load("PlayerBall.png");
     playerSprite_.reset(Sprite::Create(playerTexture_, pos, { 1,1,1,1 }, { 0.5f, 0.5f }));
     playerSprite_->SetPosition(pos);
 
-    // –îˆói‰Šú‰ñ“]45‹j
+    // çŸ¢å°ï¼ˆåˆæœŸå›è»¢45Â°ï¼‰
     playerArrowTexture = TextureManager::Load("arrow.png");
     playerArrowSprite_.reset(Sprite::Create(playerArrowTexture, ArrowpPos, { 1,1,1,1 }, { 0.5,0.5 }));
     playerArrowSprite_->SetPosition(ArrowpPos);
 
-    // === HPƒo[ ===
+    // === HPãƒãƒ¼ ===
     barWidth = 400.0f;
     barHeight = 20.0f;
-    screenWidth = 1280.0f;   // ‰æ–Ê•
-    barX = (screenWidth - barWidth) / 2.0f; // ’†‰›
-    barY = 750.0f;           // YˆÊ’uw’è
+    screenWidth = 1280.0f;   // ç”»é¢å¹…
+    barX = (screenWidth - barWidth) / 2.0f; // ä¸­å¤®
+    barY = 750.0f;           // Yä½ç½®æŒ‡å®š
     hpBackTex_ = TextureManager::Load("PlayerHP_Back.png");
     hpGaugeTex_ = TextureManager::Load("PlayerHP.png");
 	hphartTex_ = TextureManager::Load("Hart.png");
@@ -38,7 +38,7 @@ void Player::Initialize(Input* input, const Vector2& startPos, float radius) {
 
     hpBackSprite_->SetSize({ barWidth, barHeight });
     hpGaugeSprite_->SetSize({ barWidth, barHeight });
-    // ƒXƒvƒ‰ƒCƒg‚ÌƒTƒCƒY‚Æ”¼Œa‚ğ“ˆê
+    // ã‚¹ãƒ—ãƒ©ã‚¤ãƒˆã®ã‚µã‚¤ã‚ºã¨åŠå¾„ã‚’çµ±ä¸€
     playerSprite_->SetSize({ 32, 32 });
 
     damageText = TextureManager::Load("number1.png");
@@ -51,23 +51,23 @@ void Player::TakeDamage(int damage) {
     if (currentHp_ <= 0) {
         currentHp_ = 0;
     }
-    // š HPƒo[‚ğ—h‚ç‚·
+    // â˜… HPãƒãƒ¼ã‚’æºã‚‰ã™
     hpBarShaking_ = true;
-    hpBarShakeTimer_ = 20; // —h‚ê‚éƒtƒŒ[ƒ€”
+    hpBarShakeTimer_ = 20; // æºã‚Œã‚‹ãƒ•ãƒ¬ãƒ¼ãƒ æ•°
     isDamage = false;
 }
 
 void Player::Update() {
     Vector2 mousePos = input_->GetMousePosition();
 
-    // --- WASDƒL[‚ÅˆÚ“® ---
+    // --- WASDã‚­ãƒ¼ã§ç§»å‹• ---
     const float accel = 0.5f;
     if (input_->PushKey(DIK_W)) { vel_.y -= accel; }
     if (input_->PushKey(DIK_S)) { vel_.y += accel; }
     if (input_->PushKey(DIK_A)) { vel_.x -= accel; }
     if (input_->PushKey(DIK_D)) { vel_.x += accel; }
 
-    // --- ƒ}ƒEƒXƒhƒ‰ƒbƒO ---
+    // --- ãƒã‚¦ã‚¹ãƒ‰ãƒ©ãƒƒã‚° ---
     if (input_->IsTriggerMouse(0)) {
         dragging_ = true;
         dragStart_ = mousePos;
@@ -76,15 +76,15 @@ void Player::Update() {
     if (dragging_ && input_->IsPressMouse(0)) {
         dragCurrent_ = mousePos;
 
-        // --- –îˆó‚Ì‰ñ“]‚ÆŠg‘å ---
+        // --- çŸ¢å°ã®å›è»¢ã¨æ‹¡å¤§ ---
         Vector2 diff = { dragStart_.x - dragCurrent_.x, dragStart_.y - dragCurrent_.y };
         float length = sqrtf(diff.x * diff.x + diff.y * diff.y);
 
-        // ‰ñ“]i‰Šú45‹‚ÍŒÅ’è‚µ‚Ä‚ ‚é‚Ì‚Å‚»‚Ì‚Ü‚Üangle‚ğƒZƒbƒgj
+        // å›è»¢ï¼ˆåˆæœŸ45Â°ã¯å›ºå®šã—ã¦ã‚ã‚‹ã®ã§ãã®ã¾ã¾angleã‚’ã‚»ãƒƒãƒˆï¼‰
         float angle = atan2f(diff.y, diff.x);
         playerArrowSprite_->SetRotation(angle);
 
-        // ‘å‚«‚³iˆø‚Á’£‚è‹——£‚ÅŠg‘åj
+        // å¤§ãã•ï¼ˆå¼•ã£å¼µã‚Šè·é›¢ã§æ‹¡å¤§ï¼‰
         float scale = std::clamp(length / 100.0f, 0.5f, 3.0f);
         playerArrowSprite_->SetSize({ radius_ * 2.0f * scale, radius_ * 2.0f * scale });
         Vector2 offset = { 10.0f, 30.0f };
@@ -99,13 +99,13 @@ void Player::Update() {
         vel_.y = diff.y * power;
     }
 
-    // --- –€C ---
+    // --- æ‘©æ“¦ ---
     vel_ *= 0.98f;
 
-    // --- ˆÊ’uXV ---
+    // --- ä½ç½®æ›´æ–° ---
     pos += vel_;
 
-    // --- ‰æ–Ê’[‚Å”½Ë ---
+    // --- ç”»é¢ç«¯ã§åå°„ ---
     const float left = 235.0f;
     const float right = 1050.0f;
     const float top = 280.0f;
@@ -116,11 +116,11 @@ void Player::Update() {
     if (pos.y < top) { pos.y = top; vel_.y *= -1.0f; }
     if (pos.y > bottom) { pos.y = bottom; vel_.y *= -1.0f; }
 
-    // –³“GŠÔ‚ğŒ¸Z
+    // ç„¡æ•µæ™‚é–“ã‚’æ¸›ç®—
     if (invincibleTimer_ > 0) {
         invincibleTimer_--;
     }
-	// HPƒo[‚Ì—h‚êXV
+	// HPãƒãƒ¼ã®æºã‚Œæ›´æ–°
     if (hpBarShaking_) {
         hpBarShakeTimer_--;
         if (hpBarShakeTimer_ <= 0) {
@@ -129,18 +129,18 @@ void Player::Update() {
     }
 
     playerSprite_->SetPosition({ pos.x + offset.x, pos.y + offset.y });
-    // --- ƒ|ƒPƒbƒg”»’è ---
+    // --- ãƒã‚±ãƒƒãƒˆåˆ¤å®š ---
     CheckPocketCollision();
 }
 
 void Player::Draw() {
-    // ¶ƒNƒŠƒbƒN‰Ÿ‰º’†‚Ì‚İ–îˆó•\¦
+    // å·¦ã‚¯ãƒªãƒƒã‚¯æŠ¼ä¸‹ä¸­ã®ã¿çŸ¢å°è¡¨ç¤º
     if (input_->IsPressMouse(0)) {
         playerArrowSprite_->Draw();
     }
     playerSprite_->Draw();
 
-    // === HPƒQ[ƒW ===
+    // === HPã‚²ãƒ¼ã‚¸ ===
     if (hpBackSprite_) {
         float shakeX = 0.0f;
         float shakeY = 0.0f;
@@ -179,15 +179,15 @@ void Player::DamageTextDraw()
 }
 
 void Player::CheckPocketCollision() {
-    if (invincibleTimer_ > 0) return; // –³“G’†‚ÍƒXƒLƒbƒv
+    if (invincibleTimer_ > 0) return; // ç„¡æ•µä¸­ã¯ã‚¹ã‚­ãƒƒãƒ—
 
     Vector2 pockets[6] = {
-        { 220, 290 },   // ¶ã
-        { 1000, 250 },  // ‰Eã
-        { 202, 632 },   // ¶‰º
-        { 1000, 632 },  // ‰E‰º
-        { 600, 250 },   // ã’†‰›
-        { 610, 660 }    // ‰º’†‰›
+        { 220, 290 },   // å·¦ä¸Š
+        { 1000, 250 },  // å³ä¸Š
+        { 202, 632 },   // å·¦ä¸‹
+        { 1000, 632 },  // å³ä¸‹
+        { 600, 250 },   // ä¸Šä¸­å¤®
+        { 610, 660 }    // ä¸‹ä¸­å¤®
     };
 
     float pocketRadius = 38.0f;
@@ -198,17 +198,17 @@ void Player::CheckPocketCollision() {
         float distSq = dx * dx + dy * dy;
 
         if (distSq < pocketRadius * pocketRadius) {
-            // š ƒ_ƒ[ƒW‚ğó‚¯‚é
+            // â˜… ãƒ€ãƒ¡ãƒ¼ã‚¸ã‚’å—ã‘ã‚‹
             TakeDamage(1);
-            invincibleTimer_ = 60; // –ñ1•b‚Ì–³“GŠÔi60fps‘z’èj
+            invincibleTimer_ = 60; // ç´„1ç§’ã®ç„¡æ•µæ™‚é–“ï¼ˆ60fpsæƒ³å®šï¼‰
             isDamage = true;
-            // š ƒ‰ƒ“ƒ_ƒ€‚Å•Ê‚Ìƒ|ƒPƒbƒg‚ğ‘I‘ğ
+            // â˜… ãƒ©ãƒ³ãƒ€ãƒ ã§åˆ¥ã®ãƒã‚±ãƒƒãƒˆã‚’é¸æŠ
             int newPocket = i;
             while (newPocket == i) {
                 newPocket = rand() % 6;
             }
 
-            // ã‘¤ƒ|ƒPƒbƒg‚È‚ç­‚µ‰º‚ÉA‰º‘¤‚È‚ç­‚µã‚Éo‚·
+            // ä¸Šå´ãƒã‚±ãƒƒãƒˆãªã‚‰å°‘ã—ä¸‹ã«ã€ä¸‹å´ãªã‚‰å°‘ã—ä¸Šã«å‡ºã™
             Vector2 spawnPos = pockets[newPocket];
             if (spawnPos.y < 400) {
                 spawnPos.y += 50;
