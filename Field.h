@@ -3,6 +3,7 @@
 #include <Sprite.h>
 #include "Input.h"
 
+class Player;
 class Ball;
 
 class Field
@@ -17,6 +18,8 @@ public:
 	void HandleBallPocket();
 
 	void SetDamage(int damage);
+
+	void SetPlayer(Player* player) { player_ = player; };
 
 	void SetBalls(Ball* balls) { balls_ = balls; };
 
@@ -40,6 +43,7 @@ private:
 	Ball* balls_=nullptr;
 	const int kBallCount = 10;
 	std::vector<Vector2> ballPositions;
+	Player* player_ = nullptr;
 
 	//‰¼‚Å•Ï”‚ğì‚é
 	Vector2 pos;

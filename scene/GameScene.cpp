@@ -33,6 +33,10 @@ void GameScene::Initialize() {
 	field_ = std::make_unique<Field>();
 	field_->Initialize();
 	field_->SetBalls(ball_);
+	field_->SetPlayer(player_.get());
+
+	damageText_ = std::make_unique<DamageText>();
+	damageText_->Initialize();
 }
 
 void GameScene::Update() {
@@ -40,10 +44,13 @@ void GameScene::Update() {
 	ball_->Update();
 	ball_->CheckPlayerCollision(*player_);
 	damage = ball_->CheckPocketCollisions();
+	damageText_->Update();
 	if (damage > 0) {
+		damageText_->IsDamage();
 		field_->SetDamage(damage);
 		field_->Update();
 		testDamage = field_->GetDamage();
+		damageText_->SetDamage(testDamage);
 		boss_->TakeDamage(testDamage);
 		field_->GenerateRandomNumber();
 	}
@@ -64,6 +71,7 @@ void GameScene::Draw() {
 	/// </summary>
 	billiardstable_->Draw();
 	field_->Draw();
+	damageText_->Draw();
 	// スプライト描画後処理
 	Sprite::PostDraw();
 	// 深度バッファクリア

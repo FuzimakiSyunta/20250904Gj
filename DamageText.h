@@ -7,11 +7,21 @@ public:
 
 	void Update();
 
+	void IsDamage();
+
 	void Draw();
 
-private:
-	uint32_t damageText;
+	void PlayerDraw();
 
-	Sprite* damageSprite = nullptr;
+	void SetDamage(int damage) { damage_ = damage; }
+
+private:
+	uint32_t damageText[10];
+
+	Sprite* damageSprite[20];
+	bool isDamage;
+	int damageCooltime;
+
+	int damage_;
 };
 

@@ -91,54 +91,23 @@ void Field::GenerateRandomNumber()
 int Field::AreaProcess(int number)
 {
 	//今はプレイヤーのHPを回復したりターンという概念がないためコメントアウト
-	////ナンバーが10以下の場合の処理(確率10%)
-	//if (number <= 10&&isDamage==false)
-	//{
-	//	//damage_ = damage_ / 2;
-	//	pos = { 100,700 };
-	//	testSprite->SetPosition(pos);
-	//}
-	////ナンバーが10から30の場合の処理(確率20%)
-	//else if (number >= 10 && number <= 30 && isDamage == false)
-	//{
-	//	//damage_ = damage_ * 2;
-	//	pos = { 300,700 };
-	//	testSprite->SetPosition(pos);
-	//}
-	////ナンバーが30から50の時の処理(確率20%)
-	//else if (number >= 30 && number <= 50 && isDamage == false)
-	//{
-	//	pos = { 500,700 };
-	//	testSprite->SetPosition(pos);
-	//}
-	////ナンバーが50から70の時の処理(確率20%)
-	//else if (number >= 50 && number <= 70 && isDamage == false)
-	//{
-	//	pos = { 700,700 };
-	//	testSprite->SetPosition(pos);
-	//}
-	////ナンバーが70から90の時の処理(確率20%)
-	//else if (number >= 70 && number <= 90 && isDamage == false)
-	//{
-	//	pos = { 900,700 };
-	//	testSprite->SetPosition(pos);
-	//}
-	////ナンバーが90以上の時の処理(確率10%)
-	//else if (number >= 90 && isDamage == false)
-	//{
-	//	pos = { 1100,700 };
-	//	testSprite->SetPosition(pos);
-	//}
-	//とりあえず今適応できる効果をここに追加(すべて揃ったらこれらは削除して上記のコメントアウトを解除する)
-	if (number <= 30 && isDamage == false)
+	//ナンバーが10以下の場合の処理(確率10%)
+	if (number <= 25 && isDamage == false)
 	{
-		damage_ = 0;
+		damage_ = damage_ / 2;
 	}
-	else if (number >= 30 && number <= 80 && isDamage == false)
+	//ナンバーが10から30の場合の処理(確率20%)
+	else if (number >= 25 && number <= 50 && isDamage == false)
 	{
-		damage_ = damage_ * 3;
+		damage_ = damage_ * 2;
 	}
-	else if (number >= 80 && isDamage == false)
+	//ナンバーが30から50の時の処理(確率20%)
+	else if (number >= 50 && number <= 75 && isDamage == false)
+	{
+		player_->TakeDamage(1);
+	}
+	//ナンバーが90以上の時の処理(確率10%)
+	else if (number >= 75 && isDamage == false)
 	{
 		damage_ = damage_;
 	}
