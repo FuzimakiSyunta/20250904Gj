@@ -29,9 +29,11 @@ void Player::Initialize(Input* input, const Vector2& startPos, float radius) {
     barY = 750.0f;           // YˆÊ’uŽw’è
     hpBackTex_ = TextureManager::Load("PlayerHP_Back.png");
     hpGaugeTex_ = TextureManager::Load("PlayerHP.png");
+	hphartTex_ = TextureManager::Load("Hart.png");
 
     hpBackSprite_.reset(Sprite::Create(hpBackTex_, { barX, barY }));
     hpGaugeSprite_.reset(Sprite::Create(hpGaugeTex_, { barX, barY }));
+    hpHartSprite_.reset(Sprite::Create(hphartTex_, { 380, 732 }));
 
     hpBackSprite_->SetSize({ barWidth, barHeight });
     hpGaugeSprite_->SetSize({ barWidth, barHeight });
@@ -144,6 +146,7 @@ void Player::Draw() {
 
         hpBackSprite_->SetPosition({ barX + shakeX, barY + shakeY });
         hpBackSprite_->Draw();
+        hpHartSprite_->Draw();
 
         float hpPercent = (float)currentHp_ / maxHp_;
         hpGaugeSprite_->SetSize({ barWidth * hpPercent, barHeight });

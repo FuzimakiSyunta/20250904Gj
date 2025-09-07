@@ -35,8 +35,10 @@ private:
 	//HPゲージ
 	uint32_t hpBackTex_ = 0;
 	uint32_t hpGaugeTex_ = 0;
+	uint32_t hphartTex_ = 0;
 	std::unique_ptr<Sprite> hpBackSprite_;
 	std::unique_ptr<Sprite> hpGaugeSprite_;
+	std::unique_ptr<Sprite> hpHartSprite_;
 
 #pragma region 座標関連
 
