@@ -74,15 +74,18 @@ void Player::Update() {
 
     // --- ボールがすべて停止している場合のみドラッグ処理 ---
    
-
+    if (ballspeed0 == true && IsStopped() == true)
+    {
         // ドラッグ開始
-        if (input_->IsTriggerMouse(0)) {
+        if (input_->IsTriggerMouse(0)) 
+        {
             dragging_ = true;
             dragStart_ = mousePos;
         }
-
+        
         // ドラッグ中
-        if (!arrowFlying_ && !arrowReturning_ && dragging_ && input_->IsPressMouse(0)) {
+        if (!arrowFlying_ && !arrowReturning_ && dragging_ && input_->IsPressMouse(0)) 
+        {
             dragCurrent_ = mousePos;
 
             Vector2 diff = { dragStart_.x - dragCurrent_.x, dragStart_.y - dragCurrent_.y };
@@ -95,7 +98,7 @@ void Player::Update() {
             Vector2 offset = { 10.0f, 30.0f };
             playerArrowSprite_->SetPosition({ pos.x + offset.x, pos.y + offset.y });
         }
-        if (ballspeed0 == true && IsStopped() == true) {
+       
         // ドラッグ終了
         if (dragging_ && !input_->IsPressMouse(0)) {
             dragging_ = false;
@@ -105,6 +108,7 @@ void Player::Update() {
             vel_.y = diff.y * power;
         }
     }
+
     // --- 摩擦 ---
     vel_ *= 0.98f;
 
@@ -145,7 +149,7 @@ void Player::Update() {
 
 void Player::Draw() {
     // 左クリック押下中のみ矢印表示
-    if (input_->IsPressMouse(0) && ballspeed0 == true && IsStopped() == true) {
+    if (dragging_ == true && ballspeed0 == true && IsStopped() == true) {
         playerArrowSprite_->Draw();
     }
     playerSprite_->Draw();
