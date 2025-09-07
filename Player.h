@@ -1,8 +1,7 @@
-#include "Sprite.h"
+ï»¿#include "Sprite.h"
 #include "TextureManager.h"
 #include "Vector2.h"
 #include "Input.h"
-
 class Player
 {
 public:
@@ -15,9 +14,9 @@ public:
 
 	void DamageTextDraw();
 
-	Vector2 GetPos() const { return pos; }      // const Cüq‚ğ’Ç‰Á
+	Vector2 GetPos() const { return pos; }      // const ï¿½Cï¿½ï¿½ï¿½qï¿½ï¿½Ç‰ï¿½
 	
-	float GetRadius() const { return radius_; } // const Cüq‚ğ’Ç‰Á
+	float GetRadius() const { return radius_; } // const ï¿½Cï¿½ï¿½ï¿½qï¿½ï¿½Ç‰ï¿½
 	Vector2 GetVel() const { return vel_; }
 	int GetHp() { return currentHp_; }
 	void SetVel(float x, float y) { vel_ = { x, y }; }
@@ -25,32 +24,40 @@ public:
 	void TakeDamage(int damage);
 
 	void CheckPocketCollision();
+	// Setter
+	void SetBallSpeed0(bool value) { ballspeed0 = value; }
+	// Getter
+	bool GetBallSpeed0() const { return  ballspeed0; }
+private:
+	bool IsStopped() const;
 
 
 private:
-#pragma region ‰æ‘œ“Ç‚İ‚İ
+#pragma region ï¿½æ‘œï¿½Ç‚İï¿½ï¿½ï¿½
 	Input* input_ = nullptr;
-	//ƒeƒNƒXƒ`ƒƒƒnƒ“ƒhƒ‹
+	//ï¿½eï¿½Nï¿½Xï¿½`ï¿½ï¿½ï¿½nï¿½ï¿½ï¿½hï¿½ï¿½
 	uint32_t playerTexture_ = 0;
 	uint32_t playerArrowTexture = 0;
-	//ƒXƒvƒ‰ƒCƒg
+	//ï¿½Xï¿½vï¿½ï¿½ï¿½Cï¿½g
 	std::unique_ptr<Sprite> playerSprite_ = nullptr;
 	std::unique_ptr<Sprite> playerArrowSprite_ = nullptr;
-	//HPƒQ[ƒW
+	//HPï¿½Qï¿½[ï¿½W
 	uint32_t hpBackTex_ = 0;
 	uint32_t hpGaugeTex_ = 0;
+	uint32_t hphartTex_ = 0;
 	std::unique_ptr<Sprite> hpBackSprite_;
 	std::unique_ptr<Sprite> hpGaugeSprite_;
+	std::unique_ptr<Sprite> hpHartSprite_;
 
-#pragma region À•WŠÖ˜A
+#pragma region ï¿½ï¿½ï¿½Wï¿½Ö˜A
 
 	Vector2 pos = {250,1050};
 	Vector2 ArrowpPos = {pos};
 	Vector2 localPos;
 	const float speed = 10.6f;
 	const Vector2 center = { 5, 5 };
-	float collisionRadius_; // “–‚½‚è”»’è—pi¬‚³‚ß‚Éİ’èj
-	float drawRadius_;       // Œ©‚½–Ú—p‚Ì”¼Œa
+	float collisionRadius_; // ï¿½ï¿½ï¿½ï¿½ï¿½è”»ï¿½ï¿½pï¿½iï¿½ï¿½ï¿½ï¿½ï¿½ß‚Éİ’ï¿½j
+	float drawRadius_;       // ï¿½ï¿½ï¿½ï¿½ï¿½Ú—pï¿½Ì”ï¿½ï¿½a
 	float radius_ = 16.0f;
 	Vector2 vel_ = { 0.0f, 0.0f };
 	bool dragging_;
@@ -59,12 +66,12 @@ private:
 
 	bool arrowFlying_ = false;
 	Vector2 arrowVel_;
-	bool arrowReturning_ = false; // –îˆó‚ª–ß‚Á‚Ä‚¢‚éÅ’†‚©
+	bool arrowReturning_ = false; // ï¿½ï¿½ó‚ª–ß‚ï¿½ï¿½Ä‚ï¿½ï¿½ï¿½Å’ï¿½ï¿½ï¿½
 
 	int maxHp_ = 7;
 	int currentHp_ = 7;
 
-	int invincibleTimer_ = 0; // –³“GŠÔƒJƒEƒ“ƒ^
+	int invincibleTimer_ = 0; // ï¿½ï¿½ï¿½Gï¿½ï¿½ï¿½ÔƒJï¿½Eï¿½ï¿½ï¿½^
 
 	std::unique_ptr<Sprite> damageSprite_;
 	uint32_t damageText;
@@ -76,15 +83,15 @@ private:
 
 	float barWidth;
 	float barHeight;
-	float screenWidth;   // ‰æ–Ê•
-	float barX; // ’†‰›
-	float barY; // YˆÊ’uw’è
-
-	// ‰E‰º‚É‚¸‚ç‚·ƒIƒtƒZƒbƒg
+	float screenWidth;   // ï¿½ï¿½Ê•ï¿½
+	float barX; // ï¿½ï¿½ï¿½ï¿½
+	float barY; // Yï¿½Ê’uï¿½wï¿½ï¿½
+	// ï¿½Eï¿½ï¿½ï¿½É‚ï¿½ï¿½ç‚·ï¿½Iï¿½tï¿½Zï¿½bï¿½g
 	Vector2 offset = { 4.0f, 4.0f };
-	// HPƒo[—h‚ê
+	// HPãƒãƒ¼æºã‚Œ
 	bool hpBarShaking_ = false;
 	int hpBarShakeTimer_ = 0;
-	float hpBarShakeStrength_ = 5.0f; // —h‚ê•
+	float hpBarShakeStrength_ = 5.0f; // æºã‚Œå¹…
+	bool ballspeed0 = true;
 };
 

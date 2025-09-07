@@ -16,7 +16,7 @@ public:
     int CheckPocketCollisions(); // ★ 追加
 
 	void Respawn(); // ★ 追加
-
+    bool AreAllBallsStopped() const;
     std::vector<Vector2> GetBallsPos(); //各ボールの座標を代入
 
 private:
@@ -37,6 +37,6 @@ private:
     void MoveBalls();
     void CheckCollisions();
     
-
+    Player* player_=nullptr;
     int damage_[kBallCount]; // 各ボールのダメージ値
 };
