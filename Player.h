@@ -71,6 +71,9 @@ private:
 	bool isDamage;
 	int damageCooltime;
 
+	uint32_t gameOverText;
+	Sprite* gameOverSprite = nullptr;
+
 	float barWidth;
 	float barHeight;
 	float screenWidth;   // ‰æ–Ê•

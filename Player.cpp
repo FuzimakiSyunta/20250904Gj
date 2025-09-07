@@ -42,6 +42,9 @@ void Player::Initialize(Input* input, const Vector2& startPos, float radius) {
     damageText = TextureManager::Load("number1.png");
     damageSprite_.reset(Sprite::Create(damageText, { 900,750 }, { 1,1,1,1 }, { 0.5f,0.5f }));
     damageCooltime = 0;
+
+    gameOverText = TextureManager::Load("uvChecker.png");
+    gameOverSprite = Sprite::Create(gameOverText, { 640,370 }, { 1,1,1,1 }, { 0.5f,0.5f });
 }
 
 void Player::TakeDamage(int damage) {
@@ -158,6 +161,10 @@ void Player::Draw() {
     if (isDamage == true)
     {
         DamageTextDraw();
+    }
+    if (currentHp_ <= 0)
+    {
+        gameOverSprite->Draw();
     }
 }
 
