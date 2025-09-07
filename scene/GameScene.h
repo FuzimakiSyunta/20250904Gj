@@ -13,6 +13,7 @@
 #include "Ball.h"
 #include "Boss.h"
 #include "Field.h"
+#include "DamageText.h"
 
 /// <summary>
 /// ゲームシーン
@@ -56,8 +57,10 @@ class GameScene {
 	std::unique_ptr<Boss> boss_;
 	int damage = 0; // ボールのダメージ値を受け取る変数
 	std::unique_ptr<Field> field_;
+	std::unique_ptr<DamageText> damageText_;
 
 	int testDamage = 0;
+
 
 	Ball* ball_ = nullptr;
 	uint32_t textureHandle_ = 0;

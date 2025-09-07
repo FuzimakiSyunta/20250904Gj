@@ -13,15 +13,19 @@ public:
 
 	void Draw();
 
+	void DamageTextDraw();
+
 	Vector2 GetPos() const { return pos; }      // const Cüq‚ğ’Ç‰Á
 	
 	float GetRadius() const { return radius_; } // const Cüq‚ğ’Ç‰Á
 	Vector2 GetVel() const { return vel_; }
+	int GetHp() { return currentHp_; }
 	void SetVel(float x, float y) { vel_ = { x, y }; }
 	void SetPos(float x, float y) { pos = { x, y }; }
 	void TakeDamage(int damage);
 
 	void CheckPocketCollision();
+
 
 private:
 #pragma region ‰æ‘œ“Ç‚İ‚İ
@@ -63,6 +67,11 @@ private:
 	int currentHp_ = 7;
 
 	int invincibleTimer_ = 0; // –³“GŠÔƒJƒEƒ“ƒ^
+
+	std::unique_ptr<Sprite> damageSprite_;
+	uint32_t damageText;
+	bool isDamage;
+	int damageCooltime;
 
 	float barWidth;
 	float barHeight;

@@ -3,6 +3,7 @@
 #include <Sprite.h>
 #include "Input.h"
 
+class Player;
 class Ball;
 
 class Field
@@ -18,9 +19,15 @@ public:
 
 	void SetDamage(int damage);
 
+	void SetPlayer(Player* player) { player_ = player; };
+
 	void SetBalls(Ball* balls) { balls_ = balls; };
 
 	void GenerateRandomNumber();
+
+	void AreaDraw(int number, Vector2 pos, int AreaNumber);
+
+	void GenerateRandomArea();
 
 	int AreaProcess(int number);
 
@@ -31,20 +38,22 @@ public:
 private:
 	int areaNumber[4]{ 0,0,0,0 };
 
-	Vector2 posTopRight;  //‰Eã
-	Vector2 posBottomRight; //‰E‰º
-	Vector2 posTopLeft; //¶ã
-	Vector2 posBottomLeft; //¶‰º
+	int areaCaunter[3]{ 0,0,0 };
+	int areaCooltime;
+	
 	bool isDamage; //ˆê‰ñ‚Å‚à”­“®‚µ‚½‚©
 	int damage_;
 	Ball* balls_=nullptr;
 	const int kBallCount = 10;
 	std::vector<Vector2> ballPositions;
+	Player* player_ = nullptr;
 
 	//‰¼‚Å•Ï”‚ğì‚é
-	Vector2 pos;
-	Sprite* testSprite = nullptr;
+	Vector2 pos[12];
+	Sprite* testSprite[12];
 	Input* input_ = nullptr; 
+	uint32_t texttexture[3];
+	bool isArea[12];
 
 	Vector2 pockets[6] = {
 		{202,250}, {1000,250}, {202,632},

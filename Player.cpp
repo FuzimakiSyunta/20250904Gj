@@ -1,6 +1,7 @@
 #include "Player.h"
 #include <algorithm>
 #include <cmath>
+#include "DamageText.h"
 
 void Player::Initialize(Input* input, const Vector2& startPos, float radius) {
     input_ = input;
@@ -40,6 +41,9 @@ void Player::Initialize(Input* input, const Vector2& startPos, float radius) {
     // スプライトのサイズと半径を統一
     playerSprite_->SetSize({ 32, 32 });
 
+    damageText = TextureManager::Load("number1.png");
+    damageSprite_.reset(Sprite::Create(damageText, { 900,750 }, { 1,1,1,1 }, { 0.5f,0.5f }));
+    damageCooltime = 0;
 }
 
 void Player::TakeDamage(int damage) {
@@ -50,6 +54,7 @@ void Player::TakeDamage(int damage) {
     // ★ HPバーを揺らす
     hpBarShaking_ = true;
     hpBarShakeTimer_ = 20; // 揺れるフレーム数
+    isDamage = false;
 }
 
 void Player::Update() {
@@ -153,6 +158,24 @@ void Player::Draw() {
         hpGaugeSprite_->SetPosition({ barX + shakeX, barY + shakeY });
         hpGaugeSprite_->Draw();
     }
+    if (isDamage == true)
+    {
+        DamageTextDraw();
+    }
+}
+
+void Player::DamageTextDraw()
+{
+    damageCooltime++;
+    if (damageSprite_)
+    {
+        damageSprite_->Draw();
+    }
+    if (damageCooltime >= 50)
+    {
+        isDamage = false;
+        damageCooltime = 0;
+    }
 }
 
 void Player::CheckPocketCollision() {
@@ -178,7 +201,7 @@ void Player::CheckPocketCollision() {
             // ★ ダメージを受ける
             TakeDamage(1);
             invincibleTimer_ = 60; // 約1秒の無敵時間（60fps想定）
-
+            isDamage = true;
             // ★ ランダムで別のポケットを選択
             int newPocket = i;
             while (newPocket == i) {
