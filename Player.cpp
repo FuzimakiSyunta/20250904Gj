@@ -45,6 +45,9 @@ void Player::TakeDamage(int damage) {
     if (currentHp_ <= 0) {
         currentHp_ = 0;
     }
+    // ★ HPバーを揺らす
+    hpBarShaking_ = true;
+    hpBarShakeTimer_ = 20; // 揺れるフレーム数
 }
 
 void Player::Update() {
@@ -110,7 +113,13 @@ void Player::Update() {
     if (invincibleTimer_ > 0) {
         invincibleTimer_--;
     }
-
+	// HPバーの揺れ更新
+    if (hpBarShaking_) {
+        hpBarShakeTimer_--;
+        if (hpBarShakeTimer_ <= 0) {
+            hpBarShaking_ = false;
+        }
+    }
 
     playerSprite_->SetPosition({ pos.x + offset.x, pos.y + offset.y });
     // --- ポケット判定 ---
@@ -126,16 +135,19 @@ void Player::Draw() {
 
     // === HPゲージ ===
     if (hpBackSprite_) {
+        float shakeX = 0.0f;
+        float shakeY = 0.0f;
+        if (hpBarShaking_) {
+            shakeX = (rand() % 5 - 2) * hpBarShakeStrength_ * 0.1f;
+            shakeY = (rand() % 5 - 2) * hpBarShakeStrength_ * 0.1f;
+        }
 
+        hpBackSprite_->SetPosition({ barX + shakeX, barY + shakeY });
         hpBackSprite_->Draw();
-    }
-    if (hpGaugeSprite_) {
+
         float hpPercent = (float)currentHp_ / maxHp_;
         hpGaugeSprite_->SetSize({ barWidth * hpPercent, barHeight });
-
-        // 位置は背景の左端に固定する
-        hpGaugeSprite_->SetPosition({ barX, barY });
-
+        hpGaugeSprite_->SetPosition({ barX + shakeX, barY + shakeY });
         hpGaugeSprite_->Draw();
     }
 }
@@ -186,3 +198,4 @@ void Player::CheckPocketCollision() {
         }
     }
 }
+
