@@ -79,5 +79,9 @@ private:
 
 	// 右下にずらすオフセット
 	Vector2 offset = { 4.0f, 4.0f };
+	// HPバー揺れ
+	bool hpBarShaking_ = false;
+	int hpBarShakeTimer_ = 0;
+	float hpBarShakeStrength_ = 5.0f; // 揺れ幅
 };
 
