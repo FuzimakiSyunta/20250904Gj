@@ -35,8 +35,10 @@ void GameScene::Initialize() {
 	field_->SetBalls(ball_);
 }
 
-void GameScene::Update() {
+void GameScene::Update(){
+	player_->SetBallSpeed0(ball_->AreAllBallsStopped());
 	player_->Update();
+
 	ball_->Update();
 	ball_->CheckPlayerCollision(*player_);
 	damage = ball_->CheckPocketCollisions();

@@ -2,7 +2,6 @@
 #include "TextureManager.h"
 #include "Vector2.h"
 #include "Input.h"
-
 class Player
 {
 public:
@@ -22,8 +21,13 @@ public:
 	void TakeDamage(int damage);
 
 	void CheckPocketCollision();
-
+	// Setter
+	void SetBallSpeed0(bool value) { ballspeed0 = value; }
+	// Getter
+	bool GetBallSpeed0() const { return  ballspeed0; }
 private:
+	bool IsStopped() const;
+
 #pragma region 画像読み込み
 	Input* input_ = nullptr;
 	//テクスチャハンドル
@@ -67,8 +71,8 @@ private:
 	float screenWidth;   // 画面幅
 	float barX; // 中央
 	float barY; // Y位置指定
-
 	// 右下にずらすオフセット
 	Vector2 offset = { 4.0f, 4.0f };
+	bool ballspeed0 = true;
 };
 
