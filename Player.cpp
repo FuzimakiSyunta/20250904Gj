@@ -48,7 +48,7 @@ void Player::Initialize(Input* input, const Vector2& startPos, float radius) {
     damageSprite_.reset(Sprite::Create(damageText, { 900,750 }, { 1,1,1,1 }, { 0.5f,0.5f }));
     damageCooltime = 0;
 
-    gameOverText = TextureManager::Load("uvChecker.png");
+    gameOverText = TextureManager::Load("GAMEOVER.png");
     gameOverSprite = Sprite::Create(gameOverText, { 640,370 }, { 1,1,1,1 }, { 0.5f,0.5f });
 }
 

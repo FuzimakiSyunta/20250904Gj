@@ -23,7 +23,8 @@ void Boss::Initialize(Input* input) {
     maxHp_ = 100;
     currentHp_ = maxHp_;
 
-
+    gameClearText_ = TextureManager::Load("YOUWIN.png");
+    gameClearSprite_.reset(Sprite::Create(gameClearText_, { 640,370 }, { 1,1,1,1 }, { 0.5f,0.5f }));
 }
 
 void Boss::Update() {
@@ -78,6 +79,10 @@ void Boss::Draw() {
         hpGaugeSprite_->SetPosition({ 400, 20 });
 
         hpGaugeSprite_->Draw();
+    }
+    if (isDead_ == true)
+    {
+        gameClearSprite_->Draw();
     }
 }
 

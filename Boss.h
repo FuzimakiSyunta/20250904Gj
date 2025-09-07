@@ -29,8 +29,10 @@ private:
 private://HPÉQÅ[ÉW
 	uint32_t hpBackTex_ = 0u;
 	uint32_t hpGaugeTex_ = 0u;
+	uint32_t gameClearText_;
 	std::unique_ptr<Sprite> hpBackSprite_;
 	std::unique_ptr<Sprite> hpGaugeSprite_;
+	std::unique_ptr<Sprite> gameClearSprite_;
 	bool isDebugdamage_ = false;
 	int maxHp_ = 100;        // ç≈ëÂHP
 	int currentHp_ = 100;    // åªç›HP
