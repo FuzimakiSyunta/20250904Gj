@@ -120,7 +120,9 @@ void Field::AreaDraw(int number,Vector2 pos1,int AreaNumber)
 	{
 		if (AreaNumber == 0)
 		{
-			if (pos1.x == pockets[0].x)
+			pos[0] = { 420,370 };
+			testSprite[0]->SetPosition(pos[0]);
+			/*if (pos1.x == pockets[0].x)
 			{
 				pos[0] = { 420,370 };
 				testSprite[0]->SetPosition(pos[0]);
@@ -139,12 +141,14 @@ void Field::AreaDraw(int number,Vector2 pos1,int AreaNumber)
 			{
 				pos[0] = { 858,370 };
 				testSprite[0]->SetPosition(pos[0]);
-			}
+			}*/
 			testSprite[0]->Draw();
 		}
 		if(AreaNumber==1)
 		{
-			if (pos1.x == pockets[0].x)
+			pos[1] = { 420,595 };
+			testSprite[1]->SetPosition(pos[1]);
+			/*if (pos1.x == pockets[0].x)
 			{
 				pos[1] = { 420,370 };
 				testSprite[1]->SetPosition(pos[1]);
@@ -163,13 +167,15 @@ void Field::AreaDraw(int number,Vector2 pos1,int AreaNumber)
 			{
 				pos[1] = { 858,370 };
 				testSprite[1]->SetPosition(pos[1]);
-			}
+			}*/
 			testSprite[1]->Draw();
 		}
 
 		if (AreaNumber == 2)
 		{
-			if (pos1.x == pockets[0].x)
+			pos[2] = { 858,595 };
+			testSprite[2]->SetPosition(pos[2]);
+			/*if (pos1.x == pockets[0].x)
 			{
 				pos[2] = { 420,370 };
 				testSprite[2]->SetPosition(pos[2]);
@@ -188,13 +194,15 @@ void Field::AreaDraw(int number,Vector2 pos1,int AreaNumber)
 			{
 				pos[2] = { 858,370 };
 				testSprite[2]->SetPosition(pos[2]);
-			}
+			}*/
 			testSprite[2]->Draw();
 		}
 
 		if (AreaNumber == 3)
 		{
-			if (pos1.x == pockets[0].x)
+			pos[3] = { 858,370 };
+			testSprite[3]->SetPosition(pos[3]);
+			/*if (pos1.x == pockets[0].x)
 			{
 				pos[3] = { 420,370 };
 				testSprite[3]->SetPosition(pos[3]);
@@ -213,7 +221,7 @@ void Field::AreaDraw(int number,Vector2 pos1,int AreaNumber)
 			{
 				pos[3] = { 858,370 };
 				testSprite[3]->SetPosition(pos[3]);
-			}
+			}*/
 			testSprite[3]->Draw();
 		}
 		
@@ -223,7 +231,9 @@ void Field::AreaDraw(int number,Vector2 pos1,int AreaNumber)
 	{
 		if (AreaNumber == 0)
 		{
-			if (pos1.x == pockets[0].x)
+			pos[4] = { 420,370 };
+			testSprite[4]->SetPosition(pos[4]);
+			/*if (pos1.x == pockets[0].x)
 			{
 				pos[4] = { 420,370 };
 				testSprite[4]->SetPosition(pos[4]);
@@ -242,12 +252,14 @@ void Field::AreaDraw(int number,Vector2 pos1,int AreaNumber)
 			{
 				pos[4] = { 858,370 };
 				testSprite[4]->SetPosition(pos[4]);
-			}
+			}*/
 			testSprite[4]->Draw();
 		}
 		if (AreaNumber == 1)
 		{
-			if (pos1.x == pockets[0].x)
+			pos[5] = { 420,595 };
+			testSprite[5]->SetPosition(pos[5]);
+			/*if (pos1.x == pockets[0].x)
 			{
 				pos[5] = { 420,370 };
 				testSprite[5]->SetPosition(pos[5]);
@@ -266,13 +278,15 @@ void Field::AreaDraw(int number,Vector2 pos1,int AreaNumber)
 			{
 				pos[5] = { 858,370 };
 				testSprite[5]->SetPosition(pos[5]);
-			}
+			}*/
 			testSprite[5]->Draw();
 		}
 
 		if (AreaNumber == 2)
 		{
-			if (pos1.x == pockets[0].x)
+			pos[6] = { 858,595 };
+			testSprite[6]->SetPosition(pos[6]);
+			/*if (pos1.x == pockets[0].x)
 			{
 				pos[6] = { 420,370 };
 				testSprite[6]->SetPosition(pos[6]);
@@ -291,13 +305,15 @@ void Field::AreaDraw(int number,Vector2 pos1,int AreaNumber)
 			{
 				pos[6] = { 858,370 };
 				testSprite[6]->SetPosition(pos[6]);
-			}
+			}*/
 			testSprite[6]->Draw();
 		}
 
 		if (AreaNumber == 3)
 		{
-			if (pos1.x == pockets[0].x)
+			pos[7] = { 858,370 };
+			testSprite[7]->SetPosition(pos[7]);
+			/*if (pos1.x == pockets[0].x)
 			{
 				pos[7] = { 420,370 };
 				testSprite[7]->SetPosition(pos[7]);
@@ -316,7 +332,7 @@ void Field::AreaDraw(int number,Vector2 pos1,int AreaNumber)
 			{
 				pos[7] = { 858,370 };
 				testSprite[7]->SetPosition(pos[7]);
-			}
+			}*/
 			testSprite[7]->Draw();
 		}
 	}
@@ -325,7 +341,9 @@ void Field::AreaDraw(int number,Vector2 pos1,int AreaNumber)
 	{
 		if (AreaNumber == 0)
 		{
-			if (pos1.x == pockets[0].x)
+			pos[8] = { 420,370 };
+			testSprite[8]->SetPosition(pos[8]);
+			/*if (pos1.x == pockets[0].x)
 			{
 				pos[8] = { 420,370 };
 				testSprite[8]->SetPosition(pos[8]);
@@ -344,12 +362,14 @@ void Field::AreaDraw(int number,Vector2 pos1,int AreaNumber)
 			{
 				pos[8] = { 858,370 };
 				testSprite[8]->SetPosition(pos[8]);
-			}
+			}*/
 			testSprite[8]->Draw();
 		}
 		if (AreaNumber == 1)
 		{
-			if (pos1.x == pockets[0].x)
+			pos[9] = { 420,595 };
+			testSprite[9]->SetPosition(pos[9]);
+			/*if (pos1.x == pockets[0].x)
 			{
 				pos[9] = { 420,370 };
 				testSprite[9]->SetPosition(pos[9]);
@@ -368,13 +388,15 @@ void Field::AreaDraw(int number,Vector2 pos1,int AreaNumber)
 			{
 				pos[9] = { 858,370 };
 				testSprite[9]->SetPosition(pos[9]);
-			}
+			}*/
 			testSprite[9]->Draw();
 		}
 
 		if (AreaNumber == 2)
 		{
-			if (pos1.x == pockets[0].x)
+			pos[10] = { 858,595 };
+			testSprite[10]->SetPosition(pos[10]);
+			/*if (pos1.x == pockets[0].x)
 			{
 				pos[10] = { 420,370 };
 				testSprite[10]->SetPosition(pos[10]);
@@ -393,13 +415,15 @@ void Field::AreaDraw(int number,Vector2 pos1,int AreaNumber)
 			{
 				pos[10] = { 858,370 };
 				testSprite[10]->SetPosition(pos[10]);
-			}
+			}*/
 			testSprite[10]->Draw();
 		}
 
 		if (AreaNumber == 3)
 		{
-			if (pos1.x == pockets[0].x)
+			pos[11] = { 858,370 };
+			testSprite[11]->SetPosition(pos[11]);
+			/*if (pos1.x == pockets[0].x)
 			{
 				pos[11] = { 420,370 };
 				testSprite[11]->SetPosition(pos[11]);
@@ -418,7 +442,7 @@ void Field::AreaDraw(int number,Vector2 pos1,int AreaNumber)
 			{
 				pos[11] = { 858,370 };
 				testSprite[11]->SetPosition(pos[11]);
-			}
+			}*/
 			testSprite[11]->Draw();
 		}
 	}

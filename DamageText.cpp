@@ -35,6 +35,9 @@ void DamageText::Initialize()
 	damageSprite[17] = Sprite::Create(damageText[7], { 750,150 }, { 1,1,1,1 }, { 0.5f,0.5f });
 	damageSprite[18] = Sprite::Create(damageText[8], { 750,150 }, { 1,1,1,1 }, { 0.5f,0.5f });
 	damageSprite[19] = Sprite::Create(damageText[9], { 750,150 }, { 1,1,1,1 }, { 0.5f,0.5f });
+
+	poketTexture = TextureManager::Load("pocket.png");
+	poketSprite = Sprite::Create(poketTexture, { 640,410 }, { 1,1,1,1 }, { 0.5f,0.5f });
 }
 
 void DamageText::Update()
@@ -139,6 +142,8 @@ void DamageText::Draw()
 		}
 
 	}
+
+	poketSprite->Draw();
 }
 
 void DamageText::PlayerDraw()

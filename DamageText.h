@@ -17,8 +17,10 @@ public:
 
 private:
 	uint32_t damageText[10];
+	uint32_t poketTexture;
 
 	Sprite* damageSprite[20];
+	Sprite* poketSprite=nullptr;
 	bool isDamage;
 	int damageCooltime;
 
