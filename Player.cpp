@@ -109,10 +109,10 @@ void Player::Update() {
     pos += vel_;
 
     // --- 画面端で反射 ---
-    const float left = 235.0f;
-    const float right = 1050.0f;
-    const float top = 280.0f;
-    const float bottom = 680.0f;
+    const float left = 240.0f;
+    const float right = 1040.0f;
+    const float top = 290.0f;
+    const float bottom = 670.0f;
 
     if (pos.x < left) { pos.x = left; vel_.x *= -1.0f; }
     if (pos.x > right) { pos.x = right; vel_.x *= -1.0f; }
@@ -212,7 +212,7 @@ void Player::CheckPocketCollision() {
        { 641, 672 }    // 下中央
     };
 
-    float pocketRadius = 38.0f;
+    float pocketRadius = 36.0f;
 
     for (int i = 0; i < 6; i++) {
         float dx = pos.x - pockets[i].x;

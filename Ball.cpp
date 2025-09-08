@@ -1,6 +1,6 @@
 #include "Ball.h"
 #include <cmath>
-#include"input/Input.h"
+
 
 Ball::Ball() {
     for (int i = 0; i < kBallCount; i++) {
@@ -60,8 +60,7 @@ void Ball::Initialize(uint32_t) {
 void Ball::Update() {
     MoveBalls();
     CheckCollisions();
-   
-   
+    
     // 全部落ちたらリスポーン
     bool allDead = true;
     for (int i = 0; i < kBallCount; i++) {
@@ -107,13 +106,13 @@ void Ball::MoveBalls() {
 
     // 壁の位置（任意に設定可能）
     //左
-    const float leftMax = 235.0f;
+    const float leftMax = 225.0f;
     //右
-    const float rightMax = 1050.0f;
+    const float rightMax = 1055.0f;
     //上
-    const float topMax = 250.0f;
+    const float topMax = 273.0f;
     //下
-    const float bottomMax = 680.0f;
+    const float bottomMax = 690.0f;
 
     // 壁の反射係数
     const float xBounce = -1.0f; // 左右

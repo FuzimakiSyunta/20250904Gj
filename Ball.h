@@ -39,4 +39,5 @@ private:
     
     Player* player_=nullptr;
     int damage_[kBallCount]; // 各ボールのダメージ値
+    Input* input_ = nullptr;
 };

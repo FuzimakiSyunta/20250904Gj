@@ -22,7 +22,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 	// ゲームウィンドウの作成
 	win = WinApp::GetInstance();
-	win->CreateGameWindow("ビリヤード");
+	win->CreateGameWindow("チーム4025_決戦!!ビリヤード");
 
 	// DirectX初期化処理
 	dxCommon = DirectXCommon::GetInstance();
