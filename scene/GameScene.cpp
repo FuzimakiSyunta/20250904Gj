@@ -91,8 +91,8 @@ void GameScene::Draw() {
 	/// <summary>
 	/// ここに前景スプライトの描画処理を追加できる
 	/// </summary>
-	player_->Draw();
 	ball_->Draw();
+	player_->Draw();
 	boss_->Draw();
 
 	// デバッグテキストの描画

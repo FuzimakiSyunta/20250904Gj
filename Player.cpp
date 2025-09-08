@@ -15,13 +15,15 @@ void Player::Initialize(Input* input, const Vector2& startPos, float radius) {
     playerTexture_ = TextureManager::Load("PlayerBall.png");
     playerSprite_.reset(Sprite::Create(playerTexture_, pos, { 1,1,1,1 }, { 0.5f, 0.5f }));
     playerSprite_->SetPosition(pos);
-
-
+    
+    nextStrikeTexture_ = TextureManager::Load("YOURTURN.png");
+    nextStrikeSprite_.reset(Sprite::Create(nextStrikeTexture_, nextStriket_, { 1,1,1,1 } ,{ 0.5f, 0.5f }));
+   
     // 矢印（初期回転45°）
     playerArrowTexture = TextureManager::Load("arrow.png");
     playerArrowSprite_.reset(Sprite::Create(playerArrowTexture, pos, { 1,1,1,1 }, { 0.5f, 0.5f }));
     playerArrowSprite_->SetSize({ radius_ * 2.0f, radius_ * 2.0f });
-    //playerArrowSprite_->SetPosition(pos);
+    
     playerSprite_->SetSize({ radius_ * 2.0f, radius_ * 2.0f });
     // === HPバー ===
     barWidth = 400.0f;
@@ -38,8 +40,7 @@ void Player::Initialize(Input* input, const Vector2& startPos, float radius) {
     hpBackSprite_->SetSize({ barWidth, barHeight });
     hpGaugeSprite_->SetSize({ barWidth, barHeight });
    
-
-  
+   
 
 }
 
@@ -96,6 +97,9 @@ void Player::Update() {
             const float power = 0.1f;
             vel_.x = diff.x * power;
             vel_.y = diff.y * power;
+            nextStriket_ = { -400,400 };
+            strikeWaitTimer_ = 60; // 60フレーム(=約1秒)待機
+            NextStop = true;
         }
     }
 
@@ -126,6 +130,34 @@ void Player::Update() {
 
     CheckPocketCollision();
    
+    // --- nextStriket_ の動き制御 ---
+    if (!strikeWaiting_&&ballspeed0 == true && IsStopped() == true) {
+        // 動かす
+        nextStriket_.x += nextStriketSpeed;
+
+        // 特定座標に到達したら待機開始
+        if (nextStriket_.x >= strikeTargetX_&& NextStop == true) {
+            nextStriket_.x = strikeTargetX_; // 位置をピッタリ固定
+            strikeWaiting_ = true;
+            strikeWaitTimer_ = 60;
+            NextStop = false;
+            
+        }
+    }
+    else {
+        // 待機中
+        strikeWaitTimer_--;
+        if (strikeWaitTimer_ <= 0) {
+            strikeWaiting_ = false; // 待機終了 → 動き出す
+        }
+       
+
+    }
+
+    nextStrikeSprite_->SetPosition(nextStriket_);
+
+
+   
 }
 
 
@@ -138,6 +170,7 @@ void Player::Draw() {
         playerArrowSprite_->Draw();
     }
 
+    
     // === HPゲージ ===
     if (hpBackSprite_) {
 
@@ -152,6 +185,11 @@ void Player::Draw() {
 
         hpGaugeSprite_->Draw();
     }
+
+    
+        nextStrikeSprite_->Draw();
+    
+
 }
 
 void Player::CheckPocketCollision() {

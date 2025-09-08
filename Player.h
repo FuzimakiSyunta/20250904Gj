@@ -36,6 +36,9 @@ private:
 	//スプライト
 	std::unique_ptr<Sprite> playerSprite_ = nullptr;
 	std::unique_ptr<Sprite> playerArrowSprite_ = nullptr;
+
+	uint32_t nextStrikeTexture_ = 0;
+	std::unique_ptr<Sprite>  nextStrikeSprite_ = nullptr;
 	//HPゲージ
 	uint32_t hpBackTex_ = 0;
 	uint32_t hpGaugeTex_ = 0;
@@ -56,16 +59,17 @@ private:
 	bool dragging_;
 	Vector2 dragStart_;
 	Vector2 dragCurrent_;
-
+	Vector2  nextStriket_{ -400,400 };
+	float nextStriketSpeed = 15.0f;
 	bool arrowFlying_ = false;
 	Vector2 arrowVel_;
 	bool arrowReturning_ = false; // 矢印が戻っている最中か
-
+	
 	int maxHp_ = 7;
 	int currentHp_ = 7;
 
 	int invincibleTimer_ = 0; // 無敵時間カウンタ
-
+	int nextStriketstop = 0;
 	float barWidth;
 	float barHeight;
 	float screenWidth;   // 画面幅
@@ -74,5 +78,10 @@ private:
 	// 右下にずらすオフセット
 	Vector2 offset = { 4.0f, 4.0f };
 	bool ballspeed0 = true;
+	bool NextStop = true;
+	bool strikeWaiting_ = false;   // 待機中かどうか
+	int strikeWaitTimer_ = 1;      // 待機時間（フレーム）
+	float strikeTargetX_ = 600.0f; // 目標座標（例: X=600で停止）
 };
 
+//650, 400
