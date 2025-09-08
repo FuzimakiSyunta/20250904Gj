@@ -80,7 +80,7 @@ private:
 	bool ballspeed0 = true;
 	bool NextStop = true;
 	bool strikeWaiting_ = false;   // 待機中かどうか
-	int strikeWaitTimer_ = 1;      // 待機時間（フレーム）
+	int strikeWaitTimer_ = 120;      // 待機時間（フレーム）
 	float strikeTargetX_ = 600.0f; // 目標座標（例: X=600で停止）
 };
 

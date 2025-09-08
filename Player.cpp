@@ -1,5 +1,6 @@
 ﻿#include "Player.h"
 #include <algorithm>
+#include"imgui/imgui.h"
 
 
 void Player::Initialize(Input* input, const Vector2& startPos, float radius) {
@@ -53,7 +54,7 @@ void Player::TakeDamage(int damage) {
 
 void Player::Update() {
     
-
+    
     Vector2 mousePos = input_->GetMousePosition();
 
     // --- WASDで移動 ---
@@ -85,8 +86,8 @@ void Player::Update() {
 
             playerArrowSprite_->SetRotation(angle);
             float scale = std::clamp(length / 100.0f, 0.5f, 3.0f);
-            playerArrowSprite_->SetSize({ drawRadius_ * 2.0f * scale, drawRadius_ * 2.0f * scale });
-            Vector2 offset = { 10.0f, 30.0f };
+            playerArrowSprite_->SetSize({ drawRadius_+40 * 1.5f * scale, drawRadius_+40 * 1.5f * scale });
+            Vector2 offset = { 0.0f, 0.0f };
             playerArrowSprite_->SetPosition({ pos.x + offset.x, pos.y + offset.y });
         }
        
@@ -167,11 +168,12 @@ void Player::Update() {
   
 
 void Player::Draw() {
-    playerSprite_->Draw();
     // 左クリック押下中のみ矢印表示
     if (dragging_ == true && ballspeed0 == true && IsStopped() == true) {
         playerArrowSprite_->Draw();
     }
+    playerSprite_->Draw();
+    
 
     
     // === HPゲージ ===
@@ -194,19 +196,20 @@ void Player::Draw() {
         nextStrikeSprite_->Draw();
     }
 
+    
 }
 
 void Player::CheckPocketCollision() {
     if (invincibleTimer_ > 0) return; // 無敵中はスキップ
-
+    
     //ここ
     Vector2 pockets[6] = {
-        { 220, 290 },   // 左上
-        { 1000, 250 },  // 右上
-        { 202, 632 },   // 左下
-        { 1000, 632 },  // 右下
-        { 600, 250 },   // 上中央
-        { 610, 660 }    // 下中央
+       { 242, 293 },   // 左上
+       { 1039, 293 },  // 右上
+       { 242, 672 },   // 左下
+       { 1039, 672 },  // 右下
+       { 641, 293 },   // 上中央
+       { 641, 672 }    // 下中央
     };
 
     float pocketRadius = 38.0f;
