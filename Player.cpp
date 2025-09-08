@@ -97,9 +97,7 @@ void Player::Update() {
             const float power = 0.1f;
             vel_.x = diff.x * power;
             vel_.y = diff.y * power;
-            nextStriket_ = { -400,400 };
-            strikeWaitTimer_ = 60; // 60フレーム(=約1秒)待機
-            NextStop = true;
+           
         }
     }
 
@@ -156,7 +154,12 @@ void Player::Update() {
 
     nextStrikeSprite_->SetPosition(nextStriket_);
 
-
+    if(ballspeed0 == false && IsStopped() == false)
+    {
+        nextStriket_ = { -400,400 };
+        strikeWaitTimer_ = 60; // 60フレーム(=約1秒)待機
+        NextStop = true;
+    }
    
 }
 
@@ -186,9 +189,10 @@ void Player::Draw() {
         hpGaugeSprite_->Draw();
     }
 
-    
+    if (ballspeed0 == true && IsStopped() == true)
+    {
         nextStrikeSprite_->Draw();
-    
+    }
 
 }
 
