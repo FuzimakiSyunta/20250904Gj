@@ -15,6 +15,8 @@ public:
 
 	void Draw();
 
+	void DebugNumberDraw();
+
 	void HandleBallPocket();
 
 	void SetDamage(int damage);
@@ -43,6 +45,8 @@ private:
 	
 	bool isDamage; //ˆê‰ñ‚Å‚à”­“®‚µ‚½‚©
 	int damage_;
+
+	int playerDamage;
 	Ball* balls_=nullptr;
 	const int kBallCount = 10;
 	std::vector<Vector2> ballPositions;
@@ -61,7 +65,10 @@ private:
 	};
 
 
+	uint32_t damageText[10];
+	uint32_t poketTexture;
 
+	Sprite* damageSprite[80];
 
 };
 

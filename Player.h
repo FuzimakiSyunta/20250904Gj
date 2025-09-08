@@ -26,6 +26,7 @@ public:
 	void CheckPocketCollision();
 	// Setter
 	void SetBallSpeed0(bool value) { ballspeed0 = value; }
+	void SetIsDamage() { isDamage = true; }
 	// Getter
 	bool GetBallSpeed0() const { return  ballspeed0; }
 private:
