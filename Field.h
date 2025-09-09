@@ -27,7 +27,7 @@ public:
 
 	void GenerateRandomNumber();
 
-	void AreaDraw(int number, Vector2 pos, int AreaNumber);
+	void AreaDraw(int number, int AreaNumber);
 
 	
 
@@ -69,10 +69,7 @@ private:
 	bool hpDown;  //全ての処理をしてからHpを減らすために必要な変数
 
 
-	uint32_t damageText[10];
 	
-
-	Sprite* damageSprite[80];  //でバック用
 
 };
 
