@@ -43,7 +43,6 @@ void GameScene::Initialize() {
 void GameScene::Update(){
 	player_->SetBallSpeed0(ball_->AreAllBallsStopped());
 	player_->Update();
-
 	ball_->Update();
 	ball_->CheckPlayerCollision(*player_);
 	damage = ball_->CheckPocketCollisions();
@@ -56,6 +55,8 @@ void GameScene::Update(){
 		damageText_->SetDamage(testDamage);
 		boss_->TakeDamage(testDamage);
 		field_->GenerateRandomNumber();
+		testDamage = 0;
+		damage = 0;
 	}
 	boss_->Update();
 

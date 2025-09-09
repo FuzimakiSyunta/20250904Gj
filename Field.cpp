@@ -509,21 +509,45 @@ void Field::HandleBallPocket()
 		if (CheckCollision(ballPositions[i], pockets[0]))
 		{
 			AreaProcess(areaCaunter[0]);  //左上のポケットが落ちた時のエリア効果
+			if (hpDown)
+			{
+				player_->TakeDamage(damage_);
+				player_->SetIsDamage();
+				hpDown = false;
+			}
 			isDamage = true;
 		}
 		else if (CheckCollision(ballPositions[i], pockets[2]))
 		{
 			AreaProcess(areaCaunter[1]); //左下のポケットが落ちた時のエリア効果
+			if (hpDown)
+			{
+				player_->TakeDamage(damage_);
+				player_->SetIsDamage();
+				hpDown = false;
+			}
 			isDamage = true;
 		}
 		else if (CheckCollision(ballPositions[i], pockets[3]))
 		{
 			AreaProcess(areaCaunter[2]); //右下のポケットが落ちた時のエリア効果
+			if (hpDown)
+			{
+				player_->TakeDamage(damage_);
+				player_->SetIsDamage();
+				hpDown = false;
+			}
 			isDamage = true;
 		}
 		else if (CheckCollision(ballPositions[i], pockets[1]))
 		{
 			AreaProcess(areaCaunter[3]); //右上のポケットが落ちた時のエリア効果
+			if (hpDown)
+			{
+				player_->TakeDamage(damage_);
+				player_->SetIsDamage();
+				hpDown = false;
+			}
 			isDamage = true;
 		}
 		else if (CheckCollision(ballPositions[i], pockets[4]))
@@ -531,6 +555,12 @@ void Field::HandleBallPocket()
 			AreaProcess(areaCaunter[0]);
 			isDamage = false;
 			AreaProcess(areaCaunter[3]); //真ん中上のポケットが落ちた時のエリア効果
+			if (hpDown)
+			{
+				player_->TakeDamage(damage_);
+				player_->SetIsDamage();
+				hpDown = false;
+			}
 			
 		}
 		else if (CheckCollision(ballPositions[i], pockets[5]))
@@ -538,6 +568,12 @@ void Field::HandleBallPocket()
 			AreaProcess(areaCaunter[1]);
 			isDamage = false;
 			AreaProcess(areaCaunter[2]); //真ん中下のポケットが落ちた時のエリア効果
+			if (hpDown)
+			{
+				player_->TakeDamage(damage_);
+				player_->SetIsDamage();
+				hpDown = false;
+			}
 			
 		}
 	}
@@ -690,24 +726,6 @@ void Field::AreaDraw(int number,Vector2 pos1,int AreaNumber)
     }
 }
 
-void Field::GenerateRandomArea()
-{
-	if (areaCooltime <= 20)
-	{
-		areaCooltime++;
-	}
-	//if (areaCooltime <= 10)
-	//{
-	//	//ボスが攻撃をするたびに発動するもの
-	//	//エリア効果のための変数を更新する
-	//	unsigned int currentTime = (unsigned int)time(nullptr);
-	//	srand(currentTime);
-	//	for (int i = 0; i < 3; i++)
-	//	{
-	//		areaCaunter[i] = rand() % 100 + 1;
-	//	}
-	//}
-}
 
 int Field::AreaProcess(int number)
 {
@@ -727,8 +745,7 @@ int Field::AreaProcess(int number)
 	//ナンバーが30から50の時の処理(確率15%)
 	else if (number >= 65 && number <= 75 && isDamage == false)
 	{
-		player_->TakeDamage(damage_);
-		player_->SetIsDamage();
+		hpDown = true;
 		isDamage = true;
 	}
 	//ナンバーが75以上の時の処理(確率30%)

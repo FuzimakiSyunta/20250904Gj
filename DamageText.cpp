@@ -63,7 +63,7 @@ void DamageText::Draw()
 {
 	if (damageCooltime >= 1&&damageCooltime<=50)
 	{
-		if (damage_ == 10 || damage_ == 20 || damage_ == 30 || damage_ == 40 || damage_ == 50 || damage_ == 60 || damage_ == 70 || damage_ == 80 || damage_ == 90)
+		if (damage_ == 0||damage_ == 10 || damage_ == 20 || damage_ == 30 || damage_ == 40 || damage_ == 50 || damage_ == 60 || damage_ == 70 || damage_ == 80 || damage_ == 90)
 		{
 			damageSprite[0]->Draw();
 		}
