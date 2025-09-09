@@ -1,6 +1,6 @@
 #include "Ball.h"
 #include <cmath>
-#include"input/Input.h"
+
 
 Ball::Ball() {
     for (int i = 0; i < kBallCount; i++) {
@@ -60,8 +60,7 @@ void Ball::Initialize(uint32_t) {
 void Ball::Update() {
     MoveBalls();
     CheckCollisions();
-   
-   
+    
     // 全部落ちたらリスポーン
     bool allDead = true;
     for (int i = 0; i < kBallCount; i++) {
@@ -86,17 +85,17 @@ void Ball::Draw() {
 
     //// デバッグ用：ポケット位置に赤丸を描画
     //Vector2 pockets[6] = {
-    //    {202,250},   // 左上
-    //    {1000,250},  // 右上
-    //    {202,632},   // 左下
-    //    {1000,632},  // 右下
-    //    {600,250},   // 上中央
-    //    {600,632}    // 下中央
+    //    { 242, 293 },   // 左上
+    //    { 1039, 293 },  // 右上
+    //    { 242, 672 },   // 左下
+    //    { 1039, 672 },  // 右下
+    //    { 641, 293 },   // 上中央
+    //    { 641, 672 }    // 下中央
     //};
 
     //for (int j = 0; j < 6; j++) {
-    //    Sprite* debug = Sprite::Create(debugCircleTex_, pockets[j]);
-    //    //debug->Draw();
+    //    Sprite* debug = Sprite::Create(debugCircleTex_, pockets[j], { 1,1,1,1 }, { 0.5f, 0.5f });
+    //    debug->Draw();
     //    
     //}
 }
@@ -107,13 +106,13 @@ void Ball::MoveBalls() {
 
     // 壁の位置（任意に設定可能）
     //左
-    const float leftMax = 235.0f;
+    const float leftMax = 225.0f;
     //右
-    const float rightMax = 1050.0f;
+    const float rightMax = 1055.0f;
     //上
-    const float topMax = 250.0f;
+    const float topMax = 273.0f;
     //下
-    const float bottomMax = 680.0f;
+    const float bottomMax = 690.0f;
 
     // 壁の反射係数
     const float xBounce = -1.0f; // 左右
@@ -262,11 +261,15 @@ void Ball::CheckPlayerCollision(Player& player) {
 
 int Ball::CheckPocketCollisions() {
     Vector2 pockets[6] = {
-        {202,265}, {1000,250}, {202,632},
-        {1010,632}, {600,280}, {600,632}
+       { 242, 293 },   // 左上
+       { 1039, 293 },  // 右上
+       { 242, 672 },   // 左下
+       { 1039, 672 },  // 右下
+       { 641, 293 },   // 上中央
+       { 641, 672 }    // 下中央
     };
 
-    float pocketRadius = 38.0f;
+    float pocketRadius = 36.0f;
     int totalDamage = 0;
 
     for (int i = 0; i < kBallCount; i++) {

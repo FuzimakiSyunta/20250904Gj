@@ -2,6 +2,7 @@
 #include <algorithm>
 #include <cmath>
 #include "DamageText.h"
+#include"imgui/imgui.h"
 
 
 void Player::Initialize(Input* input, const Vector2& startPos, float radius) {
@@ -17,13 +18,15 @@ void Player::Initialize(Input* input, const Vector2& startPos, float radius) {
     playerTexture_ = TextureManager::Load("PlayerBall.png");
     playerSprite_.reset(Sprite::Create(playerTexture_, pos, { 1,1,1,1 }, { 0.5f, 0.5f }));
     playerSprite_->SetPosition(pos);
-
-
+    
+    nextStrikeTexture_ = TextureManager::Load("YOURTURN.png");
+    nextStrikeSprite_.reset(Sprite::Create(nextStrikeTexture_, nextStriket_, { 1,1,1,1 } ,{ 0.5f, 0.5f }));
+   
     // 矢印（初期回転45°）
     playerArrowTexture = TextureManager::Load("arrow.png");
     playerArrowSprite_.reset(Sprite::Create(playerArrowTexture, pos, { 1,1,1,1 }, { 0.5f, 0.5f }));
     playerArrowSprite_->SetSize({ radius_ * 2.0f, radius_ * 2.0f });
-    //playerArrowSprite_->SetPosition(pos);
+    
     playerSprite_->SetSize({ radius_ * 2.0f, radius_ * 2.0f });
     // === HPバー ===
     barWidth = 400.0f;
@@ -105,7 +108,7 @@ void Player::TakeDamage(int damage) {
 
 void Player::Update() {
     
-
+    
     Vector2 mousePos = input_->GetMousePosition();
 
     // --- WASDで移動 ---
@@ -137,8 +140,8 @@ void Player::Update() {
 
             playerArrowSprite_->SetRotation(angle);
             float scale = std::clamp(length / 100.0f, 0.5f, 3.0f);
-            playerArrowSprite_->SetSize({ drawRadius_ * 2.0f * scale, drawRadius_ * 2.0f * scale });
-            Vector2 offset = { 10.0f, 30.0f };
+            playerArrowSprite_->SetSize({ drawRadius_+40 * 1.5f * scale, drawRadius_+40 * 1.5f * scale });
+            Vector2 offset = { 0.0f, 0.0f };
             playerArrowSprite_->SetPosition({ pos.x + offset.x, pos.y + offset.y });
         }
        
@@ -149,6 +152,7 @@ void Player::Update() {
             const float power = 0.1f;
             vel_.x = diff.x * power;
             vel_.y = diff.y * power;
+           
         }
     }
 
@@ -159,10 +163,10 @@ void Player::Update() {
     pos += vel_;
 
     // --- 画面端で反射 ---
-    const float left = 235.0f;
-    const float right = 1050.0f;
-    const float top = 280.0f;
-    const float bottom = 680.0f;
+    const float left = 240.0f;
+    const float right = 1040.0f;
+    const float top = 290.0f;
+    const float bottom = 670.0f;
 
     if (pos.x < left) { pos.x = left; vel_.x *= -1.0f; }
     if (pos.x > right) { pos.x = right; vel_.x *= -1.0f; }
@@ -196,7 +200,39 @@ void Player::Update() {
     }
 
     CheckPocketCollision();
+   
+    // --- nextStriket_ の動き制御 ---
+    if (!strikeWaiting_&&ballspeed0 == true && IsStopped() == true) {
+        // 動かす
+        nextStriket_.x += nextStriketSpeed;
 
+        // 特定座標に到達したら待機開始
+        if (nextStriket_.x >= strikeTargetX_&& NextStop == true) {
+            nextStriket_.x = strikeTargetX_; // 位置をピッタリ固定
+            strikeWaiting_ = true;
+            strikeWaitTimer_ = 60;
+            NextStop = false;
+            
+        }
+    }
+    else {
+        // 待機中
+        strikeWaitTimer_--;
+        if (strikeWaitTimer_ <= 0) {
+            strikeWaiting_ = false; // 待機終了 → 動き出す
+        }
+       
+
+    }
+
+    nextStrikeSprite_->SetPosition(nextStriket_);
+
+    if(ballspeed0 == false && IsStopped() == false)
+    {
+        nextStriket_ = { -400,400 };
+        strikeWaitTimer_ = 60; // 60フレーム(=約1秒)待機
+        NextStop = true;
+    }
    
 }
 
@@ -328,22 +364,29 @@ void Player::DamageTextDraw()
         isDamage = false;
         damageCooltime = 0;
     }
+
+    if (ballspeed0 == true && IsStopped() == true)
+    {
+        nextStrikeSprite_->Draw();
+    }
+
+    
 }
 
 void Player::CheckPocketCollision() {
     if (invincibleTimer_ > 0) return; // 無敵中はスキップ
-
+    
     //ここ
     Vector2 pockets[6] = {
-        { 220, 290 },   // 左上
-        { 1000, 250 },  // 右上
-        { 202, 632 },   // 左下
-        { 1000, 632 },  // 右下
-        { 600, 250 },   // 上中央
-        { 610, 660 }    // 下中央
+       { 242, 293 },   // 左上
+       { 1039, 293 },  // 右上
+       { 242, 672 },   // 左下
+       { 1039, 672 },  // 右下
+       { 641, 293 },   // 上中央
+       { 641, 672 }    // 下中央
     };
 
-    float pocketRadius = 38.0f;
+    float pocketRadius = 36.0f;
 
     for (int i = 0; i < 6; i++) {
         float dx = pos.x - pockets[i].x;

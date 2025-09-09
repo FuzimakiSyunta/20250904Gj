@@ -46,7 +46,10 @@ private:
 	//�X�v���C�g
 	std::unique_ptr<Sprite> playerSprite_ = nullptr;
 	std::unique_ptr<Sprite> playerArrowSprite_ = nullptr;
-	//HP�Q�[�W
+
+	uint32_t nextStrikeTexture_ = 0;
+	std::unique_ptr<Sprite>  nextStrikeSprite_ = nullptr;
+	//HPゲージ
 	uint32_t hpBackTex_ = 0;
 	uint32_t hpGaugeTex_ = 0;
 	uint32_t hphartTex_ = 0;
@@ -68,7 +71,8 @@ private:
 	bool dragging_;
 	Vector2 dragStart_;
 	Vector2 dragCurrent_;
-
+	Vector2  nextStriket_{ -400,400 };
+	float nextStriketSpeed = 15.0f;
 	bool arrowFlying_ = false;
 	Vector2 arrowVel_;
 	bool arrowReturning_ = false; // ��󂪖߂��Ă���Œ���
@@ -94,6 +98,8 @@ private:
 	bool isSceneEnd_;
 	int damage_;
 
+	int invincibleTimer_ = 0; // 無敵時間カウンタ
+	int nextStriketstop = 0;
 	float barWidth;
 	float barHeight;
 	float screenWidth;   // ��ʕ�
@@ -106,5 +112,10 @@ private:
 	int hpBarShakeTimer_ = 0;
 	float hpBarShakeStrength_ = 5.0f; // 揺れ幅
 	bool ballspeed0 = true;
+	bool NextStop = true;
+	bool strikeWaiting_ = false;   // 待機中かどうか
+	int strikeWaitTimer_ = 120;      // 待機時間（フレーム）
+	float strikeTargetX_ = 600.0f; // 目標座標（例: X=600で停止）
 };
 
+//650, 400
