@@ -36,15 +36,10 @@ void Field::Initialize()
 		testSprite[i]->SetSize({ 419,212 });
 	}
 
-	areaCooltime=0;
-
-	for (int i = 0; i < 12; i++)
-	{
-		isArea[i] = false;
-	}
 
 
 
+	//数値を可視化するためのスクリプト
 	damageText[0] = TextureManager::Load("number0.png");
 	damageText[1] = TextureManager::Load("number1.png");
 	damageText[2] = TextureManager::Load("number2.png");
@@ -169,10 +164,11 @@ void Field::Draw()
 	AreaDraw(areaNumber[1], pockets[2],1);
 	AreaDraw(areaNumber[2], pockets[3],2);
 	AreaDraw(areaNumber[3], pockets[1],3);
-	
+	//数値を可視化するための変数特に気にしなくてよい
 	DebugNumberDraw();
 }
 
+//数値を可視化するための変数特に気にしなくてよい
 void Field::DebugNumberDraw()
 {
 	//4右上
@@ -584,7 +580,7 @@ void Field::SetDamage(int damage)
 {
 	damage_ = damage;
 }
-
+//ポケットにボールを入れるたびにランダムに変数を変える処理
 void Field::GenerateRandomNumber()
 {
 	//ボスが攻撃をするたびに発動するもの
@@ -598,6 +594,7 @@ void Field::GenerateRandomNumber()
 	isDamage = false;
 }
 
+//この関数は上記にあるareaNumberの値を見てどこに画像を描画するかを決める処理AreaNumberについては順番に描画されるように0～3を設定する
 void Field::AreaDraw(int number,Vector2 pos1,int AreaNumber)
 {
 	//ナンバーが25以下の場合の処理(確率25%)
@@ -605,6 +602,7 @@ void Field::AreaDraw(int number,Vector2 pos1,int AreaNumber)
 	{
 		if (AreaNumber == 0)
 		{
+			//左上の画像
 			pos[0] = { 430,376 };
 			testSprite[0]->SetPosition(pos[0]);
 			testSprite[0]->Draw();
@@ -612,6 +610,7 @@ void Field::AreaDraw(int number,Vector2 pos1,int AreaNumber)
 		}
 		if(AreaNumber==1)
 		{
+			//左下の画像
 			pos[1] = { 430,586 };
 			testSprite[1]->SetPosition(pos[1]);
 			testSprite[1]->Draw();
@@ -620,6 +619,7 @@ void Field::AreaDraw(int number,Vector2 pos1,int AreaNumber)
 
 		if (AreaNumber == 2)
 		{
+			//右下の画像
 			pos[2] = { 848,586 };
 			testSprite[2]->SetPosition(pos[2]);
 			testSprite[2]->Draw();
@@ -628,6 +628,7 @@ void Field::AreaDraw(int number,Vector2 pos1,int AreaNumber)
 
 		if (AreaNumber == 3)
 		{
+			//右上の画像
 			pos[3] = { 848,376 };
 			testSprite[3]->SetPosition(pos[3]);
 			testSprite[3]->Draw();
@@ -730,25 +731,25 @@ void Field::AreaDraw(int number,Vector2 pos1,int AreaNumber)
 int Field::AreaProcess(int number)
 {
 	//今はプレイヤーのHPを回復したりターンという概念がないためコメントアウト
-	//ナンバーが10以下の場合の処理(確率10%)
+	//ナンバーが20以下の場合の処理(確率20%)
 	if (number <= 20 && isDamage == false)
 	{
 		damage_ = damage_ / 2;
 		isDamage = true;
 	}
-	//ナンバーが10から30の場合の処理(確率40%)
+	//ナンバーが20から65の場合の処理(確率45%)
 	else if (number >= 20 && number <= 65 && isDamage == false)
 	{
 		damage_ = damage_ * 2;
 		isDamage = true;
 	}
-	//ナンバーが30から50の時の処理(確率15%)
+	//ナンバーが65から75の時の処理(確率10%)
 	else if (number >= 65 && number <= 75 && isDamage == false)
 	{
 		hpDown = true;
 		isDamage = true;
 	}
-	//ナンバーが75以上の時の処理(確率30%)
+	//ナンバーが75以上の時の処理(確率25%)
 	else if (number >= 75 && isDamage == false)
 	{
 		damage_ = damage_;
@@ -757,6 +758,7 @@ int Field::AreaProcess(int number)
 	return number;
 }
 
+//当たり判定(各ボールの座標と各ポケットの座標)
 bool Field::CheckCollision(Vector2 pos1, Vector2 pos2)
 {
 	float pocketRadius = 38.0f;
