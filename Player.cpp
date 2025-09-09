@@ -273,6 +273,11 @@ void Player::Draw() {
         gameOverSprite->Draw();
         gameButtonSprite->Draw();
     }
+    if (ballspeed0 == true && IsStopped() == true)
+    {
+        nextStrikeSprite_->Draw();
+    }
+
 }
 
 void Player::DamageTextDraw()
