@@ -307,7 +307,7 @@ int Field::AreaProcess(int number)
 {
 	if (isDragon_) {
 		// === ドラゴン用確率 ===
-		// 0〜100 の number のうち 40% をダメージ発動
+		// 0?100 の number のうち 40% をダメージ発動
 		if (number <= 40 && !isDamage) {
 			damage_ = damage_ * 2; // 例：ダメージ強化
 			isDamage = true;
