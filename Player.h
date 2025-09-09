@@ -98,7 +98,7 @@ private:
 	bool isSceneEnd_;
 	int damage_;
 
-	int invincibleTimer_ = 0; // 無敵時間カウンタ
+	
 	int nextStriketstop = 0;
 	float barWidth;
 	float barHeight;
