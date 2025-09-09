@@ -3,26 +3,44 @@
 
 void Boss::Initialize(Input* input) {
     input_ = input;
-	// テクスチャの読み込み
-    bossTexture_ = TextureManager::Load("slimeKing.png");
-    bossDamegeTexture_ = TextureManager::Load("slimeKing_Dmaege.png");
-	// HPゲージ
+
+    // ★ 乱数シードを1回だけ初期化
+    srand((unsigned int)time(nullptr));
+    // === ランダムでボスタイプを決定 ===
+    int bossType = rand() % 2; // 0 = スライムキング, 1 = ドラゴン
+
+    if (bossType == 0) {
+        // スライムキング
+        bossTexture_ = TextureManager::Load("slimeKing.png");
+        bossDamegeTexture_ = TextureManager::Load("slimeKing_Dmaege.png");
+        maxHp_ = 300; // HP少なめ
+    }
+    else {
+        // ドラゴン
+        bossTexture_ = TextureManager::Load("dragon.png");
+        bossDamegeTexture_ = TextureManager::Load("dragon_Damege.png");
+        maxHp_ = 500; // HP多め
+    }
+
+    // === HPゲージ ===
     hpBackTex_ = TextureManager::Load("BossHpBack.png");
     hpGaugeTex_ = TextureManager::Load("BossHpRed.png");
     hpBackSprite_.reset(Sprite::Create(hpBackTex_, { 400, 20 }));
     hpGaugeSprite_.reset(Sprite::Create(hpGaugeTex_, { 400, 20 }));
-    hpBackSprite_->SetSize({ 480, 20 });   // 背景バーのサイズ
-    hpGaugeSprite_->SetSize({ 480, 20 });  // ゲージ最大サイズ
+    hpBackSprite_->SetSize({ 480, 20 });
+    hpGaugeSprite_->SetSize({ 480, 20 });
 
-	// スプライトの生成と初期位置設定
+    // === ボスのスプライト ===
     basePos_ = { 540.0f, 40.0f };
     bossSprite_.reset(Sprite::Create(bossTexture_, basePos_));
     bossDamegeSprite_.reset(Sprite::Create(bossDamegeTexture_, basePos_));
     bossSprite_->SetPosition(basePos_);
     bossDamegeSprite_->SetPosition(basePos_);
-    maxHp_ = 100;
+
+    // HP初期化
     currentHp_ = maxHp_;
 
+    // === 勝利画面関連 ===
     gameClearText_ = TextureManager::Load("YOUWIN.png");
     gameClearSprite_.reset(Sprite::Create(gameClearText_, { 640,370 }, { 1,1,1,1 }, { 0.5f,0.5f }));
 
