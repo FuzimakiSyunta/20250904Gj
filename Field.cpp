@@ -38,7 +38,10 @@ void Field::Initialize()
 		testSprite[i]->SetSize({ 419,212 });
 	}
 
-
+	for (int i = 0; i < 10; i++)
+	{
+		isActive[i] = true;
+	}
 
 
 	
@@ -67,7 +70,7 @@ void Field::HandleBallPocket()
 	for (int i = 0; i < kBallCount; i++)
 	{
 		//エリアを分けて処理させる
-		if (CheckCollision(ballPositions[i], pockets[0]))  //当たり判定を計測する関数
+		if (CheckCollision(ballPositions[i], pockets[0]) && isActive[i])  //当たり判定を計測する関数
 		{
 			AreaProcess(areaCaunter[0]);  //左上のポケットが落ちた時のエリア効果
 			//hpがダウンする効果が当たる時最後にプレイヤーにダメージを与える
@@ -79,8 +82,10 @@ void Field::HandleBallPocket()
 			}
 			//処理が終わったらフラグを立たせ複数処理されないようにする
 			isDamage = true;
+			isActive[i] = false;
+			break;
 		}
-		else if (CheckCollision(ballPositions[i], pockets[2]))
+		else if (CheckCollision(ballPositions[i], pockets[2]) && isActive[i])
 		{
 			AreaProcess(areaCaunter[1]); //左下のポケットが落ちた時のエリア効果
 			//hpがダウンする効果が当たる時最後にプレイヤーにダメージを与える
@@ -92,8 +97,10 @@ void Field::HandleBallPocket()
 			}
 			//処理が終わったらフラグを立たせ複数処理されないようにする
 			isDamage = true;
+			isActive[i] = false;
+			break;
 		}
-		else if (CheckCollision(ballPositions[i], pockets[3]))
+		else if (CheckCollision(ballPositions[i], pockets[3]) && isActive[i])
 		{
 			AreaProcess(areaCaunter[2]); //右下のポケットが落ちた時のエリア効果
 			//hpがダウンする効果が当たる時最後にプレイヤーにダメージを与える
@@ -105,8 +112,10 @@ void Field::HandleBallPocket()
 			}
 			//処理が終わったらフラグを立たせ複数処理されないようにする
 			isDamage = true;
+			isActive[i] = false;
+			break;
 		}
-		else if (CheckCollision(ballPositions[i], pockets[1]))
+		else if (CheckCollision(ballPositions[i], pockets[1]) && isActive[i])
 		{
 			AreaProcess(areaCaunter[3]); //右上のポケットが落ちた時のエリア効果
 			//hpがダウンする効果が当たる時最後にプレイヤーにダメージを与える
@@ -118,8 +127,10 @@ void Field::HandleBallPocket()
 			}
 			//処理が終わったらフラグを立たせ複数処理されないようにする
 			isDamage = true;
+			isActive[i] = false;
+			break;
 		}
-		else if (CheckCollision(ballPositions[i], pockets[4]))
+		else if (CheckCollision(ballPositions[i], pockets[4]) && isActive[i])
 		{
 			AreaProcess(areaCaunter[0]);
 			isDamage = false;
@@ -132,8 +143,10 @@ void Field::HandleBallPocket()
 			}
 			//処理が終わったらフラグを立たせ複数処理されないようにする
 			isDamage = false;
+			isActive[i] = false;
+			break;
 		}
-		else if (CheckCollision(ballPositions[i], pockets[5]))
+		else if (CheckCollision(ballPositions[i], pockets[5]) && isActive[i])
 		{
 			AreaProcess(areaCaunter[1]);
 			isDamage = false;
@@ -146,6 +159,8 @@ void Field::HandleBallPocket()
 			}
 			//処理が終わったらフラグを立たせ複数処理されないようにする
 			isDamage = false;
+			isActive[i] = false;
+			break;
 		}
 	}
 	
@@ -349,3 +364,12 @@ bool Field::CheckCollision(Vector2 pos1, Vector2 pos2)
 		return false;
 	}
 }
+
+void Field::ReviveBall()
+{
+	for (int i = 0; i < 10; i++)
+	{
+		isActive[i] = true;   // 再び参照可能にする
+	}
+}
+

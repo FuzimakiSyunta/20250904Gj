@@ -38,6 +38,7 @@ void GameScene::Initialize() {
 	damageText_ = std::make_unique<DamageText>();
 	damageText_->Initialize();
 	isSceneEnd_ = false;
+	ball_->SetField(field_.get());
 }
 
 void GameScene::Update(){
