@@ -17,7 +17,7 @@ void Player::Initialize(Input* input, const Vector2& startPos, float radius) {
     playerSprite_.reset(Sprite::Create(playerTexture_, pos, { 1,1,1,1 }, { 0.5f, 0.5f }));
     playerSprite_->SetPosition(pos);
     
-    nextStrikeTexture_ = TextureManager::Load("YOURTURN.png");
+    nextStrikeTexture_ = TextureManager::Load("YOURTURN2.png");
     nextStrikeSprite_.reset(Sprite::Create(nextStrikeTexture_, nextStriket_, { 1,1,1,1 } ,{ 0.5f, 0.5f }));
    
     // 矢印（初期回転45°）
