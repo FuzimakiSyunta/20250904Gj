@@ -31,6 +31,11 @@ void Field::Initialize()
 	testSprite[10] = Sprite::Create(texttexture[0], pos[10], { 1,1,1,1 }, { 0.5f,0.5f });
 	testSprite[11] = Sprite::Create(texttexture[0], pos[11], { 1,1,1,1 }, { 0.5f,0.5f });
 
+	for (int i = 0; i < 12; i++)
+	{
+		testSprite[i]->SetSize({ 419,212 });
+	}
+
 	areaCooltime=0;
 
 	for (int i = 0; i < 12; i++)
@@ -164,8 +169,8 @@ void Field::Draw()
 	AreaDraw(areaNumber[1], pockets[2],1);
 	AreaDraw(areaNumber[2], pockets[3],2);
 	AreaDraw(areaNumber[3], pockets[1],3);
-
-	//DebugNumberDraw();
+	
+	DebugNumberDraw();
 }
 
 void Field::DebugNumberDraw()
@@ -503,36 +508,36 @@ void Field::HandleBallPocket()
 		//エリアを分けて処理させる
 		if (CheckCollision(ballPositions[i], pockets[0]))
 		{
-			AreaProcess(areaNumber[0]);  //左上のポケットが落ちた時のエリア効果
+			AreaProcess(areaCaunter[0]);  //左上のポケットが落ちた時のエリア効果
 			isDamage = true;
 		}
 		else if (CheckCollision(ballPositions[i], pockets[2]))
 		{
-			AreaProcess(areaNumber[1]); //左下のポケットが落ちた時のエリア効果
+			AreaProcess(areaCaunter[1]); //左下のポケットが落ちた時のエリア効果
 			isDamage = true;
 		}
 		else if (CheckCollision(ballPositions[i], pockets[3]))
 		{
-			AreaProcess(areaNumber[2]); //右下のポケットが落ちた時のエリア効果
+			AreaProcess(areaCaunter[2]); //右下のポケットが落ちた時のエリア効果
 			isDamage = true;
 		}
 		else if (CheckCollision(ballPositions[i], pockets[1]))
 		{
-			AreaProcess(areaNumber[3]); //右上のポケットが落ちた時のエリア効果
+			AreaProcess(areaCaunter[3]); //右上のポケットが落ちた時のエリア効果
 			isDamage = true;
 		}
 		else if (CheckCollision(ballPositions[i], pockets[4]))
 		{
-			AreaProcess(areaNumber[0]);
+			AreaProcess(areaCaunter[0]);
 			isDamage = false;
-			AreaProcess(areaNumber[3]); //真ん中上のポケットが落ちた時のエリア効果
+			AreaProcess(areaCaunter[3]); //真ん中上のポケットが落ちた時のエリア効果
 			
 		}
 		else if (CheckCollision(ballPositions[i], pockets[5]))
 		{
-			AreaProcess(areaNumber[1]);
+			AreaProcess(areaCaunter[1]);
 			isDamage = false;
-			AreaProcess(areaNumber[2]); //真ん中下のポケットが落ちた時のエリア効果
+			AreaProcess(areaCaunter[2]); //真ん中下のポケットが落ちた時のエリア効果
 			
 		}
 	}
@@ -560,96 +565,129 @@ void Field::GenerateRandomNumber()
 void Field::AreaDraw(int number,Vector2 pos1,int AreaNumber)
 {
 	//ナンバーが25以下の場合の処理(確率25%)
-	if (number <= 25 )
+	if (number <= 20 )
 	{
 		if (AreaNumber == 0)
 		{
-			pos[0] = { 420,370 };
+			pos[0] = { 430,376 };
 			testSprite[0]->SetPosition(pos[0]);
 			testSprite[0]->Draw();
+			areaCaunter[0] = number;
 		}
 		if(AreaNumber==1)
 		{
-			pos[1] = { 420,595 };
+			pos[1] = { 430,586 };
 			testSprite[1]->SetPosition(pos[1]);
 			testSprite[1]->Draw();
+			areaCaunter[1] = number;
 		}
 
 		if (AreaNumber == 2)
 		{
-			pos[2] = { 858,595 };
+			pos[2] = { 848,586 };
 			testSprite[2]->SetPosition(pos[2]);
 			testSprite[2]->Draw();
+			areaCaunter[2] = number;
 		}
 
 		if (AreaNumber == 3)
 		{
-			pos[3] = { 858,370 };
+			pos[3] = { 848,376 };
 			testSprite[3]->SetPosition(pos[3]);
 			testSprite[3]->Draw();
+			areaCaunter[3] = number;
 		}
 		
 	}
 	//ナンバーが25から50の場合の処理(確率25%)
-	else if (number >= 25 && number <= 50 )
+	else if (number >= 20 && number <= 65 )
 	{
 		if (AreaNumber == 0)
 		{
-			pos[4] = { 420,370 };
+			pos[4] = { 430,376 };
 			testSprite[4]->SetPosition(pos[4]);
 			testSprite[4]->Draw();
+			areaCaunter[0] = number;
 		}
 		if (AreaNumber == 1)
 		{
-			pos[5] = { 420,595 };
+			pos[5] = { 430,586 };
 			testSprite[5]->SetPosition(pos[5]);
 			testSprite[5]->Draw();
+			areaCaunter[1] = number;
 		}
 
 		if (AreaNumber == 2)
 		{
-			pos[6] = { 858,595 };
+			pos[6] = { 848,586 };
 			testSprite[6]->SetPosition(pos[6]);
 			testSprite[6]->Draw();
+			areaCaunter[2] = number;
 		}
 
 		if (AreaNumber == 3)
 		{
-			pos[7] = { 858,370 };
+			pos[7] = { 848,376 };
 			testSprite[7]->SetPosition(pos[7]);
 			testSprite[7]->Draw();
+			areaCaunter[3] = number;
 		}
 	}
 	//ナンバーが50から75の時の処理(確率25%)
-	else if (number >= 50 && number <= 75 )
+	else if (number >= 65 && number <= 75 )
 	{
 		if (AreaNumber == 0)
 		{
-			pos[8] = { 420,370 };
+			pos[8] = { 430,376 };
 			testSprite[8]->SetPosition(pos[8]);
 			testSprite[8]->Draw();
+			areaCaunter[0] = number;
 		}
 		if (AreaNumber == 1)
 		{
-			pos[9] = { 420,595 };
+			pos[9] = { 430,586 };
 			testSprite[9]->SetPosition(pos[9]);
 			testSprite[9]->Draw();
+			areaCaunter[1] = number;
 		}
 
 		if (AreaNumber == 2)
 		{
-			pos[10] = { 858,595 };
+			pos[10] = { 848,586 };
 			testSprite[10]->SetPosition(pos[10]);
 			testSprite[10]->Draw();
+			areaCaunter[2] = number;
 		}
 
 		if (AreaNumber == 3)
 		{
-			pos[11] = { 858,370 };
+			pos[11] = { 848,376 };
 			testSprite[11]->SetPosition(pos[11]);
 			testSprite[11]->Draw();
+			areaCaunter[3] = number;
 		}
 	}
+	else if (number >= 75 )
+	{
+		if (AreaNumber == 0)
+		{
+			areaCaunter[0] = number;
+		}
+		if (AreaNumber == 1)
+		{
+			areaCaunter[1] = number;
+		}
+
+		if (AreaNumber == 2)
+		{
+			areaCaunter[2] = number;
+		}
+
+		if (AreaNumber == 3)
+		{
+			areaCaunter[3] = number;
+		}
+    }
 }
 
 void Field::GenerateRandomArea()
@@ -658,42 +696,42 @@ void Field::GenerateRandomArea()
 	{
 		areaCooltime++;
 	}
-	if (areaCooltime <= 10)
-	{
-		//ボスが攻撃をするたびに発動するもの
-		//エリア効果のための変数を更新する
-		unsigned int currentTime = (unsigned int)time(nullptr);
-		srand(currentTime);
-		for (int i = 0; i < 3; i++)
-		{
-			areaCaunter[i] = rand() % 100 + 1;
-		}
-	}
+	//if (areaCooltime <= 10)
+	//{
+	//	//ボスが攻撃をするたびに発動するもの
+	//	//エリア効果のための変数を更新する
+	//	unsigned int currentTime = (unsigned int)time(nullptr);
+	//	srand(currentTime);
+	//	for (int i = 0; i < 3; i++)
+	//	{
+	//		areaCaunter[i] = rand() % 100 + 1;
+	//	}
+	//}
 }
 
 int Field::AreaProcess(int number)
 {
 	//今はプレイヤーのHPを回復したりターンという概念がないためコメントアウト
 	//ナンバーが10以下の場合の処理(確率10%)
-	if (number <= 25 && isDamage == false)
+	if (number <= 20 && isDamage == false)
 	{
 		damage_ = damage_ / 2;
 		isDamage = true;
 	}
-	//ナンバーが10から30の場合の処理(確率20%)
-	else if (number >= 25 && number <= 50 && isDamage == false)
+	//ナンバーが10から30の場合の処理(確率40%)
+	else if (number >= 20 && number <= 65 && isDamage == false)
 	{
 		damage_ = damage_ * 2;
 		isDamage = true;
 	}
-	//ナンバーが30から50の時の処理(確率20%)
-	else if (number >= 50 && number <= 75 && isDamage == false)
+	//ナンバーが30から50の時の処理(確率15%)
+	else if (number >= 65 && number <= 75 && isDamage == false)
 	{
-		player_->TakeDamage(1);
+		player_->TakeDamage(damage_);
 		player_->SetIsDamage();
 		isDamage = true;
 	}
-	//ナンバーが90以上の時の処理(確率10%)
+	//ナンバーが75以上の時の処理(確率30%)
 	else if (number >= 75 && isDamage == false)
 	{
 		damage_ = damage_;

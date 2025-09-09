@@ -2,6 +2,7 @@
 #include "TextureManager.h"
 #include "Vector2.h"
 #include "Input.h"
+#include "WinApp.h"
 class Player
 {
 public:
@@ -13,6 +14,7 @@ public:
 	void Draw();
 
 	void DamageTextDraw();
+
 
 	Vector2 GetPos() const { return pos; }      // const �C���q��ǉ�
 	
@@ -29,6 +31,8 @@ public:
 	void SetIsDamage() { isDamage = true; }
 	// Getter
 	bool GetBallSpeed0() const { return  ballspeed0; }
+
+	bool IsSceneEnd() { return isSceneEnd_; }
 private:
 	bool IsStopped() const;
 
@@ -69,18 +73,26 @@ private:
 	Vector2 arrowVel_;
 	bool arrowReturning_ = false; // ��󂪖߂��Ă���Œ���
 
-	int maxHp_ = 7;
-	int currentHp_ = 7;
+	int maxHp_ = 100;
+	int currentHp_ = 100;
 
 	int invincibleTimer_ = 0; // ���G���ԃJ�E���^
 
-	std::unique_ptr<Sprite> damageSprite_;
-	uint32_t damageText;
+	
 	bool isDamage;
 	int damageCooltime;
 
+	uint32_t damageText[10];
+	Sprite* damageSprite[20];
+	Vector2 damagePos[2];
+
 	uint32_t gameOverText;
 	Sprite* gameOverSprite = nullptr;
+	uint32_t gameButton;
+	std::unique_ptr<Sprite> gameButtonSprite;
+	POINT mousePosition;
+	bool isSceneEnd_;
+	int damage_;
 
 	float barWidth;
 	float barHeight;

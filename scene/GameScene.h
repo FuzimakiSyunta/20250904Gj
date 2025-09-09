@@ -14,6 +14,7 @@
 #include "Boss.h"
 #include "Field.h"
 #include "DamageText.h"
+#include "Scene.h"
 
 /// <summary>
 /// ゲームシーン
@@ -46,6 +47,15 @@ class GameScene {
 	/// </summary>
 	void Draw();
 
+	/// <summary>
+	/// リセット
+	/// </summary>
+	void Reset();
+
+	bool IsSceneEnd() { return isSceneEnd_; }
+
+	Scene::SceneType NextScene() { return Scene::SceneType::kTitle; }
+
   private: // メンバ変数
 	DirectXCommon* dxCommon_ = nullptr;
 	Input* input_ = nullptr;
@@ -60,6 +70,8 @@ class GameScene {
 	std::unique_ptr<DamageText> damageText_;
 
 	int testDamage = 0;
+
+	bool isSceneEnd_;
 
 
 	Ball* ball_ = nullptr;

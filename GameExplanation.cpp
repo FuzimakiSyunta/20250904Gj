@@ -13,12 +13,16 @@ void GameExplanation::Initialize()
 	input_ = Input::GetInstance();
 	audio_ = Audio::GetInstance();
 	//背景の画像のデータ取得
-	uint32_t Explanationtexture = TextureManager::Load("sample.png");
+	uint32_t Explanationtexture = TextureManager::Load("operation.png");
+	explanationButton = TextureManager::Load("operation_StartButton.png");
 	//画像の座標
-	pos = { 400,400 };
+	pos = { 640,400 };
 	explanationSprite = Sprite::Create(Explanationtexture, pos, { 1,1,1,1 }, { 0.5f,0.5f });
+	explanationButtonSprite = Sprite::Create(explanationButton, { 0,0 }, { 1,1,1,1 }, { 0.0f,0.0f });
 	//すぐにシーンに移らないためのクールタイム初期化
 	sceneCooltime = 0;
+
+	isSceneEnd_ = false;
 }
 
 void GameExplanation::Update()
@@ -36,7 +40,7 @@ void GameExplanation::Update()
 	}
 	//ボタンやクリックをしたら次のシーンに行くための処理
 	if (input_->PushKey(DIK_SPACE)&&sceneCooltime>10||
-		mousePosition.x >= 400 && mousePosition.x <= 700 && mousePosition.y >= 200 && mousePosition.y <= 500 && input_->IsPressMouse(WM_LBUTTONDOWN == 0)&&sceneCooltime>10)
+		mousePosition.x >= 990 && mousePosition.x <= 1220 && mousePosition.y >= 675 && mousePosition.y <= 760 && input_->IsPressMouse(WM_LBUTTONDOWN == 0)&&sceneCooltime>10)
 	{
 		isSceneEnd_ = true;
 	}
@@ -55,6 +59,7 @@ void GameExplanation::Draw()
 	/// ここに背景スプライトの描画処理を追加できる
 	/// </summary>
 	explanationSprite->Draw();
+	explanationButtonSprite->Draw();
 	// スプライト描画後処理
 	Sprite::PostDraw();
 	// 深度バッファクリア
@@ -85,4 +90,9 @@ void GameExplanation::Draw()
 	Sprite::PostDraw();
 
 #pragma endregion
+}
+
+void GameExplanation::Reset()
+{
+	Initialize();
 }

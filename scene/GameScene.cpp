@@ -37,6 +37,7 @@ void GameScene::Initialize() {
 
 	damageText_ = std::make_unique<DamageText>();
 	damageText_->Initialize();
+	isSceneEnd_ = false;
 }
 
 void GameScene::Update(){
@@ -57,6 +58,11 @@ void GameScene::Update(){
 		field_->GenerateRandomNumber();
 	}
 	boss_->Update();
+
+	if (player_->IsSceneEnd() || boss_->IsSceneEnd())
+	{
+		isSceneEnd_ = true;
+	}
 }
 
 void GameScene::Draw() {
@@ -99,8 +105,11 @@ void GameScene::Draw() {
 	/// <summary>
 	/// ここに前景スプライトの描画処理を追加できる
 	/// </summary>
-	player_->Draw();
-	ball_->Draw();
+	if (player_->GetHp()>=1 ||boss_->GetHp()>=1 )
+	{
+		player_->Draw();
+		ball_->Draw();
+	}
 	boss_->Draw();
 
 	// デバッグテキストの描画
@@ -110,4 +119,9 @@ void GameScene::Draw() {
 	Sprite::PostDraw();
 
 #pragma endregion
+}
+
+void GameScene::Reset()
+{
+	Initialize();
 }

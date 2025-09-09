@@ -86,18 +86,25 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 			if (titleScene->IsSceneEnd())
 			{
 				sceneNo = titleScene->NextScene();
+				gameExplanation->Reset();
 			}
 			break;
 		case Scene::SceneType::kGameExplanation:
 			gameExplanation->Update();
 			if (gameExplanation->IsSceneEnd())
 			{
+				gameScene->Reset();
 				sceneNo = gameExplanation->NextScene();
 			}
 			break;
 		case Scene::SceneType::kGamePlay:
 			// ゲームシーンの毎フレーム処理
 			gameScene->Update();
+			if (gameScene->IsSceneEnd())
+			{
+				sceneNo = gameScene->NextScene();
+				titleScene->Reset();
+			}
 			break;
 		}
 		// 軸表示の更新

@@ -37,6 +37,11 @@ public:
 	/// </summary>
 	void Draw();
 
+	/// <summary>
+	/// リセット
+	/// </summary>
+	void Reset();
+
 	//次のシーンに移る為の処理
 	bool IsSceneEnd() { return isSceneEnd_; }
 	Scene::SceneType NextScene() { return Scene::SceneType::kGameExplanation; }
@@ -51,6 +56,10 @@ private:
 	//タイトルで使う画像
 	Sprite* titleSprite = nullptr;
 	Vector2 pos; //画像の座標
+	uint32_t titleButton;
+	Sprite* titleButtonSprite = nullptr;
 	POINT mousePosition; //マウスの座標
+
+	int sceneCooltime; //シーンに移り変わった時一瞬だけクールタイムを用意し連続で移り変わらないようにする
 };
 

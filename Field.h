@@ -40,7 +40,7 @@ public:
 private:
 	int areaNumber[4]{ 0,0,0,0 };
 
-	int areaCaunter[3]{ 0,0,0 };
+	int areaCaunter[4]{ 0,0,0 };
 	int areaCooltime;
 	
 	bool isDamage; //ˆê‰ñ‚Å‚à”­“®‚µ‚½‚©
