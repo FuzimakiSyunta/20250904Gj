@@ -29,15 +29,17 @@ public:
 
 	void AreaDraw(int number, int AreaNumber);
 
-	
-
 	int AreaProcess(int number);
 
 	int GetDamage() { return damage_; }
 
 	bool CheckCollision(Vector2 pos1,Vector2 pos2);
 
+
 	void SetBossType(bool isDragon); // BossがDragonかどうかを設定
+
+	void ReviveBall();
+
 
 private:
 	int areaNumber[4]{ 0,0,0,0 };  //ポケットに入れるたびに変数を変更させている
@@ -69,6 +71,10 @@ private:
 	};
 
 	bool hpDown;  //全ての処理をしてからHpを減らすために必要な変数
+
+
+	bool isActive[10];
+
 
 	bool isDragon_ = false; // デフォルトはスライムキング
 	

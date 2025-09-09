@@ -1,6 +1,6 @@
 ﻿#include "Ball.h"
 #include <cmath>
-
+#include "Field.h"
 
 Ball::Ball() {
     for (int i = 0; i < kBallCount; i++) {
@@ -71,6 +71,7 @@ void Ball::Update() {
     }
     if (allDead) {
         Respawn();
+        field_->ReviveBall();
     }
 }
 //isAlive_[i] && sprite_[i]
