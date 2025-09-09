@@ -1,4 +1,4 @@
-#include "Sprite.h"
+ï»¿#include "Sprite.h"
 #include "TextureManager.h"
 #include "Vector2.h"
 #include <vector>
@@ -12,12 +12,12 @@ public:
     void Update();
     void Draw();
 
-    void CheckPlayerCollision(Player& player); // ƒvƒŒƒCƒ„[‚Æ‚ÌÕ“Ë
-    int CheckPocketCollisions(); // š ’Ç‰Á
+    void CheckPlayerCollision(Player& player); // ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã¨ã®è¡çª
+    int CheckPocketCollisions(); // â˜… è¿½åŠ 
 
-	void Respawn(); // š ’Ç‰Á
+	void Respawn(); // â˜… è¿½åŠ 
     bool AreAllBallsStopped() const;
-    std::vector<Vector2> GetBallsPos(); //Šeƒ{[ƒ‹‚ÌÀ•W‚ğ‘ã“ü
+    std::vector<Vector2> GetBallsPos(); //å„ãƒœãƒ¼ãƒ«ã®åº§æ¨™ã‚’ä»£å…¥
 
 private:
     static const int kBallCount = 10;
@@ -27,17 +27,17 @@ private:
 
     uint32_t ballTextureHandle_[kBallCount] = { 0u };
 
-    // š ƒfƒoƒbƒO‰Â‹‰»—p ---------------------
-    uint32_t debugCircleTex_ = 0u; // ÔŠÛ(DebugCircle.png)‚ÌƒeƒNƒXƒ`ƒƒ
+    // â˜… ãƒ‡ãƒãƒƒã‚°å¯è¦–åŒ–ç”¨ ---------------------
+    uint32_t debugCircleTex_ = 0u; // èµ¤ä¸¸(DebugCircle.png)ã®ãƒ†ã‚¯ã‚¹ãƒãƒ£
     // ---------------------------------------
-    Vector2 pocketPos_[6];   // © ImGui‚Å’²®‚·‚éƒ|ƒPƒbƒgˆÊ’u
+    Vector2 pocketPos_[6];   // â† ImGuiã§èª¿æ•´ã™ã‚‹ãƒã‚±ãƒƒãƒˆä½ç½®
 
-    bool isAlive_[kBallCount];  // š ’Ç‰ÁFƒ{[ƒ‹‚ªc‚Á‚Ä‚¢‚é‚©‚Ç‚¤‚©
+    bool isAlive_[kBallCount];  // â˜… è¿½åŠ ï¼šãƒœãƒ¼ãƒ«ãŒæ®‹ã£ã¦ã„ã‚‹ã‹ã©ã†ã‹
 
     void MoveBalls();
     void CheckCollisions();
     
     Player* player_=nullptr;
-    int damage_[kBallCount]; // Šeƒ{[ƒ‹‚Ìƒ_ƒ[ƒW’l
+    int damage_[kBallCount]; // å„ãƒœãƒ¼ãƒ«ã®ãƒ€ãƒ¡ãƒ¼ã‚¸å€¤
     Input* input_ = nullptr;
 };
