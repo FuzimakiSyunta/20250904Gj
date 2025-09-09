@@ -14,14 +14,26 @@ void TitleScene::Initialize()
 	input_ = Input::GetInstance();
 	audio_ = Audio::GetInstance();
 	//背景の画像のデータ取得
-	uint32_t textureTitle = TextureManager::Load("uvChecker.png");
+	uint32_t textureTitle = TextureManager::Load("Title.png");
+	titleButton = TextureManager::Load("TitleButton.png");
 	//画像の座標
-	pos = { 400,400 };
+	pos = { 640,400 };
 	titleSprite = Sprite::Create(textureTitle, pos, { 1,1,1,1 }, { 0.5f,0.5f });
+	titleButtonSprite = Sprite::Create(titleButton, { 0,0 }, { 1,1,1,1 }, { 0.0f,0.0f });
+	isSceneEnd_ = false;
+
+	//すぐにシーンに移らないためのクールタイム初期化
+	sceneCooltime = 0;
 }
 
 void TitleScene::Update()
 {
+	//すぐにシーンに移らないようにする処理
+	if (isSceneEnd_ == false)
+	{
+		sceneCooltime++;
+	}
+
 	//マウスの座標を取得
 	GetCursorPos(&mousePosition); 
 	HWND hwnd = WinApp::GetInstance()->GetHwnd(); 
@@ -29,8 +41,8 @@ void TitleScene::Update()
 	//--------------------//
 	
 	//ボタンやクリックをしたら次のシーンに行くための処理
-	if (input_->PushKey(DIK_SPACE)||
-		mousePosition.x >= 400 && mousePosition.x <= 700 && mousePosition.y >= 200 && mousePosition.y <= 500 && input_->IsPressMouse(WM_LBUTTONDOWN == 0))
+	if (input_->PushKey(DIK_SPACE)&&  sceneCooltime > 10||
+		mousePosition.x >= 80 && mousePosition.x <= 366 && mousePosition.y >= 370 && mousePosition.y <= 500 && input_->IsPressMouse(WM_LBUTTONDOWN == 0) && sceneCooltime > 10)
 	{
 		isSceneEnd_ = true;
 	}
@@ -51,6 +63,7 @@ void TitleScene::Draw()
 	/// ここに背景スプライトの描画処理を追加できる
 	/// </summary>
 	titleSprite->Draw();
+	titleButtonSprite->Draw();
 	// スプライト描画後処理
 	Sprite::PostDraw();
 	// 深度バッファクリア
@@ -81,4 +94,9 @@ void TitleScene::Draw()
 	Sprite::PostDraw();
 
 #pragma endregion
+}
+
+void TitleScene::Reset()
+{
+	Initialize();
 }

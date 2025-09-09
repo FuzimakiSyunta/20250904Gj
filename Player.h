@@ -1,7 +1,8 @@
-#include "Sprite.h"
+ï»¿#include "Sprite.h"
 #include "TextureManager.h"
 #include "Vector2.h"
 #include "Input.h"
+#include "WinApp.h"
 class Player
 {
 public:
@@ -12,10 +13,14 @@ public:
 
 	void Draw();
 
-	Vector2 GetPos() const { return pos; }      // const Cüq‚ğ’Ç‰Á
+	void DamageTextDraw();
+
+
+	Vector2 GetPos() const { return pos; }      // const ï¿½Cï¿½ï¿½ï¿½qï¿½ï¿½Ç‰ï¿½
 	
-	float GetRadius() const { return radius_; } // const Cüq‚ğ’Ç‰Á
+	float GetRadius() const { return radius_; } // const ï¿½Cï¿½ï¿½ï¿½qï¿½ï¿½Ç‰ï¿½
 	Vector2 GetVel() const { return vel_; }
+	int GetHp() { return currentHp_; }
 	void SetVel(float x, float y) { vel_ = { x, y }; }
 	void SetPos(float x, float y) { pos = { x, y }; }
 	void TakeDamage(int damage);
@@ -23,37 +28,44 @@ public:
 	void CheckPocketCollision();
 	// Setter
 	void SetBallSpeed0(bool value) { ballspeed0 = value; }
+	void SetIsDamage() { isDamage = true; }
 	// Getter
 	bool GetBallSpeed0() const { return  ballspeed0; }
+
+	bool IsSceneEnd() { return isSceneEnd_; }
 private:
 	bool IsStopped() const;
 
-#pragma region ‰æ‘œ“Ç‚İ‚İ
+
+private:
+#pragma region ï¿½æ‘œï¿½Ç‚İï¿½ï¿½ï¿½
 	Input* input_ = nullptr;
-	//ƒeƒNƒXƒ`ƒƒƒnƒ“ƒhƒ‹
+	//ï¿½eï¿½Nï¿½Xï¿½`ï¿½ï¿½ï¿½nï¿½ï¿½ï¿½hï¿½ï¿½
 	uint32_t playerTexture_ = 0;
 	uint32_t playerArrowTexture = 0;
-	//ƒXƒvƒ‰ƒCƒg
+	//ï¿½Xï¿½vï¿½ï¿½ï¿½Cï¿½g
 	std::unique_ptr<Sprite> playerSprite_ = nullptr;
 	std::unique_ptr<Sprite> playerArrowSprite_ = nullptr;
 
 	uint32_t nextStrikeTexture_ = 0;
 	std::unique_ptr<Sprite>  nextStrikeSprite_ = nullptr;
-	//HPƒQ[ƒW
+	//HPã‚²ãƒ¼ã‚¸
 	uint32_t hpBackTex_ = 0;
 	uint32_t hpGaugeTex_ = 0;
+	uint32_t hphartTex_ = 0;
 	std::unique_ptr<Sprite> hpBackSprite_;
 	std::unique_ptr<Sprite> hpGaugeSprite_;
+	std::unique_ptr<Sprite> hpHartSprite_;
 
-#pragma region À•WŠÖ˜A
+#pragma region ï¿½ï¿½ï¿½Wï¿½Ö˜A
 
 	Vector2 pos = {250,1050};
 	Vector2 ArrowpPos = {pos};
 	Vector2 localPos;
 	const float speed = 10.6f;
 	const Vector2 center = { 5, 5 };
-	float collisionRadius_; // “–‚½‚è”»’è—pi¬‚³‚ß‚Éİ’èj
-	float drawRadius_;       // Œ©‚½–Ú—p‚Ì”¼Œa
+	float collisionRadius_; // ï¿½ï¿½ï¿½ï¿½ï¿½è”»ï¿½ï¿½pï¿½iï¿½ï¿½ï¿½ï¿½ï¿½ß‚Éİ’ï¿½j
+	float drawRadius_;       // ï¿½ï¿½ï¿½ï¿½ï¿½Ú—pï¿½Ì”ï¿½ï¿½a
 	float radius_ = 16.0f;
 	Vector2 vel_ = { 0.0f, 0.0f };
 	bool dragging_;
@@ -63,25 +75,47 @@ private:
 	float nextStriketSpeed = 15.0f;
 	bool arrowFlying_ = false;
 	Vector2 arrowVel_;
-	bool arrowReturning_ = false; // –îˆó‚ª–ß‚Á‚Ä‚¢‚éÅ’†‚©
-	
-	int maxHp_ = 7;
-	int currentHp_ = 7;
+	bool arrowReturning_ = false; // ï¿½ï¿½ó‚ª–ß‚ï¿½ï¿½Ä‚ï¿½ï¿½ï¿½Å’ï¿½ï¿½ï¿½
 
-	int invincibleTimer_ = 0; // –³“GŠÔƒJƒEƒ“ƒ^
+	int maxHp_ = 100;
+	int currentHp_ = 100;
+
+	int invincibleTimer_ = 0; // ï¿½ï¿½ï¿½Gï¿½ï¿½ï¿½ÔƒJï¿½Eï¿½ï¿½ï¿½^
+
+	
+	bool isDamage;
+	int damageCooltime;
+
+	uint32_t damageText[10];
+	Sprite* damageSprite[20];
+	Vector2 damagePos[2];
+
+	uint32_t gameOverText;
+	Sprite* gameOverSprite = nullptr;
+	uint32_t gameButton;
+	std::unique_ptr<Sprite> gameButtonSprite;
+	POINT mousePosition;
+	bool isSceneEnd_;
+	int damage_;
+
+	
 	int nextStriketstop = 0;
 	float barWidth;
 	float barHeight;
-	float screenWidth;   // ‰æ–Ê•
-	float barX; // ’†‰›
-	float barY; // YˆÊ’uw’è
-	// ‰E‰º‚É‚¸‚ç‚·ƒIƒtƒZƒbƒg
+	float screenWidth;   // ï¿½ï¿½Ê•ï¿½
+	float barX; // ï¿½ï¿½ï¿½ï¿½
+	float barY; // Yï¿½Ê’uï¿½wï¿½ï¿½
+	// ï¿½Eï¿½ï¿½ï¿½É‚ï¿½ï¿½ç‚·ï¿½Iï¿½tï¿½Zï¿½bï¿½g
 	Vector2 offset = { 4.0f, 4.0f };
+	// HPãƒãƒ¼æºã‚Œ
+	bool hpBarShaking_ = false;
+	int hpBarShakeTimer_ = 0;
+	float hpBarShakeStrength_ = 5.0f; // æºã‚Œå¹…
 	bool ballspeed0 = true;
 	bool NextStop = true;
-	bool strikeWaiting_ = false;   // ‘Ò‹@’†‚©‚Ç‚¤‚©
-	int strikeWaitTimer_ = 120;      // ‘Ò‹@ŠÔiƒtƒŒ[ƒ€j
-	float strikeTargetX_ = 600.0f; // –Ú•WÀ•Wi—á: X=600‚Å’â~j
+	bool strikeWaiting_ = false;   // å¾…æ©Ÿä¸­ã‹ã©ã†ã‹
+	int strikeWaitTimer_ = 120;      // å¾…æ©Ÿæ™‚é–“ï¼ˆãƒ•ãƒ¬ãƒ¼ãƒ ï¼‰
+	float strikeTargetX_ = 600.0f; // ç›®æ¨™åº§æ¨™ï¼ˆä¾‹: X=600ã§åœæ­¢ï¼‰
 };
 
 //650, 400

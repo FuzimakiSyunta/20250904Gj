@@ -37,6 +37,11 @@ public:
 	/// </summary>
 	void Draw();
 
+	/// <summary>
+	/// ƒŠƒZƒbƒg
+	/// </summary>
+	void Reset();
+
 	bool IsSceneEnd() { return isSceneEnd_; }
 	Scene::SceneType NextScene() { return Scene::SceneType::kGamePlay; }
 
@@ -47,6 +52,8 @@ private:
 	DebugText* debugText_ = nullptr;
 
 	Sprite* explanationSprite = nullptr;
+	uint32_t explanationButton;
+	Sprite* explanationButtonSprite = nullptr;
 	Vector2 pos;
 	bool isSceneEnd_ = false;
 	POINT mousePosition;

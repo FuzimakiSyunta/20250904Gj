@@ -33,23 +33,37 @@ void GameScene::Initialize() {
 	field_ = std::make_unique<Field>();
 	field_->Initialize();
 	field_->SetBalls(ball_);
+	field_->SetPlayer(player_.get());
+
+	damageText_ = std::make_unique<DamageText>();
+	damageText_->Initialize();
+	isSceneEnd_ = false;
 }
 
 void GameScene::Update(){
 	player_->SetBallSpeed0(ball_->AreAllBallsStopped());
 	player_->Update();
-
 	ball_->Update();
 	ball_->CheckPlayerCollision(*player_);
 	damage = ball_->CheckPocketCollisions();
+	damageText_->Update();
 	if (damage > 0) {
+		damageText_->IsDamage();
 		field_->SetDamage(damage);
 		field_->Update();
 		testDamage = field_->GetDamage();
+		damageText_->SetDamage(testDamage);
 		boss_->TakeDamage(testDamage);
 		field_->GenerateRandomNumber();
+		testDamage = 0;
+		damage = 0;
 	}
 	boss_->Update();
+
+	if (player_->IsSceneEnd() || boss_->IsSceneEnd())
+	{
+		isSceneEnd_ = true;
+	}
 }
 
 void GameScene::Draw() {
@@ -66,6 +80,7 @@ void GameScene::Draw() {
 	/// </summary>
 	billiardstable_->Draw();
 	field_->Draw();
+	damageText_->Draw();
 	// スプライト描画後処理
 	Sprite::PostDraw();
 	// 深度バッファクリア
@@ -91,8 +106,11 @@ void GameScene::Draw() {
 	/// <summary>
 	/// ここに前景スプライトの描画処理を追加できる
 	/// </summary>
-	ball_->Draw();
-	player_->Draw();
+	if (player_->GetHp()>=1 ||boss_->GetHp()>=1 )
+	{
+		player_->Draw();
+		ball_->Draw();
+	}
 	boss_->Draw();
 
 	// デバッグテキストの描画
@@ -102,4 +120,9 @@ void GameScene::Draw() {
 	Sprite::PostDraw();
 
 #pragma endregion
+}
+
+void GameScene::Reset()
+{
+	Initialize();
 }

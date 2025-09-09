@@ -3,6 +3,7 @@
 #include <Sprite.h>
 #include "Input.h"
 
+class Player;
 class Ball;
 
 class Field
@@ -14,13 +15,21 @@ public:
 
 	void Draw();
 
+	void DebugNumberDraw();
+
 	void HandleBallPocket();
 
 	void SetDamage(int damage);
 
+	void SetPlayer(Player* player) { player_ = player; };
+
 	void SetBalls(Ball* balls) { balls_ = balls; };
 
 	void GenerateRandomNumber();
+
+	void AreaDraw(int number, Vector2 pos, int AreaNumber);
+
+	void GenerateRandomArea();
 
 	int AreaProcess(int number);
 
@@ -31,28 +40,41 @@ public:
 private:
 	int areaNumber[4]{ 0,0,0,0 };
 
-	Vector2 posTopRight;  //右上
-	Vector2 posBottomRight; //右下
-	Vector2 posTopLeft; //左上
-	Vector2 posBottomLeft; //左下
+	int areaCaunter[4]{ 0,0,0 };
+	int areaCooltime;
+	
 	bool isDamage; //一回でも発動したか
 	int damage_;
+
+	int playerDamage;
 	Ball* balls_=nullptr;
 	const int kBallCount = 10;
 	std::vector<Vector2> ballPositions;
+	Player* player_ = nullptr;
 
 	//仮で変数を作る
-	Vector2 pos;
-	Sprite* testSprite = nullptr;
+	Vector2 pos[12];
+	Sprite* testSprite[12];
 	Input* input_ = nullptr; 
+	uint32_t texttexture[3];
+	bool isArea[12];
 
 	Vector2 pockets[6] = {
-		{202,250}, {1000,250}, {202,632},
-		{1010,632}, {600,280}, {600,632}
+	 { 242, 293 },   // 左上
+	 { 1039, 293 },  // 右上
+	 { 242, 672 },   // 左下
+	 { 1039, 672 },  // 右下
+	 { 641, 293 },   // 上中央
+	 { 641, 672 }    // 下中央
 	};
 
+	bool hpDown;
 
 
+	uint32_t damageText[10];
+	uint32_t poketTexture;
+
+	Sprite* damageSprite[80];
 
 };
 

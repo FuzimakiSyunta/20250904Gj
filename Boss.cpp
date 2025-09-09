@@ -23,7 +23,13 @@ void Boss::Initialize(Input* input) {
     maxHp_ = 100;
     currentHp_ = maxHp_;
 
+    gameClearText_ = TextureManager::Load("YOUWIN.png");
+    gameClearSprite_.reset(Sprite::Create(gameClearText_, { 640,370 }, { 1,1,1,1 }, { 0.5f,0.5f }));
 
+    gameButton = TextureManager::Load("TitleButton.png");
+    gameButtonSprite.reset(Sprite::Create(gameButton, { 1040,470 }, { 1,1,1,1 }, { 0.5f,0.5f }));
+
+    isSceneEnd_ = false;
 }
 
 void Boss::Update() {
@@ -56,6 +62,18 @@ void Boss::Update() {
     if (input_->PushKey(DIK_1)) {
         TakeDamage(10);
     }
+
+    if (isDead_==true)
+    {
+        //マウスの座標を取得
+        GetCursorPos(&mousePosition);
+        HWND hwnd = WinApp::GetInstance()->GetHwnd();
+        ScreenToClient(hwnd, &mousePosition);
+        if (mousePosition.x >= 480 && mousePosition.x <= 765 && mousePosition.y >= 420 && mousePosition.y <= 560 && input_->IsPressMouse(WM_LBUTTONDOWN == 0))
+        {
+            isSceneEnd_ = true;
+        }
+    }
 }
 
 void Boss::Draw() {
@@ -78,6 +96,11 @@ void Boss::Draw() {
         hpGaugeSprite_->SetPosition({ 400, 20 });
 
         hpGaugeSprite_->Draw();
+    }
+    if (isDead_ == true)
+    {
+        gameClearSprite_->Draw();
+        gameButtonSprite->Draw();
     }
 }
 
