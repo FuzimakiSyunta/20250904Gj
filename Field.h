@@ -27,9 +27,9 @@ public:
 
 	void GenerateRandomNumber();
 
-	void AreaDraw(int number, Vector2 pos, int AreaNumber);
+	void AreaDraw(int number, int AreaNumber);
 
-	void GenerateRandomArea();
+	
 
 	int AreaProcess(int number);
 
@@ -38,26 +38,24 @@ public:
 	bool CheckCollision(Vector2 pos1,Vector2 pos2);
 
 private:
-	int areaNumber[4]{ 0,0,0,0 };
+	int areaNumber[4]{ 0,0,0,0 };  //ポケットに入れるたびに変数を変更させている
 
-	int areaCaunter[4]{ 0,0,0 };
-	int areaCooltime;
+	int areaCaunter[4]{ 0,0,0 };  //関数の値を子の変数に代入させている
 	
 	bool isDamage; //一回でも発動したか
 	int damage_;
 
-	int playerDamage;
-	Ball* balls_=nullptr;
-	const int kBallCount = 10;
-	std::vector<Vector2> ballPositions;
+	
+	Ball* balls_=nullptr;  //ボール
+	const int kBallCount = 10;   //ボールの数
+	std::vector<Vector2> ballPositions;  //ボールの座標
 	Player* player_ = nullptr;
 
-	//仮で変数を作る
-	Vector2 pos[12];
-	Sprite* testSprite[12];
+	
+	Vector2 pos[12];  //エリアの画像に必要な座標
+	Sprite* testSprite[12];  //エリアのスクリプト
 	Input* input_ = nullptr; 
-	uint32_t texttexture[3];
-	bool isArea[12];
+	uint32_t texttexture[3];  //エリアを表示するための画像
 
 	Vector2 pockets[6] = {
 	 { 242, 293 },   // 左上
@@ -68,13 +66,10 @@ private:
 	 { 641, 672 }    // 下中央
 	};
 
-	bool hpDown;
+	bool hpDown;  //全ての処理をしてからHpを減らすために必要な変数
 
 
-	uint32_t damageText[10];
-	uint32_t poketTexture;
-
-	Sprite* damageSprite[80];
+	
 
 };
 
