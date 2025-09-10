@@ -1,8 +1,8 @@
-#pragma once
+ï»¿#pragma once
 class Scene {
 
 public:
-	//ƒV[ƒ“‚Ìí—Ş
+	//ã‚·ãƒ¼ãƒ³ã®ç¨®é¡
 	enum class SceneType {
 		kTitle,
 		kGameExplanation,

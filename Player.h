@@ -3,6 +3,7 @@
 #include "Vector2.h"
 #include "Input.h"
 #include "WinApp.h"
+#include "Boss.h"
 #include "Audio.h"
 class Player
 {
@@ -34,6 +35,8 @@ public:
 	bool GetBallSpeed0() const { return  ballspeed0; }
 
 	bool IsSceneEnd() { return isSceneEnd_; }
+	void GameOver();
+	void GameDraw();
 private:
 	bool IsStopped() const;
 
@@ -58,6 +61,7 @@ private:
 	std::unique_ptr<Sprite> hpGaugeSprite_;
 	std::unique_ptr<Sprite> hpHartSprite_;
 
+	Boss* boss_= nullptr;
 #pragma region ���W�֘A
 
 	Vector2 pos = {250,1050};
@@ -98,6 +102,7 @@ private:
 	POINT mousePosition;
 	bool isSceneEnd_;
 	int damage_;
+	int playerDamage_ = 1;
 
 	
 	int nextStriketstop = 0;

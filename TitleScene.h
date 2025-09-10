@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include "Audio.h"
 #include "DirectXCommon.h"
 #include "DebugText.h"
@@ -13,36 +13,36 @@ class TitleScene
 {
 public:
 	/// <summary>
-	/// ƒRƒ“ƒXƒgƒ‰ƒNƒ^
+	/// ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 	/// </summary>
 	TitleScene();
 
 	/// <summary>
-	/// ƒfƒXƒgƒ‰ƒNƒ^
+	/// ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 	/// </summary>
 	~TitleScene();
 
 	/// <summary>
-	/// ‰Šú‰»
+	/// åˆæœŸåŒ–
 	/// </summary>
 	void Initialize();
 
 	/// <summary>
-	/// XV
+	/// æ›´æ–°
 	/// </summary>
 	void Update();
 
 	/// <summary>
-	/// •`‰æ
+	/// æç”»
 	/// </summary>
 	void Draw();
 
 	/// <summary>
-	/// ƒŠƒZƒbƒg
+	/// ãƒªã‚»ãƒƒãƒˆ
 	/// </summary>
 	void Reset();
 
-	//Ÿ‚ÌƒV[ƒ“‚ÉˆÚ‚éˆ×‚Ìˆ—
+	//æ¬¡ã®ã‚·ãƒ¼ãƒ³ã«ç§»ã‚‹ç‚ºã®å‡¦ç†
 	bool IsSceneEnd() { return isSceneEnd_; }
 	Scene::SceneType NextScene() { return Scene::SceneType::kGameExplanation; }
 
@@ -51,15 +51,20 @@ private:
 	Input* input_ = nullptr;
 	Audio* audio_ = nullptr;
 	DebugText* debugText_ = nullptr;
-	bool isSceneEnd_ = false; //Ÿ‚ÌƒV[ƒ“‚És‚­‚½‚ß‚Ì•K—v‚È•Ï”
+	bool isSceneEnd_ = false; //æ¬¡ã®ã‚·ãƒ¼ãƒ³ã«è¡ŒããŸã‚ã®å¿…è¦ãªå¤‰æ•°
 
-	//ƒ^ƒCƒgƒ‹‚Åg‚¤‰æ‘œ
+	//ã‚¿ã‚¤ãƒˆãƒ«ã§ä½¿ã†ç”»åƒ
 	Sprite* titleSprite = nullptr;
-	Vector2 pos; //‰æ‘œ‚ÌÀ•W
-	uint32_t titleButton;
-	Sprite* titleButtonSprite = nullptr;
-	POINT mousePosition; //ƒ}ƒEƒX‚ÌÀ•W
+	Vector2 pos; //ç”»åƒã®åº§æ¨™
+	uint32_t titleButton[2];
+	Sprite* titleButtonSprite[2];
+	POINT mousePosition; //ãƒã‚¦ã‚¹ã®åº§æ¨™
+	uint32_t fadeInTexture;
+	std::unique_ptr<Sprite> fadeInSprite;
+	Vector4 color;
+	float fadeColor;
+	bool isFade;
 
-	int sceneCooltime; //ƒV[ƒ“‚ÉˆÚ‚è•Ï‚í‚Á‚½ˆêu‚¾‚¯ƒN[ƒ‹ƒ^ƒCƒ€‚ğ—pˆÓ‚µ˜A‘±‚ÅˆÚ‚è•Ï‚í‚ç‚È‚¢‚æ‚¤‚É‚·‚é
+	int sceneCooltime; //ã‚·ãƒ¼ãƒ³ã«ç§»ã‚Šå¤‰ã‚ã£ãŸæ™‚ä¸€ç¬ã ã‘ã‚¯ãƒ¼ãƒ«ã‚¿ã‚¤ãƒ ã‚’ç”¨æ„ã—é€£ç¶šã§ç§»ã‚Šå¤‰ã‚ã‚‰ãªã„ã‚ˆã†ã«ã™ã‚‹
 };
 

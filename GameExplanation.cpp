@@ -1,4 +1,4 @@
-#include "GameExplanation.h"
+ï»¿#include "GameExplanation.h"
 GameExplanation::GameExplanation()
 {
 }
@@ -12,81 +12,114 @@ void GameExplanation::Initialize()
 	dxCommon_ = DirectXCommon::GetInstance();
 	input_ = Input::GetInstance();
 	audio_ = Audio::GetInstance();
-	//”wŒi‚Ì‰æ‘œ‚Ìƒf[ƒ^æ“¾
+	//èƒŒæ™¯ã®ç”»åƒã®ãƒ‡ãƒ¼ã‚¿å–å¾—
 	uint32_t Explanationtexture = TextureManager::Load("operation.png");
 	explanationButton = TextureManager::Load("operation_StartButton.png");
-	//‰æ‘œ‚ÌÀ•W
+	//ç”»åƒã®åº§æ¨™
 	pos = { 640,400 };
 	explanationSprite = Sprite::Create(Explanationtexture, pos, { 1,1,1,1 }, { 0.5f,0.5f });
 	explanationButtonSprite = Sprite::Create(explanationButton, { 0,0 }, { 1,1,1,1 }, { 0.0f,0.0f });
-	//‚·‚®‚ÉƒV[ƒ“‚ÉˆÚ‚ç‚È‚¢‚½‚ß‚ÌƒN[ƒ‹ƒ^ƒCƒ€‰Šú‰»
+	//ã™ãã«ã‚·ãƒ¼ãƒ³ã«ç§»ã‚‰ãªã„ãŸã‚ã®ã‚¯ãƒ¼ãƒ«ã‚¿ã‚¤ãƒ åˆæœŸåŒ–
 	sceneCooltime = 0;
 
 	isSceneEnd_ = false;
+
+	color = { 0,0,0,1 };
+
+	fadeInTexture = TextureManager::Load("uvChecker.png");
+	fadeInSprite.reset(Sprite::Create(fadeInTexture, { 640,370 }, color, { 0.5f,0.5f }));
+
+	fadeInSprite->SetSize({ 1280,820 });
+
+	fadeColor = 0.01f;
+	fadeFlag = false;
 }
 
 void GameExplanation::Update()
 {
-	//ƒ}ƒEƒX‚ÌÀ•W‚ğæ“¾
+	//ãƒã‚¦ã‚¹ã®åº§æ¨™ã‚’å–å¾—
 	GetCursorPos(&mousePosition);
 	HWND hwnd = WinApp::GetInstance()->GetHwnd();
 	ScreenToClient(hwnd, &mousePosition);
 	//--------------------//
-	
-	//‚·‚®‚ÉƒV[ƒ“‚ÉˆÚ‚ç‚È‚¢‚æ‚¤‚É‚·‚éˆ—
+	if (fadeFlag == false)
+	{
+		color.w -= fadeColor;
+		fadeInSprite->SetColor(color);
+	}
+	if (color.w <= 0&&fadeFlag==false)
+	{
+		fadeFlag = true;
+	}
+	//ã™ãã«ã‚·ãƒ¼ãƒ³ã«ç§»ã‚‰ãªã„ã‚ˆã†ã«ã™ã‚‹å‡¦ç†
 	if (isSceneEnd_ == false)
 	{
 		sceneCooltime++;
 	}
-	//ƒ{ƒ^ƒ“‚âƒNƒŠƒbƒN‚ğ‚µ‚½‚çŸ‚ÌƒV[ƒ“‚És‚­‚½‚ß‚Ìˆ—
+	//ãƒœã‚¿ãƒ³ã‚„ã‚¯ãƒªãƒƒã‚¯ã‚’ã—ãŸã‚‰æ¬¡ã®ã‚·ãƒ¼ãƒ³ã«è¡ŒããŸã‚ã®å‡¦ç†
 	if (input_->PushKey(DIK_SPACE)&&sceneCooltime>10||
 		mousePosition.x >= 990 && mousePosition.x <= 1220 && mousePosition.y >= 675 && mousePosition.y <= 760 && input_->IsPressMouse(WM_LBUTTONDOWN == 0)&&sceneCooltime>10)
 	{
+		fadeFlag = true;
+		isFade = true;
+	}
+
+	if (isFade == true)
+	{
+		color.w += fadeColor;
+		fadeInSprite->SetColor(color);
+	}
+
+	if (color.w >= 1)
+	{
+		isFade = false;
 		isSceneEnd_ = true;
 	}
 }
 
 void GameExplanation::Draw()
 {
-	// ƒRƒ}ƒ“ƒhƒŠƒXƒg‚Ìæ“¾
+	// ã‚³ãƒãƒ³ãƒ‰ãƒªã‚¹ãƒˆã®å–å¾—
 	ID3D12GraphicsCommandList* commandList = dxCommon_->GetCommandList();
 
-#pragma region ”wŒiƒXƒvƒ‰ƒCƒg•`‰æ
-	// ”wŒiƒXƒvƒ‰ƒCƒg•`‰æ‘Oˆ—
+#pragma region èƒŒæ™¯ã‚¹ãƒ—ãƒ©ã‚¤ãƒˆæç”»
+	// èƒŒæ™¯ã‚¹ãƒ—ãƒ©ã‚¤ãƒˆæç”»å‰å‡¦ç†
 	Sprite::PreDraw(commandList);
 
 	/// <summary>
-	/// ‚±‚±‚É”wŒiƒXƒvƒ‰ƒCƒg‚Ì•`‰æˆ—‚ğ’Ç‰Á‚Å‚«‚é
+	/// ã“ã“ã«èƒŒæ™¯ã‚¹ãƒ—ãƒ©ã‚¤ãƒˆã®æç”»å‡¦ç†ã‚’è¿½åŠ ã§ãã‚‹
 	/// </summary>
 	explanationSprite->Draw();
 	explanationButtonSprite->Draw();
-	// ƒXƒvƒ‰ƒCƒg•`‰æŒãˆ—
+
+	fadeInSprite->Draw();
+	// ã‚¹ãƒ—ãƒ©ã‚¤ãƒˆæç”»å¾Œå‡¦ç†
 	Sprite::PostDraw();
-	// [“xƒoƒbƒtƒ@ƒNƒŠƒA
+	// æ·±åº¦ãƒãƒƒãƒ•ã‚¡ã‚¯ãƒªã‚¢
 	dxCommon_->ClearDepthBuffer();
 #pragma endregion
 
-#pragma region 3DƒIƒuƒWƒFƒNƒg•`‰æ
-	// 3DƒIƒuƒWƒFƒNƒg•`‰æ‘Oˆ—
+#pragma region 3Dã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆæç”»
+	// 3Dã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆæç”»å‰å‡¦ç†
 	Model::PreDraw(commandList);
 
 	/// <summary>
-	/// ‚±‚±‚É3DƒIƒuƒWƒFƒNƒg‚Ì•`‰æˆ—‚ğ’Ç‰Á‚Å‚«‚é
+	/// ã“ã“ã«3Dã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®æç”»å‡¦ç†ã‚’è¿½åŠ ã§ãã‚‹
 	/// </summary>
 
-	// 3DƒIƒuƒWƒFƒNƒg•`‰æŒãˆ—
+	// 3Dã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆæç”»å¾Œå‡¦ç†
 	Model::PostDraw();
 #pragma endregion
 
-#pragma region ‘OŒiƒXƒvƒ‰ƒCƒg•`‰æ
-	// ‘OŒiƒXƒvƒ‰ƒCƒg•`‰æ‘Oˆ—
+#pragma region å‰æ™¯ã‚¹ãƒ—ãƒ©ã‚¤ãƒˆæç”»
+	// å‰æ™¯ã‚¹ãƒ—ãƒ©ã‚¤ãƒˆæç”»å‰å‡¦ç†
 	Sprite::PreDraw(commandList);
 
 	/// <summary>
-	/// ‚±‚±‚É‘OŒiƒXƒvƒ‰ƒCƒg‚Ì•`‰æˆ—‚ğ’Ç‰Á‚Å‚«‚é
+	/// ã“ã“ã«å‰æ™¯ã‚¹ãƒ—ãƒ©ã‚¤ãƒˆã®æç”»å‡¦ç†ã‚’è¿½åŠ ã§ãã‚‹
 	/// </summary>
 
-	// ƒXƒvƒ‰ƒCƒg•`‰æŒãˆ—
+	// ã‚¹ãƒ—ãƒ©ã‚¤ãƒˆæç”»å¾Œå‡¦ç†
 	Sprite::PostDraw();
 
 #pragma endregion

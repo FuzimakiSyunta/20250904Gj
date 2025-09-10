@@ -88,11 +88,11 @@ void Player::Initialize(Input* input, const Vector2& startPos, float radius) {
     gameOverText = TextureManager::Load("GAMEOVER.png");
     gameOverSprite = Sprite::Create(gameOverText, { 640,370 }, { 1,1,1,1 }, { 0.5f,0.5f });
 
-    gameButton = TextureManager::Load("TitleButton.png");
-    gameButtonSprite.reset(Sprite::Create(gameButton, { 1040,470 }, { 1,1,1,1 }, { 0.5f,0.5f }));
+    gameButton = TextureManager::Load("Back.png");
+    gameButtonSprite.reset(Sprite::Create(gameButton, { 0,0 }, { 1,1,1,1 }, { 0.0f,0.0f }));
 
     isSceneEnd_ = false;
-	
+    boss_ = new Boss();
 }
 
 void Player::TakeDamage(int damage) {
@@ -108,145 +108,122 @@ void Player::TakeDamage(int damage) {
 }
 
 void Player::Update() {
-    
-    
-    Vector2 mousePos = input_->GetMousePosition();
 
-    // --- WASDで移動 ---
-    const float accel = 0.5f;
-    if (input_->PushKey(DIK_W)) vel_.y -= accel;
-    if (input_->PushKey(DIK_S)) vel_.y += accel;
-    if (input_->PushKey(DIK_A)) vel_.x -= accel;
-    if (input_->PushKey(DIK_D)) vel_.x += accel;
-
-    // --- ボールがすべて停止している場合のみドラッグ処理 ---
    
-    if (ballspeed0 == true && IsStopped() == true)
-    {
-        // ドラッグ開始
-        if (input_->IsTriggerMouse(0)) 
+        Vector2 mousePos = input_->GetMousePosition();
+
+        // --- WASDで移動 ---
+        const float accel = 0.5f;
+        if (input_->PushKey(DIK_W)) vel_.y -= accel;
+        if (input_->PushKey(DIK_S)) vel_.y += accel;
+        if (input_->PushKey(DIK_A)) vel_.x -= accel;
+        if (input_->PushKey(DIK_D)) vel_.x += accel;
+
+        // --- ボールがすべて停止している場合のみドラッグ処理 ---
+
+        if (ballspeed0 == true && IsStopped() == true)
         {
-            dragging_ = true;
-            dragStart_ = mousePos;
+            // ドラッグ開始
+            if (input_->IsTriggerMouse(0))
+            {
+                dragging_ = true;
+                dragStart_ = mousePos;
+            }
+
+            // ドラッグ中
+            if (!arrowFlying_ && !arrowReturning_ && dragging_ && input_->IsPressMouse(0))
+            {
+                dragCurrent_ = mousePos;
+
+                Vector2 diff = { dragStart_.x - dragCurrent_.x, dragStart_.y - dragCurrent_.y };
+                float length = sqrtf(diff.x * diff.x + diff.y * diff.y);
+                float angle = atan2f(diff.y, diff.x);
+
+                playerArrowSprite_->SetRotation(angle);
+                float scale = std::clamp(length / 100.0f, 0.5f, 3.0f);
+                playerArrowSprite_->SetSize({ drawRadius_ + 40 * 1.5f * scale, drawRadius_ + 40 * 1.5f * scale });
+                Vector2 offset = { 0.0f, 0.0f };
+                playerArrowSprite_->SetPosition({ pos.x + offset.x, pos.y + offset.y });
+            }
+
+            // ドラッグ終了
+            if (dragging_ && !input_->IsPressMouse(0)) {
+                dragging_ = false;
+                Vector2 diff = { dragStart_.x - mousePos.x, dragStart_.y - mousePos.y };
+                const float power = 0.1f;
+                vel_.x = diff.x * power;
+                vel_.y = diff.y * power;
+
+            }
         }
-        
-        // ドラッグ中
-        if (!arrowFlying_ && !arrowReturning_ && dragging_ && input_->IsPressMouse(0)) 
-        {
-            dragCurrent_ = mousePos;
 
-            Vector2 diff = { dragStart_.x - dragCurrent_.x, dragStart_.y - dragCurrent_.y };
-            float length = sqrtf(diff.x * diff.x + diff.y * diff.y);
-            float angle = atan2f(diff.y, diff.x);
+        // --- 摩擦 ---
+        vel_ *= 0.98f;
 
-            playerArrowSprite_->SetRotation(angle);
-            float scale = std::clamp(length / 100.0f, 0.5f, 3.0f);
-            playerArrowSprite_->SetSize({ drawRadius_+40 * 1.5f * scale, drawRadius_+40 * 1.5f * scale });
-            Vector2 offset = { 0.0f, 0.0f };
-            playerArrowSprite_->SetPosition({ pos.x + offset.x, pos.y + offset.y });
+        // --- 最大速度制限 ---
+        const float maxSpeed = 35.0f; // 最大速度
+        float speed = std::sqrt(vel_.x * vel_.x + vel_.y * vel_.y);
+        if (speed > maxSpeed) {
+            float scale = maxSpeed / speed;
+            vel_.x *= scale;
+            vel_.y *= scale;
         }
-       
-        // ドラッグ終了
-        if (dragging_ && !input_->IsPressMouse(0)) {
-            dragging_ = false;
-            Vector2 diff = { dragStart_.x - mousePos.x, dragStart_.y - mousePos.y };
-            const float power = 0.1f;
-            vel_.x = diff.x * power;
-            vel_.y = diff.y * power;
-           
+
+        // --- 位置更新 ---
+        pos += vel_;
+
+        // --- 画面端で反射 ---
+        const float left = 240.0f;
+        const float right = 1040.0f;
+        const float top = 290.0f;
+        const float bottom = 670.0f;
+
+        if (pos.x < left) { pos.x = left; vel_.x *= -1.0f; }
+        if (pos.x > right) { pos.x = right; vel_.x *= -1.0f; }
+        if (pos.y < top) { pos.y = top; vel_.y *= -1.0f; }
+        if (pos.y > bottom) { pos.y = bottom; vel_.y *= -1.0f; }
+
+        // 無敵時間を減算
+        if (invincibleTimer_ > 0) {
+            invincibleTimer_--;
         }
-    }
-
-    // --- 摩擦 ---
-    vel_ *= 0.98f;
-
-    // --- 位置更新 ---
-    pos += vel_;
-
-    // --- 画面端で反射 ---
-    const float left = 240.0f;
-    const float right = 1040.0f;
-    const float top = 290.0f;
-    const float bottom = 670.0f;
-
-    if (pos.x < left) { pos.x = left; vel_.x *= -1.0f; }
-    if (pos.x > right) { pos.x = right; vel_.x *= -1.0f; }
-    if (pos.y < top) { pos.y = top; vel_.y *= -1.0f; }
-    if (pos.y > bottom) { pos.y = bottom; vel_.y *= -1.0f; }
-
-    // 無敵時間を減算
-    if (invincibleTimer_ > 0) {
-        invincibleTimer_--;
-    }
-	// HPバーの揺れ更新
-    if (hpBarShaking_) {
-        hpBarShakeTimer_--;
-        if (hpBarShakeTimer_ <= 0) {
-            hpBarShaking_ = false;
+        // HPバーの揺れ更新
+        if (hpBarShaking_) {
+            hpBarShakeTimer_--;
+            if (hpBarShakeTimer_ <= 0) {
+                hpBarShaking_ = false;
+            }
         }
-    }
 
-    playerSprite_->SetPosition(pos);
+        playerSprite_->SetPosition(pos);
+        CheckPocketCollision();
+    
 
-    if (currentHp_ <= 0)
-    {
-        //マウスの座標を取得
-        GetCursorPos(&mousePosition);
-        HWND hwnd = WinApp::GetInstance()->GetHwnd();
-        ScreenToClient(hwnd, &mousePosition);
-        if (mousePosition.x >= 480 && mousePosition.x <= 765 && mousePosition.y >= 420 && mousePosition.y <= 560 && input_->IsPressMouse(WM_LBUTTONDOWN == 0))
-        {
-            isSceneEnd_ = true;
-        }
-    }
 
-    CheckPocketCollision();
-   
-    // --- nextStriket_ の動き制御 ---
-    if (!strikeWaiting_&&ballspeed0 == true && IsStopped() == true) {
-        // 動かす
-        nextStriket_.x += nextStriketSpeed;
 
-        // 特定座標に到達したら待機開始
-        if (nextStriket_.x >= strikeTargetX_&& NextStop == true) {
-            nextStriket_.x = strikeTargetX_; // 位置をピッタリ固定
-            strikeWaiting_ = true;
-            strikeWaitTimer_ = 60;
-            NextStop = false;
-            
-        }
-    }
-    else {
-        // 待機中
-        strikeWaitTimer_--;
-        if (strikeWaitTimer_ <= 0) {
-            strikeWaiting_ = false; // 待機終了 → 動き出す
-        }
-       
-
-    }
 
     nextStrikeSprite_->SetPosition(nextStriket_);
 
-    if(ballspeed0 == false && IsStopped() == false)
+    if (ballspeed0 == false && IsStopped() == false)
     {
         nextStriket_ = { -400,400 };
         strikeWaitTimer_ = 60; // 60フレーム(=約1秒)待機
         NextStop = true;
     }
-   
 }
 
 
   
 
 void Player::Draw() {
-    // 左クリック押下中のみ矢印表示
-    if (dragging_ == true && ballspeed0 == true && IsStopped() == true) {
-        playerArrowSprite_->Draw();
-    }
-    playerSprite_->Draw();
+    
+        // 左クリック押下中のみ矢印表示
+        if (dragging_ == true && ballspeed0 == true && IsStopped() == true) {
+            playerArrowSprite_->Draw();
+        }
 
+        playerSprite_->Draw();
+    
     // === HPゲージ ===
     if (hpBackSprite_) {
         float shakeX = 0.0f;
@@ -269,14 +246,13 @@ void Player::Draw() {
     {
         DamageTextDraw();
     }
-    if (currentHp_ <= 0)
+    
+    if (currentHp_ >= 1)
     {
-        gameOverSprite->Draw();
-        gameButtonSprite->Draw();
-    }
-    if (ballspeed0 == true && IsStopped() == true)
-    {
-        nextStrikeSprite_->Draw();
+        if (ballspeed0 == true && IsStopped() == true)
+        {
+            nextStrikeSprite_->Draw();
+        }
     }
 }
 
@@ -400,7 +376,7 @@ void Player::CheckPocketCollision() {
 
         if (distSq < pocketRadius * pocketRadius) {
             // ★ ダメージを受ける
-            TakeDamage(1);
+            TakeDamage(10);
             invincibleTimer_ = 60; // 約1秒の無敵時間（60fps想定）
             isDamage = true;
             // ★ ランダムで別のポケットを選択
@@ -426,6 +402,57 @@ void Player::CheckPocketCollision() {
     }
 }
 
+
+void Player::GameOver()
+{
+    if (currentHp_ <= 0)
+    {
+        //マウスの座標を取得
+        GetCursorPos(&mousePosition);
+        HWND hwnd = WinApp::GetInstance()->GetHwnd();
+        ScreenToClient(hwnd, &mousePosition);
+        if (mousePosition.x >= 480 && mousePosition.x <= 765 && mousePosition.y >= 420 && mousePosition.y <= 560 && input_->IsPressMouse(WM_LBUTTONDOWN == 0))
+        {
+            isSceneEnd_ = true;
+        }
+    }
+
+    if (boss_->GetHp() >= 1)
+    {
+        // --- nextStriket_ の動き制御 ---
+        if (!strikeWaiting_ && ballspeed0 == true && IsStopped() == true) {
+            // 動かす
+            nextStriket_.x += nextStriketSpeed;
+
+            // 特定座標に到達したら待機開始
+            if (nextStriket_.x >= strikeTargetX_ && NextStop == true) {
+                nextStriket_.x = strikeTargetX_; // 位置をピッタリ固定
+                strikeWaiting_ = true;
+                strikeWaitTimer_ = 60;
+                NextStop = false;
+
+            }
+        }
+        else {
+            // 待機中
+            strikeWaitTimer_--;
+            if (strikeWaitTimer_ <= 0) {
+                strikeWaiting_ = false; // 待機終了 → 動き出す
+            }
+
+
+        }
+    }
+}
+
+void Player::GameDraw()
+{
+    if (currentHp_ <= 1 && boss_->GetHp() >= 1)
+    {
+        gameOverSprite->Draw();
+        gameButtonSprite->Draw();
+    }
+}
 
 bool Player::IsStopped() const {
     const float threshold = 0.01f; // 停止判定の閾値

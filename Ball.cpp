@@ -249,7 +249,7 @@ bool Ball::CheckPlayerCollision(Player& player) {
             }
 
             // めり込み解消
-            float overlap = (minDist - dist) * 0.5f;
+            float overlap = (minDist - dist) * 1.0f;
             pos_[i].x += nx * overlap;
             pos_[i].y += ny * overlap;
             player.SetPos(playerPos.x - nx * overlap, playerPos.y - ny * overlap);

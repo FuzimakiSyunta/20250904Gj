@@ -44,6 +44,15 @@ void GameScene::Initialize() {
 
 	backSoundHandle_ = audio_->LoadWave("/sound/SE/backMusic.mp3");
 	audio_->PlayWave(backSoundHandle_, true, 1.0f);
+	ball_->SetField(field_.get());
+
+	color = { 0,0,0,1 };
+	fadeColor = 0.01f;
+	fadeFlag = false;
+	fadeOutTexture = TextureManager::Load("uvChecker.png");
+	fadeOutSprite_.reset(Sprite::Create(fadeOutTexture, { 640,420 }, color, { 0.5f,0.5f }));
+	fadeOutSprite_->SetSize({ 1280,820 });
+	isFade = false;
 }
 
 void GameScene::Update(){
@@ -76,6 +85,17 @@ void GameScene::Update(){
 	if (!hitPlayer) wasHitPlayer_ = false;
 	if (!fallPocket) wasHitPocket_ = false;
 
+	if (player_->GetHp() >= 1 && boss_->GetHp() >= 1)
+	{
+		player_->SetBallSpeed0(ball_->AreAllBallsStopped());
+		player_->Update();
+		ball_->Update();
+	}
+	
+	
+	
+	ball_->CheckPlayerCollision(*player_);
+	damage = ball_->CheckPocketCollisions();
 	damageText_->Update();
 	if (damage > 0) {
 		damageText_->IsDamage();
@@ -89,8 +109,28 @@ void GameScene::Update(){
 		damage = 0;
 	}
 	boss_->Update();
-
+	player_->GameOver();
 	if (player_->IsSceneEnd() || boss_->IsSceneEnd())
+	{
+		isFade = true;
+	}
+
+	if (fadeFlag == false)
+	{
+		color.w -= fadeColor;
+		fadeOutSprite_->SetColor(color);
+	}
+	if (color.w <= 0 && fadeFlag == false)
+	{
+		fadeFlag = true;
+	}
+
+	if (isFade == true)
+	{
+		color.w += fadeColor;
+		fadeOutSprite_->SetColor(color);
+	}
+	if (color.w >= 1 && isFade == true)
 	{
 		isSceneEnd_ = true;
 	}
@@ -136,13 +176,22 @@ void GameScene::Draw() {
 	/// <summary>
 	/// ここに前景スプライトの描画処理を追加できる
 	/// </summary>
-	if (player_->GetHp()>=1 ||boss_->GetHp()>=1 )
-	{
-		player_->Draw();
-		ball_->Draw();
-	}
-	boss_->Draw();
+	   
+		if (player_->GetHp() <= 1 && boss_->GetHp() >= 1)
+		{
 
+			player_->GameDraw();
+		}
+		if (player_->GetHp() >= 1 && boss_->GetHp()>=1)
+		{
+			ball_->Draw();
+		}
+		if (player_->GetHp() >= 1 && boss_->GetHp() >= 1)
+		{
+			player_->Draw();
+		}
+	boss_->Draw();
+	fadeOutSprite_->Draw();
 	// デバッグテキストの描画
 	debugText_->DrawAll(commandList);
 	

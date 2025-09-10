@@ -1,4 +1,4 @@
-#include "DamageText.h"
+ï»¿#include "DamageText.h"
 #include <TextureManager.h>
 
 void DamageText::Initialize()
@@ -13,7 +13,7 @@ void DamageText::Initialize()
 	damageText[7] = TextureManager::Load("number7.png");
 	damageText[8] = TextureManager::Load("number8.png");
 	damageText[9] = TextureManager::Load("number9.png");
-	//1‚©‚ç9‚Ü‚Å‚Ìƒ_ƒ[ƒW”’l
+	//1ã‹ã‚‰9ã¾ã§ã®ãƒ€ãƒ¡ãƒ¼ã‚¸æ•°å€¤
 	damageSprite[0] = Sprite::Create(damageText[0], { 800,150 }, { 1,1,1,1 }, { 0.5f,0.5f });
 	damageSprite[1] = Sprite::Create(damageText[1], { 800,150 }, { 1,1,1,1 }, { 0.5f,0.5f });
 	damageSprite[2] = Sprite::Create(damageText[2], { 800,150 }, { 1,1,1,1 }, { 0.5f,0.5f });
@@ -25,7 +25,7 @@ void DamageText::Initialize()
 	damageSprite[8] = Sprite::Create(damageText[8], { 800,150 }, { 1,1,1,1 }, { 0.5f,0.5f });
 	damageSprite[9] = Sprite::Create(damageText[9], { 800,150 }, { 1,1,1,1 }, { 0.5f,0.5f });
 	damageSprite[10] = Sprite::Create(damageText[1], { 900,500 }, { 1,1,1,1 }, { 0.5f,0.5f });
-	//10‚©‚ç90‚Ü‚Å‚Ìƒ_ƒ[ƒW”’l
+	//10ã‹ã‚‰90ã¾ã§ã®ãƒ€ãƒ¡ãƒ¼ã‚¸æ•°å€¤
 	damageSprite[11] = Sprite::Create(damageText[1], { 750,150 }, { 1,1,1,1 }, { 0.5f,0.5f });
 	damageSprite[12] = Sprite::Create(damageText[2], { 750,150 }, { 1,1,1,1 }, { 0.5f,0.5f });
 	damageSprite[13] = Sprite::Create(damageText[3], { 750,150 }, { 1,1,1,1 }, { 0.5f,0.5f });

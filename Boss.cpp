@@ -1,30 +1,32 @@
-#include "Boss.h"
+ï»¿#include "Boss.h"
 #include <cstdlib> // rand()
 
 void Boss::Initialize(Input* input) {
     input_ = input;
 
-    // š —”ƒV[ƒh‚ğ1‰ñ‚¾‚¯‰Šú‰»
+    // â˜… ä¹±æ•°ã‚·ãƒ¼ãƒ‰ã‚’1å›ã ã‘åˆæœŸåŒ–
     srand((unsigned int)time(nullptr));
-    // === ƒ‰ƒ“ƒ_ƒ€‚Åƒ{ƒXƒ^ƒCƒv‚ğŒˆ’è ===
-    int bossType = rand() % 2; // 0 = ƒXƒ‰ƒCƒ€ƒLƒ“ƒO, 1 = ƒhƒ‰ƒSƒ“
+    // === ãƒ©ãƒ³ãƒ€ãƒ ã§ãƒœã‚¹ã‚¿ã‚¤ãƒ—ã‚’æ±ºå®š ===
+    int bossType = rand() % 2; // 0 = ã‚¹ãƒ©ã‚¤ãƒ ã‚­ãƒ³ã‚°, 1 = ãƒ‰ãƒ©ã‚´ãƒ³
 
     if (bossType == 0) {
-        // ƒXƒ‰ƒCƒ€ƒLƒ“ƒO
-        type_ = BossType::SlimeKing;  // © •Û‘¶
+        // ã‚¹ãƒ©ã‚¤ãƒ ã‚­ãƒ³ã‚°
+        type_ = BossType::SlimeKing;  // â† ä¿å­˜
         bossTexture_ = TextureManager::Load("slimeKing.png");
         bossDamegeTexture_ = TextureManager::Load("slimeKing_Dmaege.png");
-        maxHp_ = 100; // HP­‚È‚ß
+        bossDownTexture_ = TextureManager::Load("slimeDown.png");
+        maxHp_ = 1; // HPå°‘ãªã‚
     }
     else {
-        // ƒhƒ‰ƒSƒ“
-        type_ = BossType::Dragon;     // © •Û‘¶
+        // ãƒ‰ãƒ©ã‚´ãƒ³
+        type_ = BossType::Dragon;     // â† ä¿å­˜
         bossTexture_ = TextureManager::Load("dragon.png");
         bossDamegeTexture_ = TextureManager::Load("dragon_Damege.png");
-        maxHp_ = 200; // HP‘½‚ß
+        bossDownTexture_ = TextureManager::Load("dragonDown.png");
+        maxHp_ = 5; // HPå¤šã‚
     }
-
-    // === HPƒQ[ƒW ===
+   
+    // === HPã‚²ãƒ¼ã‚¸ ===
     hpBackTex_ = TextureManager::Load("BossHpBack.png");
     hpGaugeTex_ = TextureManager::Load("BossHpRed.png");
     hpBackSprite_.reset(Sprite::Create(hpBackTex_, { 400, 20 }));
@@ -32,22 +34,24 @@ void Boss::Initialize(Input* input) {
     hpBackSprite_->SetSize({ 480, 20 });
     hpGaugeSprite_->SetSize({ 480, 20 });
 
-    // === ƒ{ƒX‚ÌƒXƒvƒ‰ƒCƒg ===
+    // === ãƒœã‚¹ã®ã‚¹ãƒ—ãƒ©ã‚¤ãƒˆ ===
     basePos_ = { 540.0f, 40.0f };
     bossSprite_.reset(Sprite::Create(bossTexture_, basePos_));
     bossDamegeSprite_.reset(Sprite::Create(bossDamegeTexture_, basePos_));
+    bossDownSprite_.reset(Sprite::Create(bossDownTexture_, basePos_));
     bossSprite_->SetPosition(basePos_);
     bossDamegeSprite_->SetPosition(basePos_);
+    bossDownSprite_->SetPosition(basePos_);
 
-    // HP‰Šú‰»
+    // HPåˆæœŸåŒ–
     currentHp_ = maxHp_;
 
-    // === Ÿ—˜‰æ–ÊŠÖ˜A ===
+    // === å‹åˆ©ç”»é¢é–¢é€£ ===
     gameClearText_ = TextureManager::Load("YOUWIN.png");
     gameClearSprite_.reset(Sprite::Create(gameClearText_, { 640,370 }, { 1,1,1,1 }, { 0.5f,0.5f }));
 
-    gameButton = TextureManager::Load("TitleButton.png");
-    gameButtonSprite.reset(Sprite::Create(gameButton, { 1040,470 }, { 1,1,1,1 }, { 0.5f,0.5f }));
+    gameButton = TextureManager::Load("Back.png");
+    gameButtonSprite.reset(Sprite::Create(gameButton, { 0,0 }, { 1,1,1,1 }, { 0.0f,0.0f }));
 
     isSceneEnd_ = false;
 }
@@ -61,14 +65,14 @@ void Boss::Update() {
 			bossDamegeSprite_->SetPosition(basePos_);
         }
         else {
-            // ƒ‰ƒ“ƒ_ƒ€‚É—h‚ç‚·
+            // ãƒ©ãƒ³ãƒ€ãƒ ã«æºã‚‰ã™
             float offsetX = (rand() % 100 / 100.0f - 0.5f) * 2 * shakeStrength_;
             float offsetY = (rand() % 100 / 100.0f - 0.5f) * 2 * shakeStrength_;
             bossSprite_->SetPosition({ basePos_.x + offsetX, basePos_.y + offsetY });
 			bossDamegeSprite_->SetPosition({ basePos_.x + offsetX, basePos_.y + offsetY });
         }
     }
-
+   
     /*if (input_->PushKey(DIK_1)) { 
         if (!isDebugdamage_) {
             OnDamage();
@@ -78,14 +82,14 @@ void Boss::Update() {
     else if(input_->PushKey(DIK_2)){
 		isDebugdamage_ = false;
     }*/
-	// ƒfƒoƒbƒO—pF1ƒL[‚Å10ƒ_ƒ[ƒW
+	// ãƒ‡ãƒãƒƒã‚°ç”¨ï¼š1ã‚­ãƒ¼ã§10ãƒ€ãƒ¡ãƒ¼ã‚¸
     if (input_->PushKey(DIK_1)) {
         TakeDamage(10);
     }
 
     if (isDead_==true)
     {
-        //ƒ}ƒEƒX‚ÌÀ•W‚ğæ“¾
+        //ãƒã‚¦ã‚¹ã®åº§æ¨™ã‚’å–å¾—
         GetCursorPos(&mousePosition);
         HWND hwnd = WinApp::GetInstance()->GetHwnd();
         ScreenToClient(hwnd, &mousePosition);
@@ -97,13 +101,17 @@ void Boss::Update() {
 }
 
 void Boss::Draw() {
-    if (bossSprite_&&!isShaking_) {
+    if (bossSprite_&&!isShaking_&& currentHp_ >= 1) {
         bossSprite_->Draw();
     }
     if (isShaking_ && bossDamegeSprite_) {
         bossDamegeSprite_->Draw();
 	}
-    // HPƒQ[ƒW‚ğ•`‰æ
+    if (currentHp_ < 1) 
+    {
+        bossDownSprite_->Draw();
+    }
+    // HPã‚²ãƒ¼ã‚¸ã‚’æç”»
     if (hpBackSprite_) {
         hpBackSprite_->Draw();
     }
@@ -111,7 +119,7 @@ void Boss::Draw() {
         float hpPercent = (float)currentHp_ / maxHp_;
         if (hpPercent < 0.0f) hpPercent = 0.0f;
 
-        // ‰¡•‚ğHPŠ„‡‚É‰‚¶‚Äk‚ß‚é
+        // æ¨ªå¹…ã‚’HPå‰²åˆã«å¿œã˜ã¦ç¸®ã‚ã‚‹
         hpGaugeSprite_->SetSize({ 480 * hpPercent, 20 });
         hpGaugeSprite_->SetPosition({ 400, 20 });
 
@@ -119,15 +127,16 @@ void Boss::Draw() {
     }
     if (isDead_ == true)
     {
+       
         gameClearSprite_->Draw();
         gameButtonSprite->Draw();
     }
 }
 
-// š ƒ_ƒ[ƒW‚ğó‚¯‚½‚Æ‚«‚ÉŒÄ‚ÔŠÖ”
+// â˜… ãƒ€ãƒ¡ãƒ¼ã‚¸ã‚’å—ã‘ãŸã¨ãã«å‘¼ã¶é–¢æ•°
 void Boss::OnDamage() {
     isShaking_ = true;
-    shakeTimer_ = 20;  // —h‚ê‚éƒtƒŒ[ƒ€”
+    shakeTimer_ = 20;  // æºã‚Œã‚‹ãƒ•ãƒ¬ãƒ¼ãƒ æ•°
 }
 
 void Boss::TakeDamage(int damage) {
@@ -138,9 +147,9 @@ void Boss::TakeDamage(int damage) {
 
     if (currentHp_ == 0) {
         isDead_ = true;
-        // “|‚ê‚½‰‰o‚È‚Ç‚ğ‚±‚±‚É
+        // å€’ã‚ŒãŸæ¼”å‡ºãªã©ã‚’ã“ã“ã«
     }
     else {
-        OnDamage(); // ƒ_ƒ[ƒW‰‰oiƒVƒFƒCƒNj
+        OnDamage(); // ãƒ€ãƒ¡ãƒ¼ã‚¸æ¼”å‡ºï¼ˆã‚·ã‚§ã‚¤ã‚¯ï¼‰
     }
 }
