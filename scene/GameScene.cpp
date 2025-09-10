@@ -32,6 +32,7 @@ void GameScene::Initialize() {
 	//フィールドのエリア
 	field_ = std::make_unique<Field>();
 	field_->Initialize();
+	field_->SetBoss(boss_.get());
 	field_->SetBalls(ball_);
 	field_->SetPlayer(player_.get());
 

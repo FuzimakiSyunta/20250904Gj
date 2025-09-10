@@ -317,40 +317,45 @@ void Field::AreaDraw(int number,int AreaNumber)
 }
 
 
-int Field::AreaProcess(int number)
-{
-	if (isDragon_) {
-		// === ドラゴン用確率 ===
-		// 0?100 の number のうち 40% をダメージ発動
-		if (number <= 40 && !isDamage) {
-			damage_ = damage_ * 2; // 例：ダメージ強化
+int Field::AreaProcess(int number) {
+	if (boss_ && boss_->GetType() == BossType::Dragon) {
+		// ドラゴン用確率: ダメージ30%, バフ20%, デバフ10%, 他40%
+		if (number <= 30 && !isDamage) {
+			hpDown = true;
 			isDamage = true;
 		}
-		else {
-			damage_ = damage_; // ダメージそのまま
+		//else if (number > 30 && number <= 50 && !isDamage) {
+		//	damage_ *= 2; // バフ
+		//	isDamage = true;
+		//}
+		//else if (number > 50 && number <= 60 && !isDamage) {
+		//	damage_ /= 2; // デバフ
+		//	isDamage = true;
+		//}
+		else if (number > 60 && !isDamage) {
+			damage_ = damage_; // 何もなし
 			isDamage = true;
 		}
 	}
 	else {
-		// === スライムキング用従来処理 ===
+		// スライムキング従来処理
 		if (number <= 20 && !isDamage) {
-			damage_ = damage_ / 2;
+			damage_ /= 2;
 			isDamage = true;
 		}
-		else if (number >= 20 && number <= 65 && !isDamage) {
-			damage_ = damage_ * 2;
+		else if (number > 20 && number <= 65 && !isDamage) {
+			damage_ *= 2;
 			isDamage = true;
 		}
-		else if (number >= 65 && number <= 75 && !isDamage) {
-			hpDown = true; // ここは残す？
+		else if (number > 65 && number <= 75 && !isDamage) {
+			hpDown = true;
 			isDamage = true;
 		}
-		else if (number >= 75 && !isDamage) {
+		else if (number > 75 && !isDamage) {
 			damage_ = damage_;
 			isDamage = true;
 		}
 	}
-
 	return number;
 }
 
