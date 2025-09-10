@@ -86,7 +86,7 @@ void Boss::Update() {
     if (input_->PushKey(DIK_1)) {
         TakeDamage(10);
     }
-
+    //ゲームクリア処理
     if (isDead_==true)
     {
         //マウスの座標を取得

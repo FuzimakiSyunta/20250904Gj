@@ -16,7 +16,6 @@ void GameScene::Initialize() {
 
 	//プレイヤー
 	player_ = std::make_unique<Player>();
-	player_->Initialize(input_, { 300.0f, 450.0f }, 32.0f);
 
 	ball_ = new Ball();
 	ball_->Initialize(textureHandle_);
@@ -28,6 +27,8 @@ void GameScene::Initialize() {
 	//ボス
 	boss_ = std::make_unique<Boss>();
 	boss_->Initialize(input_);
+	player_->SetBoss(boss_.get());
+	player_->Initialize(input_, { 300.0f, 450.0f }, 32.0f);
 
 	//フィールドのエリア
 	field_ = std::make_unique<Field>();
@@ -35,6 +36,7 @@ void GameScene::Initialize() {
 	field_->SetBoss(boss_.get());
 	field_->SetBalls(ball_);
 	field_->SetPlayer(player_.get());
+	player_->SetField(field_.get());
 
 	damageText_ = std::make_unique<DamageText>();
 	damageText_->Initialize();
@@ -104,7 +106,7 @@ void GameScene::Update(){
 		testDamage = field_->GetDamage();
 		damageText_->SetDamage(testDamage);
 		boss_->TakeDamage(testDamage);
-		field_->GenerateRandomNumber();
+		//field_->GenerateRandomNumber();  //このコメントを復活させるとポケットに入るごとにエリアが変わります。
 		testDamage = 0;
 		damage = 0;
 	}
@@ -114,26 +116,9 @@ void GameScene::Update(){
 	{
 		isFade = true;
 	}
-
-	if (fadeFlag == false)
-	{
-		color.w -= fadeColor;
-		fadeOutSprite_->SetColor(color);
-	}
-	if (color.w <= 0 && fadeFlag == false)
-	{
-		fadeFlag = true;
-	}
-
-	if (isFade == true)
-	{
-		color.w += fadeColor;
-		fadeOutSprite_->SetColor(color);
-	}
-	if (color.w >= 1 && isFade == true)
-	{
-		isSceneEnd_ = true;
-	}
+	//turnChange();  //ターンが変わるごとにエリアを変える
+	FadeOut(); //シーン遷移する時の演出をする処理
+	
 }
 
 void GameScene::Draw() {
@@ -205,6 +190,32 @@ void GameScene::Reset()
 {
 	Initialize();
 }
-void GameScene::BGMStop() {
-	audio_->StopWave(playSound_);
+
+void GameScene::FadeOut()
+{
+	if (player_->IsSceneEnd() || boss_->IsSceneEnd())
+	{
+		isFade = true;
+	}
+
+	if (fadeFlag == false)
+	{
+		color.w -= fadeColor;
+		fadeOutSprite_->SetColor(color);
+	}
+	if (color.w <= 0 && fadeFlag == false)
+	{
+		fadeFlag = true;
+	}
+
+	if (isFade == true)
+	{
+		color.w += fadeColor;
+		fadeOutSprite_->SetColor(color);
+	}
+	if (color.w >= 1 && isFade == true)
+	{
+		isSceneEnd_ = true;
+	}
 }
+

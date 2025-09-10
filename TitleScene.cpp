@@ -18,10 +18,10 @@ void TitleScene::Initialize()
 	titleButton[0] = TextureManager::Load("TitleButton.png");
 	titleButton[1] = TextureManager::Load("mouseOk.png");
 	//画像の座標
-	pos = { 640,400 };
-	titleSprite = Sprite::Create(textureTitle, pos, { 1,1,1,1 }, { 0.5f,0.5f });
+	pos = { 0,0 };
+	titleSprite = Sprite::Create(textureTitle, pos, { 1,1,1,1 });
 	titleButtonSprite[0] = Sprite::Create(titleButton[0], {0,0}, {1,1,1,1}, {0.0f,0.0f});
-	titleButtonSprite[1] = Sprite::Create(titleButton[1], { 0,0 }, { 1,1,1,1 }, { 0.0f,0.0f });
+	titleButtonSprite[1] = Sprite::Create(titleButton[1], { 0,-30 }, { 1,1,1,1 }, { 0.0f,0.0f });
 	isSceneEnd_ = false;
 
 	color = { 0,0,0,0 };
@@ -51,8 +51,7 @@ void TitleScene::Update()
 	//--------------------//
 	
 	//ボタンやクリックをしたら次のシーンに行くための処理
-	if (input_->PushKey(DIK_SPACE)&&  sceneCooltime > 10||
-		mousePosition.x >= 80 && mousePosition.x <= 366 && mousePosition.y >= 370 && mousePosition.y <= 500 && input_->IsPressMouse(WM_LBUTTONDOWN == 0) && sceneCooltime > 10)
+	if (mousePosition.x >= 80 && mousePosition.x <= 366 && mousePosition.y >= 370 && mousePosition.y <= 500 && input_->IsPressMouse(WM_LBUTTONDOWN == 0) && sceneCooltime > 10)
 	{
 		isFade = true;
 	}

@@ -16,6 +16,8 @@ public:
 
 	void Draw();
 
+	void ProcessPocket(int ballIndex, int pocketIndex, int areaIndex, bool damageFlag);
+
 	void DebugNumberDraw();
 
 	void HandleBallPocket();
@@ -28,6 +30,8 @@ public:
 
 	void GenerateRandomNumber();
 
+	void DrawAreaSprite(int spriteOffset, int AreaNumber, int number);
+
 	void AreaDraw(int number, int AreaNumber);
 
 	void DragoAreaDraw(int number, int AreaNumber);
@@ -37,7 +41,6 @@ public:
 	int GetDamage() { return damage_; }
 
 	bool CheckCollision(Vector2 pos1,Vector2 pos2);
-
 
 	void SetBossType(bool isDragon); // BossがDragonかどうかを設定
 
@@ -67,6 +70,9 @@ private:
 	Sprite* testSprite[12];  //エリアのスクリプト
 	Input* input_ = nullptr; 
 	uint32_t texttexture[3];  //エリアを表示するための画像
+
+	uint32_t turnTexture;
+	std::unique_ptr<Sprite> turnSprite_;
 
 	Vector2 pockets[6] = {
 	 { 242, 293 },   // 左上

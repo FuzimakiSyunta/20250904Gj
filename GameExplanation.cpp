@@ -16,8 +16,8 @@ void GameExplanation::Initialize()
 	uint32_t Explanationtexture = TextureManager::Load("operation.png");
 	explanationButton = TextureManager::Load("operation_StartButton.png");
 	//画像の座標
-	pos = { 640,400 };
-	explanationSprite = Sprite::Create(Explanationtexture, pos, { 1,1,1,1 }, { 0.5f,0.5f });
+	pos = { 0,0 };
+	explanationSprite = Sprite::Create(Explanationtexture, pos, { 1,1,1,1 });
 	explanationButtonSprite = Sprite::Create(explanationButton, { 0,0 }, { 1,1,1,1 }, { 0.0f,0.0f });
 	//すぐにシーンに移らないためのクールタイム初期化
 	sceneCooltime = 0;
@@ -57,8 +57,7 @@ void GameExplanation::Update()
 		sceneCooltime++;
 	}
 	//ボタンやクリックをしたら次のシーンに行くための処理
-	if (input_->PushKey(DIK_SPACE)&&sceneCooltime>10||
-		mousePosition.x >= 990 && mousePosition.x <= 1220 && mousePosition.y >= 675 && mousePosition.y <= 760 && input_->IsPressMouse(WM_LBUTTONDOWN == 0)&&sceneCooltime>10)
+	if (mousePosition.x >= 990 && mousePosition.x <= 1220 && mousePosition.y >= 675 && mousePosition.y <= 760 && input_->IsPressMouse(WM_LBUTTONDOWN == 0)&&sceneCooltime>10)
 	{
 		fadeFlag = true;
 		isFade = true;

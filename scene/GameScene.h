@@ -52,6 +52,16 @@ public: // メンバ関数
 	/// </summary>
 	void Reset();
 
+	/// <summary>
+	/// フェードアウト
+	/// </summary>
+	void FadeOut();
+
+	/// <summary>
+	/// ターンが変わるごとにエリアを変える
+	/// </summary>
+	void turnChange();
+
 	void BGMReset();
 
 	void BGMStop();
