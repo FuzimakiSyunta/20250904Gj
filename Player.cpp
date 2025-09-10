@@ -230,24 +230,19 @@ void Player::Update() {
             strikeWaiting_ = false; // 待機終了 → 動き出す
         }
 
-
+    }
         nextStrikeSprite_->SetPosition(nextStriket_);
 
-        if (ballspeed0 == false && IsStopped() == false)
-        {
-            nextStriket_ = { -400,400 };
-            strikeWaitTimer_ = 60; // 60フレーム(=約1秒)待機
-            NextStop = true;
-            isChange = false;  //このフラグを削除するとターンごとにエリアを変える処理の一部がなくなります
-        }
+       
         //このフラグを削除するとターンごとにエリアを変える処理の一部がなくなります
         if (ballspeed0 == true && IsStopped() == true && isChange == false)
         {
             field_->GenerateRandomNumber();
             isChange = true;
-        }
-    }
-}
+        } 
+   }
+    
+
 
 
   
@@ -389,32 +384,7 @@ void Player::GameOver()
         }
     }
 
-    if (boss_->GetHp() >= 1)
-    {
-        // --- nextStriket_ の動き制御 ---
-        if (!strikeWaiting_ && ballspeed0 == true && IsStopped() == true) {
-            // 動かす
-            nextStriket_.x += nextStriketSpeed;
-
-            // 特定座標に到達したら待機開始
-            if (nextStriket_.x >= strikeTargetX_ && NextStop == true) {
-                nextStriket_.x = strikeTargetX_; // 位置をピッタリ固定
-                strikeWaiting_ = true;
-                strikeWaitTimer_ = 60;
-                NextStop = false;
-
-            }
-        }
-        else {
-            // 待機中
-            strikeWaitTimer_--;
-            if (strikeWaitTimer_ <= 0) {
-                strikeWaiting_ = false; // 待機終了 → 動き出す
-            }
-
-
-        }
-    }
+    
 }
 
 void Player::GameDraw()

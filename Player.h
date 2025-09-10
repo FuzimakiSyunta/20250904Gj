@@ -81,7 +81,7 @@ private:
 	Vector2 dragStart_;
 	Vector2 dragCurrent_;
 	Vector2  nextStriket_{ -400,400 };
-	float nextStriketSpeed = 15.0f;
+	float nextStriketSpeed = 10.0f;
 	bool arrowFlying_ = false;
 	Vector2 arrowVel_;
 	bool arrowReturning_ = false; 
