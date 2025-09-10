@@ -22,7 +22,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 	// ゲームウィンドウの作成
 	win = WinApp::GetInstance();
-	win->CreateGameWindow("チーム4025_決戦!!ビリヤード");
+	win->CreateGameWindow("4025_決戦!!ビリヤード");
 
 	// DirectX初期化処理
 	dxCommon = DirectXCommon::GetInstance();
@@ -86,6 +86,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 			if (titleScene->IsSceneEnd())
 			{
 				sceneNo = titleScene->NextScene();
+				gameScene->BGMStop();
 				gameExplanation->Reset();
 			}
 			break;
@@ -94,6 +95,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 			if (gameExplanation->IsSceneEnd())
 			{
 				gameScene->Reset();
+				gameScene->BGMStop();
 				sceneNo = gameExplanation->NextScene();
 			}
 			break;
@@ -103,6 +105,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 			if (gameScene->IsSceneEnd())
 			{
 				sceneNo = gameScene->NextScene();
+				gameScene->BGMStop();
 				titleScene->Reset();
 			}
 			break;

@@ -62,6 +62,8 @@ class GameScene {
 	/// </summary>
 	void turnChange();
 
+	void BGMStop();
+
 	bool IsSceneEnd() { return isSceneEnd_; }
 
 	Scene::SceneType NextScene() { return Scene::SceneType::kTitle; }

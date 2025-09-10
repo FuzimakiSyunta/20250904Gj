@@ -196,3 +196,8 @@ void GameScene::FadeOut()
 	}
 }
 
+void GameScene::BGMStop()
+{
+	audio_->StopWave(backSoundHandle_);
+}
+
