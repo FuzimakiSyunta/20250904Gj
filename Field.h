@@ -71,6 +71,9 @@ private:
 	Input* input_ = nullptr; 
 	uint32_t texttexture[3];  //エリアを表示するための画像
 
+	uint32_t turnTexture;
+	std::unique_ptr<Sprite> turnSprite_;
+
 	Vector2 pockets[6] = {
 	 { 242, 293 },   // 左上
 	 { 1039, 293 },  // 右上

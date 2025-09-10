@@ -51,8 +51,7 @@ void TitleScene::Update()
 	//--------------------//
 	
 	//ボタンやクリックをしたら次のシーンに行くための処理
-	if (input_->PushKey(DIK_SPACE)&&  sceneCooltime > 10||
-		mousePosition.x >= 80 && mousePosition.x <= 366 && mousePosition.y >= 370 && mousePosition.y <= 500 && input_->IsPressMouse(WM_LBUTTONDOWN == 0) && sceneCooltime > 10)
+	if (mousePosition.x >= 80 && mousePosition.x <= 366 && mousePosition.y >= 370 && mousePosition.y <= 500 && input_->IsPressMouse(WM_LBUTTONDOWN == 0) && sceneCooltime > 10)
 	{
 		isFade = true;
 	}

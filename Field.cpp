@@ -50,8 +50,8 @@ void Field::Initialize()
 		isActive[i] = true;
 	}
 
-
-	
+	turnTexture = TextureManager::Load("tarn.png");
+	turnSprite_.reset(Sprite::Create(turnTexture, { 0,-10 }, { 1,1,1,1 }, { 0.0f,0.0f }));
 }
 
 void Field::Update()
@@ -77,6 +77,8 @@ void Field::Draw()
 		DragoAreaDraw(areaNumber[2], 2);
 		DragoAreaDraw(areaNumber[3], 3);
 	}
+
+	turnSprite_->Draw();
 }
 
 void Field::ProcessPocket(int ballIndex, int pocketIndex, int areaIndex, bool damageFlag) {

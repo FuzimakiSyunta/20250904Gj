@@ -57,8 +57,7 @@ void GameExplanation::Update()
 		sceneCooltime++;
 	}
 	//ボタンやクリックをしたら次のシーンに行くための処理
-	if (input_->PushKey(DIK_SPACE)&&sceneCooltime>10||
-		mousePosition.x >= 990 && mousePosition.x <= 1220 && mousePosition.y >= 675 && mousePosition.y <= 760 && input_->IsPressMouse(WM_LBUTTONDOWN == 0)&&sceneCooltime>10)
+	if (mousePosition.x >= 990 && mousePosition.x <= 1220 && mousePosition.y >= 675 && mousePosition.y <= 760 && input_->IsPressMouse(WM_LBUTTONDOWN == 0)&&sceneCooltime>10)
 	{
 		fadeFlag = true;
 		isFade = true;

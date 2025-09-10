@@ -66,7 +66,7 @@ void GameScene::Update(){
 		testDamage = field_->GetDamage();
 		damageText_->SetDamage(testDamage);
 		boss_->TakeDamage(testDamage);
-		field_->GenerateRandomNumber();
+		//field_->GenerateRandomNumber();  //このコメントを復活させるとポケットに入るごとにエリアが変わります。
 		testDamage = 0;
 		damage = 0;
 	}

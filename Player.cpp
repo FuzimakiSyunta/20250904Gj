@@ -89,7 +89,7 @@ void Player::Initialize(Input* input, const Vector2& startPos, float radius) {
     }
 
     isSceneEnd_ = false;
-    isChange = false;
+    isChange = false;  //このフラグを削除するとターンごとにエリアを変える処理の一部がなくなります
 }
 
 void Player::TakeDamage(int damage) {
@@ -110,11 +110,11 @@ void Player::Update() {
     Vector2 mousePos = input_->GetMousePosition();
 
     // --- WASDで移動 ---
-    const float accel = 0.5f;
+  /*  const float accel = 0.5f;
     if (input_->PushKey(DIK_W)) vel_.y -= accel;
     if (input_->PushKey(DIK_S)) vel_.y += accel;
     if (input_->PushKey(DIK_A)) vel_.x -= accel;
-    if (input_->PushKey(DIK_D)) vel_.x += accel;
+    if (input_->PushKey(DIK_D)) vel_.x += accel;*/
 
     // --- ボールがすべて停止している場合のみドラッグ処理 ---
    
@@ -230,13 +230,14 @@ void Player::Update() {
         nextStriket_ = { -400,400 };
         strikeWaitTimer_ = 60; // 60フレーム(=約1秒)待機
         NextStop = true;
+        isChange = false;  //このフラグを削除するとターンごとにエリアを変える処理の一部がなくなります
     }
-   
-   /* if (ballspeed0 == true && IsStopped() == true&&isChange==false)
+    //このフラグを削除するとターンごとにエリアを変える処理の一部がなくなります
+    if (ballspeed0 == true && IsStopped() == true&&isChange==false)
     {
         field_->GenerateRandomNumber();
         isChange = true;
-    }*/
+    }
 }
 
 
