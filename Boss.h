@@ -4,6 +4,12 @@
 #include "Vector2.h"
 #include "Input.h"
 #include <WinApp.h>
+
+enum class BossType {
+	SlimeKing,
+	Dragon
+};
+
 class Boss
 {
 public:
@@ -16,6 +22,9 @@ public:
 	int GetHp() const { return currentHp_; }
 
 	bool IsSceneEnd() { return isSceneEnd_; }
+
+	BossType type_;   // 現在のボスタイプ
+	BossType GetType() const { return type_; }
 
 private:
 	Input* input_ = nullptr;

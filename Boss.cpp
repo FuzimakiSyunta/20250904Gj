@@ -11,12 +11,14 @@ void Boss::Initialize(Input* input) {
 
     if (bossType == 0) {
         // スライムキング
+        type_ = BossType::SlimeKing;  // ← 保存
         bossTexture_ = TextureManager::Load("slimeKing.png");
         bossDamegeTexture_ = TextureManager::Load("slimeKing_Dmaege.png");
         maxHp_ = 100; // HP少なめ
     }
     else {
         // ドラゴン
+        type_ = BossType::Dragon;     // ← 保存
         bossTexture_ = TextureManager::Load("dragon.png");
         bossDamegeTexture_ = TextureManager::Load("dragon_Damege.png");
         maxHp_ = 200; // HP多め
