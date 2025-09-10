@@ -51,9 +51,15 @@ void GameScene::Initialize() {
 }
 
 void GameScene::Update(){
-	player_->SetBallSpeed0(ball_->AreAllBallsStopped());
-	player_->Update();
-	ball_->Update();
+	if (player_->GetHp() >= 1 && boss_->GetHp() >= 1)
+	{
+		player_->SetBallSpeed0(ball_->AreAllBallsStopped());
+		player_->Update();
+		ball_->Update();
+	}
+	
+	
+	
 	ball_->CheckPlayerCollision(*player_);
 	damage = ball_->CheckPocketCollisions();
 	damageText_->Update();
@@ -69,7 +75,7 @@ void GameScene::Update(){
 		damage = 0;
 	}
 	boss_->Update();
-
+	player_->GameOver();
 	if (player_->IsSceneEnd() || boss_->IsSceneEnd())
 	{
 		isFade = true;
@@ -136,11 +142,19 @@ void GameScene::Draw() {
 	/// <summary>
 	/// ここに前景スプライトの描画処理を追加できる
 	/// </summary>
-	if (player_->GetHp()>=1 ||boss_->GetHp()>=1 )
-	{
+	    if (player_->GetHp() >= 1 && boss_->GetHp() >= 1)
+	    {
 		player_->Draw();
-		ball_->Draw();
-	}
+	    }
+		if (player_->GetHp() <= 1 && boss_->GetHp() >= 1)
+		{
+
+			player_->GameDraw();
+		}
+		if (player_->GetHp() >= 1 && boss_->GetHp()>=1)
+		{
+			ball_->Draw();
+		}
 	boss_->Draw();
 	fadeOutSprite_->Draw();
 	// デバッグテキストの描画
