@@ -16,8 +16,8 @@ void GameExplanation::Initialize()
 	uint32_t Explanationtexture = TextureManager::Load("operation.png");
 	explanationButton = TextureManager::Load("operation_StartButton.png");
 	//画像の座標
-	pos = { 640,400 };
-	explanationSprite = Sprite::Create(Explanationtexture, pos, { 1,1,1,1 }, { 0.5f,0.5f });
+	pos = { 0,0 };
+	explanationSprite = Sprite::Create(Explanationtexture, pos, { 1,1,1,1 });
 	explanationButtonSprite = Sprite::Create(explanationButton, { 0,0 }, { 1,1,1,1 }, { 0.0f,0.0f });
 	//すぐにシーンに移らないためのクールタイム初期化
 	sceneCooltime = 0;

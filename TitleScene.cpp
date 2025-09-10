@@ -18,8 +18,8 @@ void TitleScene::Initialize()
 	titleButton[0] = TextureManager::Load("TitleButton.png");
 	titleButton[1] = TextureManager::Load("mouseOk.png");
 	//画像の座標
-	pos = { 640,400 };
-	titleSprite = Sprite::Create(textureTitle, pos, { 1,1,1,1 }, { 0.5f,0.5f });
+	pos = { 0,0 };
+	titleSprite = Sprite::Create(textureTitle, pos, { 1,1,1,1 });
 	titleButtonSprite[0] = Sprite::Create(titleButton[0], {0,0}, {1,1,1,1}, {0.0f,0.0f});
 	titleButtonSprite[1] = Sprite::Create(titleButton[1], { 0,-30 }, { 1,1,1,1 }, { 0.0f,0.0f });
 	isSceneEnd_ = false;
