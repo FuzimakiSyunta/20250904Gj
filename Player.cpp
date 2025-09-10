@@ -232,11 +232,11 @@ void Player::Update() {
         NextStop = true;
     }
    
-    if (ballspeed0 == true && IsStopped() == true&&isChange==false)
+   /* if (ballspeed0 == true && IsStopped() == true&&isChange==false)
     {
         field_->GenerateRandomNumber();
         isChange = true;
-    }
+    }*/
 }
 
 
