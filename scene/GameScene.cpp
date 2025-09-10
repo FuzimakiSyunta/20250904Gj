@@ -45,7 +45,7 @@ void GameScene::Initialize() {
 	fallPocketHandle_ = audio_->LoadWave("/sound/SE/fallsound.wav");
 
 	backSoundHandle_ = audio_->LoadWave("/sound/SE/backMusic.mp3");
-	//audio_->PlayWave(backSoundHandle_, true, 1.0f);
+	audio_->PlayWave(backSoundHandle_, true, 1.0f);
 	ball_->SetField(field_.get());
 
 	color = { 0,0,0,1 };
@@ -106,7 +106,7 @@ void GameScene::Update(){
 		testDamage = field_->GetDamage();
 		damageText_->SetDamage(testDamage);
 		boss_->TakeDamage(testDamage);
-		//field_->GenerateRandomNumber();  //このコメントを復活させるとポケットに入るごとにエリアが変わります。
+		field_->GenerateRandomNumber();  //このコメントを復活させるとポケットに入るごとにエリアが変わります。
 		testDamage = 0;
 		damage = 0;
 	}
@@ -217,5 +217,10 @@ void GameScene::FadeOut()
 	{
 		isSceneEnd_ = true;
 	}
+}
+
+void GameScene::BGMStop()
+{
+	audio_->StopWave(backSoundHandle_);
 }
 

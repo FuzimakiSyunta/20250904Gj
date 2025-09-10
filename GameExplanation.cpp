@@ -128,3 +128,5 @@ void GameExplanation::Reset()
 {
 	Initialize();
 }
+
+

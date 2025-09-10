@@ -86,6 +86,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 			if (titleScene->IsSceneEnd())
 			{
 				sceneNo = titleScene->NextScene();
+				gameScene->BGMStop();
 				gameExplanation->Reset();
 			}
 			break;
@@ -94,6 +95,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 			if (gameExplanation->IsSceneEnd())
 			{
 				gameScene->Reset();
+				gameScene->BGMStop();
 				sceneNo = gameExplanation->NextScene();
 			}
 			break;
@@ -103,6 +105,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 			if (gameScene->IsSceneEnd())
 			{
 				sceneNo = gameScene->NextScene();
+				gameScene->BGMStop();
 				titleScene->Reset();
 			}
 			break;
