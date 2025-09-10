@@ -14,6 +14,7 @@ void Boss::Initialize(Input* input) {
         type_ = BossType::SlimeKing;  // ← 保存
         bossTexture_ = TextureManager::Load("slimeKing.png");
         bossDamegeTexture_ = TextureManager::Load("slimeKing_Dmaege.png");
+        bossDownTexture_ = TextureManager::Load("slimeDown.png");
         maxHp_ = 100; // HP少なめ
     }
     else {
@@ -21,9 +22,10 @@ void Boss::Initialize(Input* input) {
         type_ = BossType::Dragon;     // ← 保存
         bossTexture_ = TextureManager::Load("dragon.png");
         bossDamegeTexture_ = TextureManager::Load("dragon_Damege.png");
-        maxHp_ = 200; // HP多め
+        bossDownTexture_ = TextureManager::Load("dragonDown.png");
+        maxHp_ = 500; // HP多め
     }
-
+   
     // === HPゲージ ===
     hpBackTex_ = TextureManager::Load("BossHpBack.png");
     hpGaugeTex_ = TextureManager::Load("BossHpRed.png");
@@ -36,8 +38,10 @@ void Boss::Initialize(Input* input) {
     basePos_ = { 540.0f, 40.0f };
     bossSprite_.reset(Sprite::Create(bossTexture_, basePos_));
     bossDamegeSprite_.reset(Sprite::Create(bossDamegeTexture_, basePos_));
+    bossDownSprite_.reset(Sprite::Create(bossDownTexture_, basePos_));
     bossSprite_->SetPosition(basePos_);
     bossDamegeSprite_->SetPosition(basePos_);
+    bossDownSprite_->SetPosition(basePos_);
 
     // HP初期化
     currentHp_ = maxHp_;
@@ -68,7 +72,7 @@ void Boss::Update() {
 			bossDamegeSprite_->SetPosition({ basePos_.x + offsetX, basePos_.y + offsetY });
         }
     }
-
+   
     /*if (input_->PushKey(DIK_1)) { 
         if (!isDebugdamage_) {
             OnDamage();
@@ -97,12 +101,16 @@ void Boss::Update() {
 }
 
 void Boss::Draw() {
-    if (bossSprite_&&!isShaking_) {
+    if (bossSprite_&&!isShaking_&& currentHp_ >= 1) {
         bossSprite_->Draw();
     }
     if (isShaking_ && bossDamegeSprite_) {
         bossDamegeSprite_->Draw();
 	}
+    if (currentHp_ < 1) 
+    {
+        bossDownSprite_->Draw();
+    }
     // HPゲージを描画
     if (hpBackSprite_) {
         hpBackSprite_->Draw();
@@ -119,6 +127,7 @@ void Boss::Draw() {
     }
     if (isDead_ == true)
     {
+       
         gameClearSprite_->Draw();
         gameButtonSprite->Draw();
     }
