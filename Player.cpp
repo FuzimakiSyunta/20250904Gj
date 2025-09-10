@@ -408,7 +408,7 @@ void Player::CheckPocketCollision() {
 
         if (distSq < pocketRadius * pocketRadius) {
             // ★ ダメージを受ける
-            TakeDamage(1);
+            TakeDamage(plyerdamage);
             invincibleTimer_ = 60; // 約1秒の無敵時間（60fps想定）
             isDamage = true;
             // ★ ランダムで別のポケットを選択

@@ -77,8 +77,8 @@ private:
 	Vector2 arrowVel_;
 	bool arrowReturning_ = false; // ��󂪖߂��Ă���Œ���
 
-	int maxHp_ = 100;
-	int currentHp_ = 100;
+	int maxHp_ = 50;
+	int currentHp_ = 50;
 
 	int invincibleTimer_ = 0; // ���G���ԃJ�E���^
 
@@ -97,7 +97,7 @@ private:
 	POINT mousePosition;
 	bool isSceneEnd_;
 	int damage_;
-
+	int plyerdamage=10;
 	
 	int nextStriketstop = 0;
 	float barWidth;
