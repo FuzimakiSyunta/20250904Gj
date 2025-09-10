@@ -41,6 +41,11 @@ void GameScene::Initialize() {
 	damageText_ = std::make_unique<DamageText>();
 	damageText_->Initialize();
 	isSceneEnd_ = false;
+	ballCollideHandle_ = audio_->LoadWave("/sound/SE/collide_ball.wav");
+	fallPocketHandle_ = audio_->LoadWave("/sound/SE/fallsound.wav");
+
+	backSoundHandle_ = audio_->LoadWave("/sound/SE/backMusic.mp3");
+	//audio_->PlayWave(backSoundHandle_, true, 1.0f);
 	ball_->SetField(field_.get());
 
 	color = { 0,0,0,1 };
@@ -56,6 +61,41 @@ void GameScene::Update(){
 	player_->SetBallSpeed0(ball_->AreAllBallsStopped());
 	player_->Update();
 	ball_->Update();
+	// 衝突判定
+	hitBall = ball_->CheckCollisions();
+	hitPlayer = ball_->CheckPlayerCollision(*player_);
+	fallPocket = ball_->CheckPocketCollisions();
+
+	// === 衝突の「瞬間」だけ音を鳴らす ===
+	if (hitBall && !wasHitBall_) {
+		audio_->PlayWave(ballCollideHandle_, false, 1.0f);
+	}
+	if (hitPlayer && !wasHitPlayer_) {
+		audio_->PlayWave(ballCollideHandle_, false, 1.0f);
+	}
+	if (fallPocket && !wasHitPocket_) {
+		audio_->PlayWave(fallPocketHandle_, false, 1.0f);
+	}
+
+	// 状態を保存
+	wasHitBall_ = hitBall;
+	wasHitPlayer_ = hitPlayer;
+	wasHitPocket_ = fallPocket;
+
+	// ★ 衝突が終わったらリセット
+	if (!hitBall)   wasHitBall_ = false;
+	if (!hitPlayer) wasHitPlayer_ = false;
+	if (!fallPocket) wasHitPocket_ = false;
+
+	if (player_->GetHp() >= 1 && boss_->GetHp() >= 1)
+	{
+		player_->SetBallSpeed0(ball_->AreAllBallsStopped());
+		player_->Update();
+		ball_->Update();
+	}
+	
+	
+	
 	ball_->CheckPlayerCollision(*player_);
 	damage = ball_->CheckPocketCollisions();
 	damageText_->Update();
@@ -71,6 +111,11 @@ void GameScene::Update(){
 		damage = 0;
 	}
 	boss_->Update();
+	player_->GameOver();
+	if (player_->IsSceneEnd() || boss_->IsSceneEnd())
+	{
+		isFade = true;
+	}
 	//turnChange();  //ターンが変わるごとにエリアを変える
 	FadeOut(); //シーン遷移する時の演出をする処理
 	
@@ -116,11 +161,20 @@ void GameScene::Draw() {
 	/// <summary>
 	/// ここに前景スプライトの描画処理を追加できる
 	/// </summary>
-	if (player_->GetHp()>=1 ||boss_->GetHp()>=1 )
-	{
-		player_->Draw();
-		ball_->Draw();
-	}
+	   
+		if (player_->GetHp() <= 1 && boss_->GetHp() >= 1)
+		{
+
+			player_->GameDraw();
+		}
+		if (player_->GetHp() >= 1 && boss_->GetHp()>=1)
+		{
+			ball_->Draw();
+		}
+		if (player_->GetHp() >= 1 && boss_->GetHp() >= 1)
+		{
+			player_->Draw();
+		}
 	boss_->Draw();
 	fadeOutSprite_->Draw();
 	// デバッグテキストの描画

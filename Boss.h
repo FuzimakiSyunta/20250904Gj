@@ -31,9 +31,12 @@ private:
 	//テクスチャハンドル
 	uint32_t bossTexture_ = 0;
 	uint32_t bossDamegeTexture_ = 0;
+	uint32_t bossDownTexture_ = 0;
 	//スプライト
 	std::unique_ptr<Sprite> bossSprite_ = nullptr;
 	std::unique_ptr<Sprite> bossDamegeSprite_ = nullptr;
+	std::unique_ptr<Sprite> bossDownSprite_ = nullptr;
+	
 
 	uint32_t gameButton;
 	std::unique_ptr<Sprite> gameButtonSprite;

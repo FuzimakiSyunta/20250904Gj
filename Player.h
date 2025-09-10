@@ -3,6 +3,8 @@
 #include "Vector2.h"
 #include "Input.h"
 #include "WinApp.h"
+#include "Boss.h"
+#include "Audio.h"
 class Boss;
 class Field;
 class Player
@@ -37,17 +39,19 @@ public:
 	bool GetBallSpeed0() const { return  ballspeed0; }
 
 	bool IsSceneEnd() { return isSceneEnd_; }
+	void GameOver();
+	void GameDraw();
 private:
 	bool IsStopped() const;
 
 
 private:
-#pragma region �摜�ǂݍ���
+#pragma region 
 	Input* input_ = nullptr;
-	//�e�N�X�`���n���h��
+	Audio* audio_ = nullptr;
 	uint32_t playerTexture_ = 0;
 	uint32_t playerArrowTexture = 0;
-	//�X�v���C�g
+	
 	std::unique_ptr<Sprite> playerSprite_ = nullptr;
 	std::unique_ptr<Sprite> playerArrowSprite_ = nullptr;
 
@@ -61,6 +65,7 @@ private:
 	std::unique_ptr<Sprite> hpGaugeSprite_;
 	std::unique_ptr<Sprite> hpHartSprite_;
 
+	Boss* boss_= nullptr;
 #pragma region ���W�֘A
 
 	Vector2 pos = {250,1050};
@@ -68,8 +73,8 @@ private:
 	Vector2 localPos;
 	const float speed = 10.6f;
 	const Vector2 center = { 5, 5 };
-	float collisionRadius_; // �����蔻��p�i�����߂ɐݒ�j
-	float drawRadius_;       // �����ڗp�̔��a
+	float collisionRadius_; 
+	float drawRadius_;      
 	float radius_ = 16.0f;
 	Vector2 vel_ = { 0.0f, 0.0f };
 	bool dragging_;
@@ -79,12 +84,12 @@ private:
 	float nextStriketSpeed = 15.0f;
 	bool arrowFlying_ = false;
 	Vector2 arrowVel_;
-	bool arrowReturning_ = false; // ��󂪖߂��Ă���Œ���
+	bool arrowReturning_ = false; 
 
 	int maxHp_ = 100;
 	int currentHp_ = 100;
 
-	int invincibleTimer_ = 0; // ���G���ԃJ�E���^
+	int invincibleTimer_ = 0;
 
 	
 	bool isDamage;
@@ -103,20 +108,21 @@ private:
 	int damage_;
 	
 	int playerDamage; //プレイヤーがポケットに入った時に食らうダメージ
-	Boss* boss_;
 	Field* field_=nullptr;
 	bool isChange;
 
 	int slimeDamage = 10;  //スライムのダメージ
 	int dragonDamage = 20;  //ドラゴンのダメージ
+	int playerDamage_ = 1;
+
 	
 	int nextStriketstop = 0;
 	float barWidth;
 	float barHeight;
-	float screenWidth;   // ��ʕ�
-	float barX; // ����
-	float barY; // Y�ʒu�w��
-	// �E���ɂ��炷�I�t�Z�b�g
+	float screenWidth;
+	float barX;
+	float barY;
+	
 	Vector2 offset = { 4.0f, 4.0f };
 	// HPバー揺れ
 	bool hpBarShaking_ = false;
@@ -129,4 +135,3 @@ private:
 	float strikeTargetX_ = 600.0f; // 目標座標（例: X=600で停止）
 };
 
-//650, 400
