@@ -277,7 +277,6 @@ void Player::Draw() {
     {
         nextStrikeSprite_->Draw();
     }
-
 }
 
 void Player::DamageTextDraw()

@@ -1,4 +1,4 @@
-#include "Ball.h"
+ï»¿#include "Ball.h"
 #include <cmath>
 #include "Field.h"
 
@@ -15,7 +15,7 @@ Ball::~Ball() {
 }
 
 void Ball::Initialize(uint32_t) {
-    // 10–‡‚Ì‰æ‘œ‚ğƒ[ƒh
+    // 10æšã®ç”»åƒã‚’ãƒ­ãƒ¼ãƒ‰
     ballTextureHandle_[0] = TextureManager::Load("1.png");
     ballTextureHandle_[1] = TextureManager::Load("2.png");
     ballTextureHandle_[2] = TextureManager::Load("3.png");
@@ -34,7 +34,7 @@ void Ball::Initialize(uint32_t) {
     const float startY = 460.0f;
     const float gap = 40.0f;
 
-    // OŠpŒ`‚Ì”z’u
+    // ä¸‰è§’å½¢ã®é…ç½®
     int rowCounts[4] = { 1,2,3,4 };
     for (int col = 0; col < 4; col++) {
         int count = rowCounts[col];
@@ -43,7 +43,7 @@ void Ball::Initialize(uint32_t) {
             float x = startX + col * gap;
             float y = startY + offsetY;
 
-            // ‰æ‘œ‚ğŠ„‚è“–‚Ä
+            // ç”»åƒã‚’å‰²ã‚Šå½“ã¦
             pos_[index] = { x, y };
             sprite_[index] = Sprite::Create(ballTextureHandle_[index], pos_[index], { 1,1,1,1 }, { 0.5f, 0.5f });
             sprite_[index]->SetSize({ 32.0f, 32.0f });
@@ -52,7 +52,7 @@ void Ball::Initialize(uint32_t) {
             index++;
         }
     }
-    const float ballRadius = 16.0f; // 32x32 ‚Ì”¼•ª
+    const float ballRadius = 16.0f; // 32x32 ã®åŠåˆ†
    
 
 }
@@ -61,7 +61,7 @@ void Ball::Update() {
     MoveBalls();
     CheckCollisions();
     
-    // ‘S•”—‚¿‚½‚çƒŠƒXƒ|[ƒ“
+    // å…¨éƒ¨è½ã¡ãŸã‚‰ãƒªã‚¹ãƒãƒ¼ãƒ³
     bool allDead = true;
     for (int i = 0; i < kBallCount; i++) {
         if (isAlive_[i]) {
@@ -76,7 +76,7 @@ void Ball::Update() {
 }
 //isAlive_[i] && sprite_[i]
 void Ball::Draw() {
-    // ƒ{[ƒ‹•`‰æ
+    // ãƒœãƒ¼ãƒ«æç”»
     for (int i = 0; i < kBallCount; i++) {
         if (isAlive_[i] ==true) {
             sprite_[i]->SetPosition(pos_[i]);
@@ -84,14 +84,14 @@ void Ball::Draw() {
         }
     }
 
-    //// ƒfƒoƒbƒO—pFƒ|ƒPƒbƒgˆÊ’u‚ÉÔŠÛ‚ğ•`‰æ
+    //// ãƒ‡ãƒãƒƒã‚°ç”¨ï¼šãƒã‚±ãƒƒãƒˆä½ç½®ã«èµ¤ä¸¸ã‚’æç”»
     //Vector2 pockets[6] = {
-    //    { 242, 293 },   // ¶ã
-    //    { 1039, 293 },  // ‰Eã
-    //    { 242, 672 },   // ¶‰º
-    //    { 1039, 672 },  // ‰E‰º
-    //    { 641, 293 },   // ã’†‰›
-    //    { 641, 672 }    // ‰º’†‰›
+    //    { 242, 293 },   // å·¦ä¸Š
+    //    { 1039, 293 },  // å³ä¸Š
+    //    { 242, 672 },   // å·¦ä¸‹
+    //    { 1039, 672 },  // å³ä¸‹
+    //    { 641, 293 },   // ä¸Šä¸­å¤®
+    //    { 641, 672 }    // ä¸‹ä¸­å¤®
     //};
 
     //for (int j = 0; j < 6; j++) {
@@ -105,41 +105,41 @@ void Ball::Draw() {
 void Ball::MoveBalls() {
     const float radius = 16.0f;
 
-    // •Ç‚ÌˆÊ’ui”CˆÓ‚Éİ’è‰Â”\j
-    //¶
+    // å£ã®ä½ç½®ï¼ˆä»»æ„ã«è¨­å®šå¯èƒ½ï¼‰
+    //å·¦
     const float leftMax = 225.0f;
-    //‰E
+    //å³
     const float rightMax = 1055.0f;
-    //ã
+    //ä¸Š
     const float topMax = 273.0f;
-    //‰º
+    //ä¸‹
     const float bottomMax = 690.0f;
 
-    // •Ç‚Ì”½ËŒW”
-    const float xBounce = -1.0f; // ¶‰E
-    const float yBounce = -1.0f; // ã‰º
+    // å£ã®åå°„ä¿‚æ•°
+    const float xBounce = -1.0f; // å·¦å³
+    const float yBounce = -1.0f; // ä¸Šä¸‹
 
     for (int i = 0; i < kBallCount; i++) {
         pos_[i].x += vel_[i].x;
         pos_[i].y += vel_[i].y;
 
-        // ¶•Ç
+        // å·¦å£
         if (pos_[i].x < leftMax + radius) {
             pos_[i].x = leftMax + radius;
             vel_[i].x *= xBounce;
         }
-        // ‰E•Ç
+        // å³å£
         else if (pos_[i].x > rightMax - radius) {
             pos_[i].x = rightMax - radius;
             vel_[i].x *= xBounce;
         }
 
-        // ã•Ç
+        // ä¸Šå£
         if (pos_[i].y < topMax + radius) {
             pos_[i].y = topMax + radius;
             vel_[i].y *= yBounce;
         }
-        // ‰º•Ç
+        // ä¸‹å£
         else if (pos_[i].y > bottomMax - radius) {
             pos_[i].y = bottomMax - radius;
             vel_[i].y *= yBounce;
@@ -150,19 +150,19 @@ void Ball::MoveBalls() {
 void Ball::CheckCollisions() {
     const float radius = 16.0f;
     const float minDist = radius * 2.0f;
-    const float friction = 0.99f; // –€CŒW”i0.0`1.0j
+    const float friction = 0.99f; // æ‘©æ“¦ä¿‚æ•°ï¼ˆ0.0ï½1.0ï¼‰
 
     for (int i = 0; i < kBallCount; i++) {
 
         if (!isAlive_[i]) {
-            // š Á‚¦‚½ƒ{[ƒ‹‚ÍˆÚ“®‚ğ~‚ß‚é
+            // â˜… æ¶ˆãˆãŸãƒœãƒ¼ãƒ«ã¯ç§»å‹•ã‚’æ­¢ã‚ã‚‹
             vel_[i].x = 0.0f;
             vel_[i].y = 0.0f;
             continue;
         }
 
         for (int j = i + 1; j < kBallCount; j++) {
-            if (!isAlive_[j]) continue; // š Á‚¦‚Ä‚éƒ{[ƒ‹‚Í–³‹
+            if (!isAlive_[j]) continue; // â˜… æ¶ˆãˆã¦ã‚‹ãƒœãƒ¼ãƒ«ã¯ç„¡è¦–
 
             float dx = pos_[j].x - pos_[i].x;
             float dy = pos_[j].y - pos_[i].y;
@@ -179,14 +179,14 @@ void Ball::CheckCollisions() {
                 float vn = rvx * nx + rvy * ny;
 
                 if (vn < 0.0f) {
-                    float impulse = -vn * 1.0f; // ’e‚«•Ô‚µ
+                    float impulse = -vn * 1.0f; // å¼¾ãè¿”ã—
                     vel_[i].x -= impulse * nx;
                     vel_[i].y -= impulse * ny;
                     vel_[j].x += impulse * nx;
                     vel_[j].y += impulse * ny;
                 }
 
-                // ‚ß‚è‚İ‰ğÁ
+                // ã‚ã‚Šè¾¼ã¿è§£æ¶ˆ
                 float overlap = (minDist - dist) * 0.5f;
                 pos_[i].x -= nx * overlap;
                 pos_[i].y -= ny * overlap;
@@ -195,11 +195,11 @@ void Ball::CheckCollisions() {
             }
         }
 
-        // –€C‚ÅŒ¸‘¬
+        // æ‘©æ“¦ã§æ¸›é€Ÿ
         vel_[i].x *= friction;
         vel_[i].y *= friction;
 
-        // ‘¬“x‚ª¬‚³‚·‚¬‚éê‡‚Í~‚ß‚é
+        // é€Ÿåº¦ãŒå°ã•ã™ãã‚‹å ´åˆã¯æ­¢ã‚ã‚‹
         if (std::abs(vel_[i].x) < 0.01f) vel_[i].x = 0.0f;
         if (std::abs(vel_[i].y) < 0.01f) vel_[i].y = 0.0f;
     }
@@ -210,14 +210,14 @@ void Ball::CheckCollisions() {
 
 void Ball::CheckPlayerCollision(Player& player) {
     const float ballRadius = 16.0f;
-    const float ballFriction = 0.99f; // –€CŒW”
+    const float ballFriction = 0.99f; // æ‘©æ“¦ä¿‚æ•°
 
     Vector2 playerPos = player.GetPos();
     float playerRadius = player.GetRadius();
 
-    // === ƒvƒŒƒCƒ„[‚Æ‚ÌÕ“Ëˆ— ===
+    // === ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã¨ã®è¡çªå‡¦ç† ===
     for (int i = 0; i < kBallCount; i++) {
-        if (!isAlive_[i]) continue; // š Á‚¦‚½ƒ{[ƒ‹‚Í–³‹
+        if (!isAlive_[i]) continue; // â˜… æ¶ˆãˆãŸãƒœãƒ¼ãƒ«ã¯ç„¡è¦–
 
         float dx = pos_[i].x - playerPos.x;
         float dy = pos_[i].y - playerPos.y;
@@ -236,13 +236,13 @@ void Ball::CheckPlayerCollision(Player& player) {
             float vn = rvx * nx + rvy * ny;
 
             if (vn < 0.0f) {
-                float impulse = -vn * 1.0f; // ”½”­ŒW”1.0
+                float impulse = -vn * 1.0f; // åç™ºä¿‚æ•°1.0
 
-                // ƒ{[ƒ‹‚Ì‘¬“x
+                // ãƒœãƒ¼ãƒ«ã®é€Ÿåº¦
                 vel_[i].x += impulse * nx;
                 vel_[i].y += impulse * ny;
 
-                // ƒvƒŒƒCƒ„[‚Ì‘¬“xid‚ß‚Éİ’èj
+                // ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®é€Ÿåº¦ï¼ˆé‡ã‚ã«è¨­å®šï¼‰
                 float playerImpulseFactor = 0.2f;
                 player.SetVel(
                     player.GetVel().x - impulse * playerImpulseFactor * nx,
@@ -250,7 +250,7 @@ void Ball::CheckPlayerCollision(Player& player) {
                 );
             }
 
-            // ‚ß‚è‚İ‰ğÁ
+            // ã‚ã‚Šè¾¼ã¿è§£æ¶ˆ
             float overlap = (minDist - dist) * 0.5f;
             pos_[i].x += nx * overlap;
             pos_[i].y += ny * overlap;
@@ -262,12 +262,12 @@ void Ball::CheckPlayerCollision(Player& player) {
 
 int Ball::CheckPocketCollisions() {
     Vector2 pockets[6] = {
-       { 242, 293 },   // ¶ã
-       { 1039, 293 },  // ‰Eã
-       { 242, 672 },   // ¶‰º
-       { 1039, 672 },  // ‰E‰º
-       { 641, 293 },   // ã’†‰›
-       { 641, 672 }    // ‰º’†‰›
+       { 242, 293 },   // å·¦ä¸Š
+       { 1039, 293 },  // å³ä¸Š
+       { 242, 672 },   // å·¦ä¸‹
+       { 1039, 672 },  // å³ä¸‹
+       { 641, 293 },   // ä¸Šä¸­å¤®
+       { 641, 672 }    // ä¸‹ä¸­å¤®
     };
 
     float pocketRadius = 36.0f;
@@ -284,13 +284,13 @@ int Ball::CheckPocketCollisions() {
             if (distSq < pocketRadius * pocketRadius) {
                 isAlive_[i] = false;
                
-                totalDamage += damage_[i]; // š ƒ_ƒ[ƒW‚ğ‰ÁZ
+                totalDamage += damage_[i]; // â˜… ãƒ€ãƒ¡ãƒ¼ã‚¸ã‚’åŠ ç®—
                 break;
             }
         }
     }
 
-    return totalDamage; // š •¡”•ª‚Ü‚Æ‚ß‚Ä•Ô‚·
+    return totalDamage; // â˜… è¤‡æ•°åˆ†ã¾ã¨ã‚ã¦è¿”ã™
 }
 
 void Ball::Respawn() {
@@ -310,8 +310,8 @@ void Ball::Respawn() {
             pos_[index] = { x, y };
             sprite_[index] = Sprite::Create(ballTextureHandle_[index], pos_[index],{ 1,1,1,1 }, { 0.5f, 0.5f });
             sprite_[index]->SetSize({ 32.0f, 32.0f });
-            isAlive_[index] = true;          // •œŠˆ
-            vel_[index] = { 0.0f, 0.0f };    // Ã~ó‘Ô‚ÉƒŠƒZƒbƒg
+            isAlive_[index] = true;          // å¾©æ´»
+            vel_[index] = { 0.0f, 0.0f };    // é™æ­¢çŠ¶æ…‹ã«ãƒªã‚»ãƒƒãƒˆ
             index++;
         }
     }
@@ -320,9 +320,9 @@ void Ball::Respawn() {
 bool Ball::AreAllBallsStopped()
 const {
     for (int i = 0; i < kBallCount; i++) {
-        if (!isAlive_[i]) continue; // Á‚¦‚Ä‚¢‚éƒ{[ƒ‹‚Í–³‹
+        if (!isAlive_[i]) continue; // æ¶ˆãˆã¦ã„ã‚‹ãƒœãƒ¼ãƒ«ã¯ç„¡è¦–
         if (std::abs(vel_[i].x) > 0.001f || std::abs(vel_[i].y) > 0.001f)
-            return false; // ‚Ü‚¾“®‚¢‚Ä‚¢‚éƒ{[ƒ‹‚ª‚ ‚é
+            return false; // ã¾ã å‹•ã„ã¦ã„ã‚‹ãƒœãƒ¼ãƒ«ãŒã‚ã‚‹
     }
     return true;
 }

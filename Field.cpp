@@ -1,4 +1,4 @@
-#include "Field.h"
+ï»¿#include "Field.h"
 #include <stdlib.h>
 #include <stdio.h>
 #include <TextureManager.h>
@@ -8,7 +8,7 @@
 void Field::Initialize()
 {
 	input_ = Input::GetInstance();
-	//‰Šú‰»‚àƒ‰ƒ“ƒ_ƒ€‚Å‚µ‚Ä‚¨‚­
+	//åˆæœŸåŒ–ã‚‚ãƒ©ãƒ³ãƒ€ãƒ ã§ã—ã¦ãŠã
 	for (int i = 0; i < 4; i++)
 	{
 		areaNumber[i] = rand()%100+1;
@@ -32,7 +32,7 @@ void Field::Initialize()
 	testSprite[10] = Sprite::Create(texttexture[0], pos[10], { 1,1,1,1 }, { 0.5f,0.5f });
 	testSprite[11] = Sprite::Create(texttexture[0], pos[11], { 1,1,1,1 }, { 0.5f,0.5f });
 
-	//‰æ‘œ‚ÌƒTƒCƒY
+	//ç”»åƒã®ã‚µã‚¤ã‚º
 	for (int i = 0; i < 12; i++)
 	{
 		testSprite[i]->SetSize({ 419,212 });
@@ -49,13 +49,13 @@ void Field::Initialize()
 
 void Field::Update()
 {
-	//ƒ{[ƒ‹‚ªƒ|ƒPƒbƒg‚É“ü‚Á‚½‚èƒ{ƒX‚ªUŒ‚‚µ‚Ä‚«‚½‚Æ‚«‚Éˆ—‚³‚ê‚éŠÖ”
+	//ãƒœãƒ¼ãƒ«ãŒãƒã‚±ãƒƒãƒˆã«å…¥ã£ãŸã‚Šãƒœã‚¹ãŒæ”»æ’ƒã—ã¦ããŸã¨ãã«å‡¦ç†ã•ã‚Œã‚‹é–¢æ•°
 	HandleBallPocket();
 }
 
 void Field::Draw()
 {
-	//‰æ‘œ‚ğ•`‰æB’l‚É‚Â‚¢‚Ä‚Íƒ‰ƒ“ƒ_ƒ€‚É•Ï‚í‚é•Ï”‚Æ‡”Ô‚É•`‰æ‚µ‚Ä‚¢‚­”(0‚©‚çn‚Ü‚é)
+	//ç”»åƒã‚’æç”»ã€‚å€¤ã«ã¤ã„ã¦ã¯ãƒ©ãƒ³ãƒ€ãƒ ã«å¤‰ã‚ã‚‹å¤‰æ•°ã¨é †ç•ªã«æç”»ã—ã¦ã„ãæ•°(0ã‹ã‚‰å§‹ã¾ã‚‹)
 	AreaDraw(areaNumber[0], 0);
 	AreaDraw(areaNumber[1], 1);
 	AreaDraw(areaNumber[2], 2);
@@ -69,63 +69,62 @@ void Field::HandleBallPocket()
 	ballPositions = balls_->GetBallsPos();
 	for (int i = 0; i < kBallCount; i++)
 	{
-		//ƒGƒŠƒA‚ğ•ª‚¯‚Äˆ—‚³‚¹‚é
-		if (CheckCollision(ballPositions[i], pockets[0]) && isActive[i])  //“–‚½‚è”»’è‚ğŒv‘ª‚·‚éŠÖ”
+		if (CheckCollision(ballPositions[i], pockets[0]) && isActive[i]) 
 		{
-			AreaProcess(areaCaunter[0]);  //¶ã‚Ìƒ|ƒPƒbƒg‚ª—‚¿‚½‚ÌƒGƒŠƒAŒø‰Ê
-			//hp‚ªƒ_ƒEƒ“‚·‚éŒø‰Ê‚ª“–‚½‚éÅŒã‚ÉƒvƒŒƒCƒ„[‚Éƒ_ƒ[ƒW‚ğ—^‚¦‚é
+			AreaProcess(areaCaunter[0]);  //å·¦ä¸Šã®ãƒã‚±ãƒƒãƒˆãŒè½ã¡ãŸæ™‚ã®ã‚¨ãƒªã‚¢åŠ¹æœ
+			//hpãŒãƒ€ã‚¦ãƒ³ã™ã‚‹åŠ¹æœãŒå½“ãŸã‚‹æ™‚æœ€å¾Œã«ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã«ãƒ€ãƒ¡ãƒ¼ã‚¸ã‚’ä¸ãˆã‚‹
 			if (hpDown)
 			{
 				player_->TakeDamage(damage_);
 				player_->SetIsDamage();
 				hpDown = false;
 			}
-			//ˆ—‚ªI‚í‚Á‚½‚çƒtƒ‰ƒO‚ğ—§‚½‚¹•¡”ˆ—‚³‚ê‚È‚¢‚æ‚¤‚É‚·‚é
+			//å‡¦ç†ãŒçµ‚ã‚ã£ãŸã‚‰ãƒ•ãƒ©ã‚°ã‚’ç«‹ãŸã›è¤‡æ•°å‡¦ç†ã•ã‚Œãªã„ã‚ˆã†ã«ã™ã‚‹
 			isDamage = true;
 			isActive[i] = false;
 			break;
 		}
 		else if (CheckCollision(ballPositions[i], pockets[2]) && isActive[i])
 		{
-			AreaProcess(areaCaunter[1]); //¶‰º‚Ìƒ|ƒPƒbƒg‚ª—‚¿‚½‚ÌƒGƒŠƒAŒø‰Ê
-			//hp‚ªƒ_ƒEƒ“‚·‚éŒø‰Ê‚ª“–‚½‚éÅŒã‚ÉƒvƒŒƒCƒ„[‚Éƒ_ƒ[ƒW‚ğ—^‚¦‚é
+			AreaProcess(areaCaunter[1]); //å·¦ä¸‹ã®ãƒã‚±ãƒƒãƒˆãŒè½ã¡ãŸæ™‚ã®ã‚¨ãƒªã‚¢åŠ¹æœ
+			//hpãŒãƒ€ã‚¦ãƒ³ã™ã‚‹åŠ¹æœãŒå½“ãŸã‚‹æ™‚æœ€å¾Œã«ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã«ãƒ€ãƒ¡ãƒ¼ã‚¸ã‚’ä¸ãˆã‚‹
 			if (hpDown)
 			{
 				player_->TakeDamage(damage_);
 				player_->SetIsDamage();
 				hpDown = false;
 			}
-			//ˆ—‚ªI‚í‚Á‚½‚çƒtƒ‰ƒO‚ğ—§‚½‚¹•¡”ˆ—‚³‚ê‚È‚¢‚æ‚¤‚É‚·‚é
+			//å‡¦ç†ãŒçµ‚ã‚ã£ãŸã‚‰ãƒ•ãƒ©ã‚°ã‚’ç«‹ãŸã›è¤‡æ•°å‡¦ç†ã•ã‚Œãªã„ã‚ˆã†ã«ã™ã‚‹
 			isDamage = true;
 			isActive[i] = false;
 			break;
 		}
 		else if (CheckCollision(ballPositions[i], pockets[3]) && isActive[i])
 		{
-			AreaProcess(areaCaunter[2]); //‰E‰º‚Ìƒ|ƒPƒbƒg‚ª—‚¿‚½‚ÌƒGƒŠƒAŒø‰Ê
-			//hp‚ªƒ_ƒEƒ“‚·‚éŒø‰Ê‚ª“–‚½‚éÅŒã‚ÉƒvƒŒƒCƒ„[‚Éƒ_ƒ[ƒW‚ğ—^‚¦‚é
+			AreaProcess(areaCaunter[2]); //å³ä¸‹ã®ãƒã‚±ãƒƒãƒˆãŒè½ã¡ãŸæ™‚ã®ã‚¨ãƒªã‚¢åŠ¹æœ
+			//hpãŒãƒ€ã‚¦ãƒ³ã™ã‚‹åŠ¹æœãŒå½“ãŸã‚‹æ™‚æœ€å¾Œã«ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã«ãƒ€ãƒ¡ãƒ¼ã‚¸ã‚’ä¸ãˆã‚‹
 			if (hpDown)
 			{
 				player_->TakeDamage(damage_);
 				player_->SetIsDamage();
 				hpDown = false;
 			}
-			//ˆ—‚ªI‚í‚Á‚½‚çƒtƒ‰ƒO‚ğ—§‚½‚¹•¡”ˆ—‚³‚ê‚È‚¢‚æ‚¤‚É‚·‚é
+			//å‡¦ç†ãŒçµ‚ã‚ã£ãŸã‚‰ãƒ•ãƒ©ã‚°ã‚’ç«‹ãŸã›è¤‡æ•°å‡¦ç†ã•ã‚Œãªã„ã‚ˆã†ã«ã™ã‚‹
 			isDamage = true;
 			isActive[i] = false;
 			break;
 		}
 		else if (CheckCollision(ballPositions[i], pockets[1]) && isActive[i])
 		{
-			AreaProcess(areaCaunter[3]); //‰Eã‚Ìƒ|ƒPƒbƒg‚ª—‚¿‚½‚ÌƒGƒŠƒAŒø‰Ê
-			//hp‚ªƒ_ƒEƒ“‚·‚éŒø‰Ê‚ª“–‚½‚éÅŒã‚ÉƒvƒŒƒCƒ„[‚Éƒ_ƒ[ƒW‚ğ—^‚¦‚é
+			AreaProcess(areaCaunter[3]); //å³ä¸Šã®ãƒã‚±ãƒƒãƒˆãŒè½ã¡ãŸæ™‚ã®ã‚¨ãƒªã‚¢åŠ¹æœ
+			//hpãŒãƒ€ã‚¦ãƒ³ã™ã‚‹åŠ¹æœãŒå½“ãŸã‚‹æ™‚æœ€å¾Œã«ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã«ãƒ€ãƒ¡ãƒ¼ã‚¸ã‚’ä¸ãˆã‚‹
 			if (hpDown)
 			{
 				player_->TakeDamage(damage_);
 				player_->SetIsDamage();
 				hpDown = false;
 			}
-			//ˆ—‚ªI‚í‚Á‚½‚çƒtƒ‰ƒO‚ğ—§‚½‚¹•¡”ˆ—‚³‚ê‚È‚¢‚æ‚¤‚É‚·‚é
+			//å‡¦ç†ãŒçµ‚ã‚ã£ãŸã‚‰ãƒ•ãƒ©ã‚°ã‚’ç«‹ãŸã›è¤‡æ•°å‡¦ç†ã•ã‚Œãªã„ã‚ˆã†ã«ã™ã‚‹
 			isDamage = true;
 			isActive[i] = false;
 			break;
@@ -134,14 +133,14 @@ void Field::HandleBallPocket()
 		{
 			AreaProcess(areaCaunter[0]);
 			isDamage = false;
-			AreaProcess(areaCaunter[3]); //^‚ñ’†ã‚Ìƒ|ƒPƒbƒg‚ª—‚¿‚½‚ÌƒGƒŠƒAŒø‰Ê
+			AreaProcess(areaCaunter[3]); //çœŸã‚“ä¸­ä¸Šã®ãƒã‚±ãƒƒãƒˆãŒè½ã¡ãŸæ™‚ã®ã‚¨ãƒªã‚¢åŠ¹æœ
 			if (hpDown)
 			{
 				player_->TakeDamage(damage_);
 				player_->SetIsDamage();
 				hpDown = false;
 			}
-			//ˆ—‚ªI‚í‚Á‚½‚çƒtƒ‰ƒO‚ğ—§‚½‚¹•¡”ˆ—‚³‚ê‚È‚¢‚æ‚¤‚É‚·‚é
+			//å‡¦ç†ãŒçµ‚ã‚ã£ãŸã‚‰ãƒ•ãƒ©ã‚°ã‚’ç«‹ãŸã›è¤‡æ•°å‡¦ç†ã•ã‚Œãªã„ã‚ˆã†ã«ã™ã‚‹
 			isDamage = false;
 			isActive[i] = false;
 			break;
@@ -150,14 +149,14 @@ void Field::HandleBallPocket()
 		{
 			AreaProcess(areaCaunter[1]);
 			isDamage = false;
-			AreaProcess(areaCaunter[2]); //^‚ñ’†‰º‚Ìƒ|ƒPƒbƒg‚ª—‚¿‚½‚ÌƒGƒŠƒAŒø‰Ê
+			AreaProcess(areaCaunter[2]); //çœŸã‚“ä¸­ä¸‹ã®ãƒã‚±ãƒƒãƒˆãŒè½ã¡ãŸæ™‚ã®ã‚¨ãƒªã‚¢åŠ¹æœ
 			if (hpDown)
 			{
 				player_->TakeDamage(damage_);
 				player_->SetIsDamage();
 				hpDown = false;
 			}
-			//ˆ—‚ªI‚í‚Á‚½‚çƒtƒ‰ƒO‚ğ—§‚½‚¹•¡”ˆ—‚³‚ê‚È‚¢‚æ‚¤‚É‚·‚é
+			//å‡¦ç†ãŒçµ‚ã‚ã£ãŸã‚‰ãƒ•ãƒ©ã‚°ã‚’ç«‹ãŸã›è¤‡æ•°å‡¦ç†ã•ã‚Œãªã„ã‚ˆã†ã«ã™ã‚‹
 			isDamage = false;
 			isActive[i] = false;
 			break;
@@ -165,16 +164,16 @@ void Field::HandleBallPocket()
 	}
 	
 }
-//ƒ{[ƒ‹‚Ìƒ_ƒ[ƒW‚ğ‘ã“ü‚·‚é‚½‚ß‚ÌŠÖ”
+//ãƒœãƒ¼ãƒ«ã®ãƒ€ãƒ¡ãƒ¼ã‚¸ã‚’ä»£å…¥ã™ã‚‹ãŸã‚ã®é–¢æ•°
 void Field::SetDamage(int damage)
 {
 	damage_ = damage;
 }
-//ƒ|ƒPƒbƒg‚Éƒ{[ƒ‹‚ğ“ü‚ê‚é‚½‚Ñ‚Éƒ‰ƒ“ƒ_ƒ€‚É•Ï”‚ğ•Ï‚¦‚éˆ—
+//ãƒã‚±ãƒƒãƒˆã«ãƒœãƒ¼ãƒ«ã‚’å…¥ã‚Œã‚‹ãŸã³ã«ãƒ©ãƒ³ãƒ€ãƒ ã«å¤‰æ•°ã‚’å¤‰ãˆã‚‹å‡¦ç†
 void Field::GenerateRandomNumber()
 {
-	//ƒ{ƒX‚ªUŒ‚‚ğ‚·‚é‚½‚Ñ‚É”­“®‚·‚é‚à‚Ì
-	//ƒGƒŠƒAŒø‰Ê‚Ì‚½‚ß‚Ì•Ï”‚ğXV‚·‚é
+	//ãƒœã‚¹ãŒæ”»æ’ƒã‚’ã™ã‚‹ãŸã³ã«ç™ºå‹•ã™ã‚‹ã‚‚ã®
+	//ã‚¨ãƒªã‚¢åŠ¹æœã®ãŸã‚ã®å¤‰æ•°ã‚’æ›´æ–°ã™ã‚‹
 	unsigned int currentTime = (unsigned int)time(nullptr);
 	srand(currentTime);
 	for (int i = 0; i < 4; i++)
@@ -184,15 +183,15 @@ void Field::GenerateRandomNumber()
 	isDamage = false;
 }
 
-//‚±‚ÌŠÖ”‚Íã‹L‚É‚ ‚éareaNumber‚Ì’l‚ğŒ©‚Ä‚Ç‚±‚É‰æ‘œ‚ğ•`‰æ‚·‚é‚©‚ğŒˆ‚ß‚éˆ—AreaNumber‚É‚Â‚¢‚Ä‚Í‡”Ô‚É•`‰æ‚³‚ê‚é‚æ‚¤‚É0`3‚ğİ’è‚·‚é
+//ã“ã®é–¢æ•°ã¯ä¸Šè¨˜ã«ã‚ã‚‹areaNumberã®å€¤ã‚’è¦‹ã¦ã©ã“ã«ç”»åƒã‚’æç”»ã™ã‚‹ã‹ã‚’æ±ºã‚ã‚‹å‡¦ç†AreaNumberã«ã¤ã„ã¦ã¯é †ç•ªã«æç”»ã•ã‚Œã‚‹ã‚ˆã†ã«0ï½3ã‚’è¨­å®šã™ã‚‹
 void Field::AreaDraw(int number,int AreaNumber)
 {
-	//ƒiƒ“ƒo[‚ª25ˆÈ‰º‚Ìê‡‚Ìˆ—(Šm—¦25%)
+	//ãƒŠãƒ³ãƒãƒ¼ãŒ25ä»¥ä¸‹ã®å ´åˆã®å‡¦ç†(ç¢ºç‡25%)
 	if (number <= 20 )
 	{
 		if (AreaNumber == 0)
 		{
-			//¶ã‚Ì‰æ‘œ
+			//å·¦ä¸Šã®ç”»åƒ
 			pos[0] = { 430,376 };
 			testSprite[0]->SetPosition(pos[0]);
 			testSprite[0]->Draw();
@@ -200,7 +199,7 @@ void Field::AreaDraw(int number,int AreaNumber)
 		}
 		if(AreaNumber==1)
 		{
-			//¶‰º‚Ì‰æ‘œ
+			//å·¦ä¸‹ã®ç”»åƒ
 			pos[1] = { 430,586 };
 			testSprite[1]->SetPosition(pos[1]);
 			testSprite[1]->Draw();
@@ -209,7 +208,7 @@ void Field::AreaDraw(int number,int AreaNumber)
 
 		if (AreaNumber == 2)
 		{
-			//‰E‰º‚Ì‰æ‘œ
+			//å³ä¸‹ã®ç”»åƒ
 			pos[2] = { 848,586 };
 			testSprite[2]->SetPosition(pos[2]);
 			testSprite[2]->Draw();
@@ -218,7 +217,7 @@ void Field::AreaDraw(int number,int AreaNumber)
 
 		if (AreaNumber == 3)
 		{
-			//‰Eã‚Ì‰æ‘œ
+			//å³ä¸Šã®ç”»åƒ
 			pos[3] = { 848,376 };
 			testSprite[3]->SetPosition(pos[3]);
 			testSprite[3]->Draw();
@@ -226,7 +225,7 @@ void Field::AreaDraw(int number,int AreaNumber)
 		}
 		
 	}
-	//ƒiƒ“ƒo[‚ª25‚©‚ç50‚Ìê‡‚Ìˆ—(Šm—¦25%)
+	//ãƒŠãƒ³ãƒãƒ¼ãŒ25ã‹ã‚‰50ã®å ´åˆã®å‡¦ç†(ç¢ºç‡25%)
 	else if (number >= 20 && number <= 65 )
 	{
 		if (AreaNumber == 0)
@@ -260,7 +259,7 @@ void Field::AreaDraw(int number,int AreaNumber)
 			areaCaunter[3] = number;
 		}
 	}
-	//ƒiƒ“ƒo[‚ª50‚©‚ç75‚Ì‚Ìˆ—(Šm—¦25%)
+	//ãƒŠãƒ³ãƒãƒ¼ãŒ50ã‹ã‚‰75ã®æ™‚ã®å‡¦ç†(ç¢ºç‡25%)
 	else if (number >= 65 && number <= 75 )
 	{
 		if (AreaNumber == 0)
@@ -320,35 +319,42 @@ void Field::AreaDraw(int number,int AreaNumber)
 
 int Field::AreaProcess(int number)
 {
-	//¡‚ÍƒvƒŒƒCƒ„[‚ÌHP‚ğ‰ñ•œ‚µ‚½‚èƒ^[ƒ“‚Æ‚¢‚¤ŠT”O‚ª‚È‚¢‚½‚ßƒRƒƒ“ƒgƒAƒEƒg
-	//ƒiƒ“ƒo[‚ª20ˆÈ‰º‚Ìê‡‚Ìˆ—(Šm—¦20%)
-	if (number <= 20 && isDamage == false)
-	{
-		damage_ = damage_ / 2;
-		isDamage = true;
+	if (isDragon_) {
+		// === ãƒ‰ãƒ©ã‚´ãƒ³ç”¨ç¢ºç‡ ===
+		// 0?100 ã® number ã®ã†ã¡ 40% ã‚’ãƒ€ãƒ¡ãƒ¼ã‚¸ç™ºå‹•
+		if (number <= 40 && !isDamage) {
+			damage_ = damage_ * 2; // ä¾‹ï¼šãƒ€ãƒ¡ãƒ¼ã‚¸å¼·åŒ–
+			isDamage = true;
+		}
+		else {
+			damage_ = damage_; // ãƒ€ãƒ¡ãƒ¼ã‚¸ãã®ã¾ã¾
+			isDamage = true;
+		}
 	}
-	//ƒiƒ“ƒo[‚ª20‚©‚ç65‚Ìê‡‚Ìˆ—(Šm—¦45%)
-	else if (number >= 20 && number <= 65 && isDamage == false)
-	{
-		damage_ = damage_ * 2;
-		isDamage = true;
+	else {
+		// === ã‚¹ãƒ©ã‚¤ãƒ ã‚­ãƒ³ã‚°ç”¨å¾“æ¥å‡¦ç† ===
+		if (number <= 20 && !isDamage) {
+			damage_ = damage_ / 2;
+			isDamage = true;
+		}
+		else if (number >= 20 && number <= 65 && !isDamage) {
+			damage_ = damage_ * 2;
+			isDamage = true;
+		}
+		else if (number >= 65 && number <= 75 && !isDamage) {
+			hpDown = true; // ã“ã“ã¯æ®‹ã™ï¼Ÿ
+			isDamage = true;
+		}
+		else if (number >= 75 && !isDamage) {
+			damage_ = damage_;
+			isDamage = true;
+		}
 	}
-	//ƒiƒ“ƒo[‚ª65‚©‚ç75‚Ì‚Ìˆ—(Šm—¦10%)
-	else if (number >= 65 && number <= 75 && isDamage == false)
-	{
-		hpDown = true;
-		isDamage = true;
-	}
-	//ƒiƒ“ƒo[‚ª75ˆÈã‚Ì‚Ìˆ—(Šm—¦25%)
-	else if (number >= 75 && isDamage == false)
-	{
-		damage_ = damage_;
-		isDamage = true;
-	}
+
 	return number;
 }
 
-//“–‚½‚è”»’è(Šeƒ{[ƒ‹‚ÌÀ•W‚ÆŠeƒ|ƒPƒbƒg‚ÌÀ•W)
+//å½“ãŸã‚Šåˆ¤å®š(å„ãƒœãƒ¼ãƒ«ã®åº§æ¨™ã¨å„ãƒã‚±ãƒƒãƒˆã®åº§æ¨™)
 bool Field::CheckCollision(Vector2 pos1, Vector2 pos2)
 {
 	float pocketRadius = 38.0f;
@@ -365,11 +371,16 @@ bool Field::CheckCollision(Vector2 pos1, Vector2 pos2)
 	}
 }
 
+void Field::SetBossType(bool isDragon) {
+	isDragon_ = isDragon;
+}
+
+
 void Field::ReviveBall()
 {
 	for (int i = 0; i < 10; i++)
 	{
-		isActive[i] = true;   // Ä‚ÑQÆ‰Â”\‚É‚·‚é
+		isActive[i] = true;   // ï¿½Ä‚ÑQï¿½Æ‰Â”\ï¿½É‚ï¿½ï¿½ï¿½
 	}
 }
 

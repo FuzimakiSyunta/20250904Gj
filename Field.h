@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include <Vector2.h>
 #include <Sprite.h>
 #include "Input.h"
@@ -35,41 +35,48 @@ public:
 
 	bool CheckCollision(Vector2 pos1,Vector2 pos2);
 
+
+	void SetBossType(bool isDragon); // BossãŒDragonã‹ã©ã†ã‹ã‚’è¨­å®š
+
 	void ReviveBall();
 
-private:
-	int areaNumber[4]{ 0,0,0,0 };  //ƒ|ƒPƒbƒg‚É“ü‚ê‚é‚½‚Ñ‚É•Ï”‚ğ•ÏX‚³‚¹‚Ä‚¢‚é
 
-	int areaCaunter[4]{ 0,0,0 };  //ŠÖ”‚Ì’l‚ğq‚Ì•Ï”‚É‘ã“ü‚³‚¹‚Ä‚¢‚é
+private:
+	int areaNumber[4]{ 0,0,0,0 };  //ãƒã‚±ãƒƒãƒˆã«å…¥ã‚Œã‚‹ãŸã³ã«å¤‰æ•°ã‚’å¤‰æ›´ã•ã›ã¦ã„ã‚‹
+
+	int areaCaunter[4]{ 0,0,0 };  //é–¢æ•°ã®å€¤ã‚’å­ã®å¤‰æ•°ã«ä»£å…¥ã•ã›ã¦ã„ã‚‹
 	
-	bool isDamage; //ˆê‰ñ‚Å‚à”­“®‚µ‚½‚©
+	bool isDamage; //ä¸€å›ã§ã‚‚ç™ºå‹•ã—ãŸã‹
 	int damage_;
 
 	
-	Ball* balls_=nullptr;  //ƒ{[ƒ‹
-	const int kBallCount = 10;   //ƒ{[ƒ‹‚Ì”
-	std::vector<Vector2> ballPositions;  //ƒ{[ƒ‹‚ÌÀ•W
+	Ball* balls_=nullptr;  //ãƒœãƒ¼ãƒ«
+	const int kBallCount = 10;   //ãƒœãƒ¼ãƒ«ã®æ•°
+	std::vector<Vector2> ballPositions;  //ãƒœãƒ¼ãƒ«ã®åº§æ¨™
 	Player* player_ = nullptr;
 
 	
-	Vector2 pos[12];  //ƒGƒŠƒA‚Ì‰æ‘œ‚É•K—v‚ÈÀ•W
-	Sprite* testSprite[12];  //ƒGƒŠƒA‚ÌƒXƒNƒŠƒvƒg
+	Vector2 pos[12];  //ã‚¨ãƒªã‚¢ã®ç”»åƒã«å¿…è¦ãªåº§æ¨™
+	Sprite* testSprite[12];  //ã‚¨ãƒªã‚¢ã®ã‚¹ã‚¯ãƒªãƒ—ãƒˆ
 	Input* input_ = nullptr; 
-	uint32_t texttexture[3];  //ƒGƒŠƒA‚ğ•\¦‚·‚é‚½‚ß‚Ì‰æ‘œ
+	uint32_t texttexture[3];  //ã‚¨ãƒªã‚¢ã‚’è¡¨ç¤ºã™ã‚‹ãŸã‚ã®ç”»åƒ
 
 	Vector2 pockets[6] = {
-	 { 242, 293 },   // ¶ã
-	 { 1039, 293 },  // ‰Eã
-	 { 242, 672 },   // ¶‰º
-	 { 1039, 672 },  // ‰E‰º
-	 { 641, 293 },   // ã’†‰›
-	 { 641, 672 }    // ‰º’†‰›
+	 { 242, 293 },   // å·¦ä¸Š
+	 { 1039, 293 },  // å³ä¸Š
+	 { 242, 672 },   // å·¦ä¸‹
+	 { 1039, 672 },  // å³ä¸‹
+	 { 641, 293 },   // ä¸Šä¸­å¤®
+	 { 641, 672 }    // ä¸‹ä¸­å¤®
 	};
 
-	bool hpDown;  //‘S‚Ä‚Ìˆ—‚ğ‚µ‚Ä‚©‚çHp‚ğŒ¸‚ç‚·‚½‚ß‚É•K—v‚È•Ï”
+	bool hpDown;  //å…¨ã¦ã®å‡¦ç†ã‚’ã—ã¦ã‹ã‚‰Hpã‚’æ¸›ã‚‰ã™ãŸã‚ã«å¿…è¦ãªå¤‰æ•°
+
 
 	bool isActive[10];
 
+
+	bool isDragon_ = false; // ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã¯ã‚¹ãƒ©ã‚¤ãƒ ã‚­ãƒ³ã‚°
 	
 
 };
