@@ -24,20 +24,32 @@ void TitleScene::Initialize()
 	titleButtonSprite[1] = Sprite::Create(titleButton[1], { 0,-30 }, { 1,1,1,1 }, { 0.0f,0.0f });
 	isSceneEnd_ = false;
 
-	color = { 0,0,0,0 };
+	color = { 0,0,0,1 };
 
 	fadeInTexture = TextureManager::Load("uvChecker.png");
 	fadeInSprite.reset(Sprite::Create(fadeInTexture, { 640,370 }, color, { 0.5f,0.5f }));
 
-	fadeInSprite->SetSize({1280,820});
+	fadeInSprite->SetSize({1280,920});
 	//すぐにシーンに移らないためのクールタイム初期化
 	sceneCooltime = 0;
 
 	fadeColor = 0.01f;
+	isFade = false;
+	fadeFlag = false;
 }
 
 void TitleScene::Update()
 {
+
+	if (fadeFlag == false)
+	{
+		color.w -= fadeColor;
+		fadeInSprite->SetColor(color);
+	}
+	if (color.w <= 0 && fadeFlag == false)
+	{
+		fadeFlag = true;
+	}
 	//すぐにシーンに移らないようにする処理
 	if (isSceneEnd_ == false)
 	{
@@ -54,6 +66,7 @@ void TitleScene::Update()
 	if (mousePosition.x >= 80 && mousePosition.x <= 366 && mousePosition.y >= 370 && mousePosition.y <= 500 && input_->IsPressMouse(WM_LBUTTONDOWN == 0) && sceneCooltime > 10)
 	{
 		isFade = true;
+		fadeFlag = true;
 	}
 
 	if (isFade==true)
