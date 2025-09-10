@@ -3,6 +3,7 @@
 #include "Vector2.h"
 #include "Input.h"
 #include "WinApp.h"
+#include"Boss.h"
 class Player
 {
 public:
@@ -57,6 +58,7 @@ private:
 	std::unique_ptr<Sprite> hpGaugeSprite_;
 	std::unique_ptr<Sprite> hpHartSprite_;
 
+	Boss* boss_=nullptr;
 #pragma region ���W�֘A
 
 	Vector2 pos = {250,1050};
@@ -116,6 +118,5 @@ private:
 	bool strikeWaiting_ = false;   // 待機中かどうか
 	int strikeWaitTimer_ = 120;      // 待機時間（フレーム）
 	float strikeTargetX_ = 600.0f; // 目標座標（例: X=600で停止）
+	
 };
-
-//650, 400

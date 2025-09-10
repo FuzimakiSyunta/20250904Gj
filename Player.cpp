@@ -5,13 +5,14 @@
 #include"imgui/imgui.h"
 
 
+
 void Player::Initialize(Input* input, const Vector2& startPos, float radius) {
     input_ = input;
     pos = startPos;
     drawRadius_ = radius;              // 例: 16 → 直径32pxで描画
     collisionRadius_ = radius;  // ★ 当たり判定だけ60%に縮小
     vel_ = { 0.0f, 0.0f };
-
+    boss_ = new Boss();
     dragging_ = false;
 
     // プレイヤー
@@ -408,7 +409,17 @@ void Player::CheckPocketCollision() {
 
         if (distSq < pocketRadius * pocketRadius) {
             // ★ ダメージを受ける
-            TakeDamage(plyerdamage);
+            if ( boss_->GetType() == BossType::Dragon) 
+            {
+                plyerdamage = 1;
+                TakeDamage(plyerdamage);
+            }
+            else if (boss_->GetType() == BossType::SlimeKing)
+            {
+                plyerdamage = 100;
+                TakeDamage(plyerdamage);
+            }
+
             invincibleTimer_ = 60; // 約1秒の無敵時間（60fps想定）
             isDamage = true;
             // ★ ランダムで別のポケットを選択
