@@ -48,7 +48,7 @@ void GameScene::Initialize() {
 	fadeFlag = false;
 	fadeOutTexture = TextureManager::Load("uvChecker.png");
 	fadeOutSprite_.reset(Sprite::Create(fadeOutTexture, { 640,420 }, color, { 0.5f,0.5f }));
-	fadeOutSprite_->SetSize({ 1280,820 });
+	fadeOutSprite_->SetSize({ 1280,920 });
 	isFade = false;
 }
 

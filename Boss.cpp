@@ -79,9 +79,9 @@ void Boss::Update() {
 		isDebugdamage_ = false;
     }*/
 	// デバッグ用：1キーで10ダメージ
-    if (input_->PushKey(DIK_1)) {
+ /*   if (input_->PushKey(DIK_1)) {
         TakeDamage(10);
-    }
+    }*/
     //ゲームクリア処理
     if (isDead_==true)
     {

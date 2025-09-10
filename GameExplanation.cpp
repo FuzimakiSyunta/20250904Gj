@@ -29,10 +29,10 @@ void GameExplanation::Initialize()
 	fadeInTexture = TextureManager::Load("uvChecker.png");
 	fadeInSprite.reset(Sprite::Create(fadeInTexture, { 640,370 }, color, { 0.5f,0.5f }));
 
-	fadeInSprite->SetSize({ 1280,820 });
+	fadeInSprite->SetSize({ 1280,920 });
 
 	fadeColor = 0.01f;
-	fadeFlag = false;
+	
 }
 
 void GameExplanation::Update()
