@@ -109,6 +109,7 @@ void Player::TakeDamage(int damage) {
 
 void Player::Update() {
 
+
    
         Vector2 mousePos = input_->GetMousePosition();
 
