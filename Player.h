@@ -108,7 +108,6 @@ private:
 	int damage_;
 	
 	int playerDamage; //プレイヤーがポケットに入った時に食らうダメージ
-	Boss* boss_;
 	Field* field_=nullptr;
 	bool isChange;
 

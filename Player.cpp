@@ -107,8 +107,8 @@ void Player::TakeDamage(int damage) {
 
 void Player::Update() {
 
-   
-        Vector2 mousePos = input_->GetMousePosition();
+
+    Vector2 mousePos = input_->GetMousePosition();
 
     // --- WASDで移動 ---
   /*  const float accel = 0.5f;
@@ -117,81 +117,81 @@ void Player::Update() {
     if (input_->PushKey(DIK_A)) vel_.x -= accel;
     if (input_->PushKey(DIK_D)) vel_.x += accel;*/
 
-        // --- ボールがすべて停止している場合のみドラッグ処理 ---
+    // --- ボールがすべて停止している場合のみドラッグ処理 ---
 
-        if (ballspeed0 == true && IsStopped() == true)
+    if (ballspeed0 == true && IsStopped() == true)
+    {
+        // ドラッグ開始
+        if (input_->IsTriggerMouse(0))
         {
-            // ドラッグ開始
-            if (input_->IsTriggerMouse(0))
-            {
-                dragging_ = true;
-                dragStart_ = mousePos;
-            }
-
-            // ドラッグ中
-            if (!arrowFlying_ && !arrowReturning_ && dragging_ && input_->IsPressMouse(0))
-            {
-                dragCurrent_ = mousePos;
-
-                Vector2 diff = { dragStart_.x - dragCurrent_.x, dragStart_.y - dragCurrent_.y };
-                float length = sqrtf(diff.x * diff.x + diff.y * diff.y);
-                float angle = atan2f(diff.y, diff.x);
-
-                playerArrowSprite_->SetRotation(angle);
-                float scale = std::clamp(length / 100.0f, 0.5f, 3.0f);
-                playerArrowSprite_->SetSize({ drawRadius_ + 40 * 1.5f * scale, drawRadius_ + 40 * 1.5f * scale });
-                Vector2 offset = { 0.0f, 0.0f };
-                playerArrowSprite_->SetPosition({ pos.x + offset.x, pos.y + offset.y });
-            }
-
-            // ドラッグ終了
-            if (dragging_ && !input_->IsPressMouse(0)) {
-                dragging_ = false;
-                Vector2 diff = { dragStart_.x - mousePos.x, dragStart_.y - mousePos.y };
-                const float power = 0.1f;
-                vel_.x = diff.x * power;
-                vel_.y = diff.y * power;
-
-            }
+            dragging_ = true;
+            dragStart_ = mousePos;
         }
 
-        // --- 摩擦 ---
-        vel_ *= 0.98f;
+        // ドラッグ中
+        if (!arrowFlying_ && !arrowReturning_ && dragging_ && input_->IsPressMouse(0))
+        {
+            dragCurrent_ = mousePos;
 
-        // --- 最大速度制限 ---
-        const float maxSpeed = 35.0f; // 最大速度
-        float speed = std::sqrt(vel_.x * vel_.x + vel_.y * vel_.y);
-        if (speed > maxSpeed) {
-            float scale = maxSpeed / speed;
-            vel_.x *= scale;
-            vel_.y *= scale;
+            Vector2 diff = { dragStart_.x - dragCurrent_.x, dragStart_.y - dragCurrent_.y };
+            float length = sqrtf(diff.x * diff.x + diff.y * diff.y);
+            float angle = atan2f(diff.y, diff.x);
+
+            playerArrowSprite_->SetRotation(angle);
+            float scale = std::clamp(length / 100.0f, 0.5f, 3.0f);
+            playerArrowSprite_->SetSize({ drawRadius_ + 40 * 1.5f * scale, drawRadius_ + 40 * 1.5f * scale });
+            Vector2 offset = { 0.0f, 0.0f };
+            playerArrowSprite_->SetPosition({ pos.x + offset.x, pos.y + offset.y });
         }
 
-        // --- 位置更新 ---
-        pos += vel_;
+        // ドラッグ終了
+        if (dragging_ && !input_->IsPressMouse(0)) {
+            dragging_ = false;
+            Vector2 diff = { dragStart_.x - mousePos.x, dragStart_.y - mousePos.y };
+            const float power = 0.1f;
+            vel_.x = diff.x * power;
+            vel_.y = diff.y * power;
 
-        // --- 画面端で反射 ---
-        const float left = 240.0f;
-        const float right = 1040.0f;
-        const float top = 290.0f;
-        const float bottom = 670.0f;
-
-        if (pos.x < left) { pos.x = left; vel_.x *= -1.0f; }
-        if (pos.x > right) { pos.x = right; vel_.x *= -1.0f; }
-        if (pos.y < top) { pos.y = top; vel_.y *= -1.0f; }
-        if (pos.y > bottom) { pos.y = bottom; vel_.y *= -1.0f; }
-
-        // 無敵時間を減算
-        if (invincibleTimer_ > 0) {
-            invincibleTimer_--;
         }
-        // HPバーの揺れ更新
-        if (hpBarShaking_) {
-            hpBarShakeTimer_--;
-            if (hpBarShakeTimer_ <= 0) {
-                hpBarShaking_ = false;
-            }
+    }
+
+    // --- 摩擦 ---
+    vel_ *= 0.98f;
+
+    // --- 最大速度制限 ---
+    const float maxSpeed = 35.0f; // 最大速度
+    float speed = std::sqrt(vel_.x * vel_.x + vel_.y * vel_.y);
+    if (speed > maxSpeed) {
+        float scale = maxSpeed / speed;
+        vel_.x *= scale;
+        vel_.y *= scale;
+    }
+
+    // --- 位置更新 ---
+    pos += vel_;
+
+    // --- 画面端で反射 ---
+    const float left = 240.0f;
+    const float right = 1040.0f;
+    const float top = 290.0f;
+    const float bottom = 670.0f;
+
+    if (pos.x < left) { pos.x = left; vel_.x *= -1.0f; }
+    if (pos.x > right) { pos.x = right; vel_.x *= -1.0f; }
+    if (pos.y < top) { pos.y = top; vel_.y *= -1.0f; }
+    if (pos.y > bottom) { pos.y = bottom; vel_.y *= -1.0f; }
+
+    // 無敵時間を減算
+    if (invincibleTimer_ > 0) {
+        invincibleTimer_--;
+    }
+    // HPバーの揺れ更新
+    if (hpBarShaking_) {
+        hpBarShakeTimer_--;
+        if (hpBarShakeTimer_ <= 0) {
+            hpBarShaking_ = false;
         }
+    }
 
     playerSprite_->SetPosition(pos);
 
@@ -208,19 +208,19 @@ void Player::Update() {
     }
 
     CheckPocketCollision();
-   
+
     // --- nextStriket_ の動き制御 ---
-    if (!strikeWaiting_&&ballspeed0 == true && IsStopped() == true) {
+    if (!strikeWaiting_ && ballspeed0 == true && IsStopped() == true) {
         // 動かす
         nextStriket_.x += nextStriketSpeed;
-       
+
         // 特定座標に到達したら待機開始
-        if (nextStriket_.x >= strikeTargetX_&& NextStop == true) {
+        if (nextStriket_.x >= strikeTargetX_ && NextStop == true) {
             nextStriket_.x = strikeTargetX_; // 位置をピッタリ固定
             strikeWaiting_ = true;
             strikeWaitTimer_ = 60;
             NextStop = false;
-            
+
         }
     }
     else {
@@ -229,22 +229,23 @@ void Player::Update() {
         if (strikeWaitTimer_ <= 0) {
             strikeWaiting_ = false; // 待機終了 → 動き出す
         }
-       
 
-    nextStrikeSprite_->SetPosition(nextStriket_);
 
-    if (ballspeed0 == false && IsStopped() == false)
-    {
-        nextStriket_ = { -400,400 };
-        strikeWaitTimer_ = 60; // 60フレーム(=約1秒)待機
-        NextStop = true;
-        isChange = false;  //このフラグを削除するとターンごとにエリアを変える処理の一部がなくなります
-    }
-    //このフラグを削除するとターンごとにエリアを変える処理の一部がなくなります
-    if (ballspeed0 == true && IsStopped() == true&&isChange==false)
-    {
-        field_->GenerateRandomNumber();
-        isChange = true;
+        nextStrikeSprite_->SetPosition(nextStriket_);
+
+        if (ballspeed0 == false && IsStopped() == false)
+        {
+            nextStriket_ = { -400,400 };
+            strikeWaitTimer_ = 60; // 60フレーム(=約1秒)待機
+            NextStop = true;
+            isChange = false;  //このフラグを削除するとターンごとにエリアを変える処理の一部がなくなります
+        }
+        //このフラグを削除するとターンごとにエリアを変える処理の一部がなくなります
+        if (ballspeed0 == true && IsStopped() == true && isChange == false)
+        {
+            field_->GenerateRandomNumber();
+            isChange = true;
+        }
     }
 }
 
