@@ -140,8 +140,8 @@ void Player::Update() {
 
             playerArrowSprite_->SetRotation(angle);
             float scale = std::clamp(length / 100.0f, 0.5f, 3.0f);
-            playerArrowSprite_->SetSize({ drawRadius_+40 * 1.5f * scale, drawRadius_+40 * 1.5f * scale });
-            Vector2 offset = { 0.0f, 0.0f };
+            playerArrowSprite_->SetSize({ drawRadius_ + 40 * 1.5f * scale, drawRadius_+40 * 1.5f * scale });
+            Vector2 offset = { 0.0f , 0.0f };
             playerArrowSprite_->SetPosition({ pos.x + offset.x, pos.y + offset.y });
         }
        
@@ -149,7 +149,7 @@ void Player::Update() {
         if (dragging_ && !input_->IsPressMouse(0)) {
             dragging_ = false;
             Vector2 diff = { dragStart_.x - mousePos.x, dragStart_.y - mousePos.y };
-            const float power = 0.1f;
+            const float power = 0.5f;
             vel_.x = diff.x * power;
             vel_.y = diff.y * power;
            
@@ -158,6 +158,15 @@ void Player::Update() {
 
     // --- 摩擦 ---
     vel_ *= 0.98f;
+
+    // --- 最大速度制限 ---
+    const float maxSpeed = 30.0f; // 最大速度
+    float speed = std::sqrt(vel_.x * vel_.x + vel_.y * vel_.y);
+    if (speed > maxSpeed) {
+        float scale = maxSpeed / speed;
+        vel_.x *= scale;
+        vel_.y *= scale;
+    }
 
     // --- 位置更新 ---
     pos += vel_;
