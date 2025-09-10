@@ -43,7 +43,7 @@ void GameScene::Initialize() {
 	fallPocketHandle_ = audio_->LoadWave("/sound/SE/fallsound.wav");
 
 	backSoundHandle_ = audio_->LoadWave("/sound/SE/backMusic.mp3");
-	audio_->PlayWave(backSoundHandle_, true, 1.0f);
+	audio_->PlayWave(backSoundHandle_, true, 0.2f);
 	ball_->SetField(field_.get());
 
 	color = { 0,0,0,1 };
