@@ -16,6 +16,8 @@ public:
 
 	void Draw();
 
+	void ProcessPocket(int ballIndex, int pocketIndex, int areaIndex, bool damageFlag);
+
 	void DebugNumberDraw();
 
 	void HandleBallPocket();
@@ -28,6 +30,8 @@ public:
 
 	void GenerateRandomNumber();
 
+	void DrawAreaSprite(int spriteOffset, int AreaNumber, int number);
+
 	void AreaDraw(int number, int AreaNumber);
 
 	void DragoAreaDraw(int number, int AreaNumber);
@@ -37,7 +41,6 @@ public:
 	int GetDamage() { return damage_; }
 
 	bool CheckCollision(Vector2 pos1,Vector2 pos2);
-
 
 	void SetBossType(bool isDragon); // BossがDragonかどうかを設定
 
