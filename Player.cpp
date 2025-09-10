@@ -160,6 +160,15 @@ void Player::Update() {
         // --- 摩擦 ---
         vel_ *= 0.98f;
 
+        // --- 最大速度制限 ---
+        const float maxSpeed = 35.0f; // 最大速度
+        float speed = std::sqrt(vel_.x * vel_.x + vel_.y * vel_.y);
+        if (speed > maxSpeed) {
+            float scale = maxSpeed / speed;
+            vel_.x *= scale;
+            vel_.y *= scale;
+        }
+
         // --- 位置更新 ---
         pos += vel_;
 
@@ -367,7 +376,7 @@ void Player::CheckPocketCollision() {
 
         if (distSq < pocketRadius * pocketRadius) {
             // ★ ダメージを受ける
-            TakeDamage(1);
+            TakeDamage(10);
             invincibleTimer_ = 60; // 約1秒の無敵時間（60fps想定）
             isDamage = true;
             // ★ ランダムで別のポケットを選択
