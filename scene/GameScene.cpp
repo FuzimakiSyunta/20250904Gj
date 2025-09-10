@@ -40,6 +40,12 @@ void GameScene::Initialize() {
 	damageText_->Initialize();
 	isSceneEnd_ = false;
 	ball_->SetField(field_.get());
+
+	color = { 0,0,0,1 };
+	fadeColor = 0.01f;
+	fadeFlag = false;
+	fadeOutTexture = TextureManager::Load("uvChecker.png");
+	fadeOutSprite_.reset(Sprite::Create(fadeOutTexture, { 640,420 }, color, { 0.5f,0.5f }));
 }
 
 void GameScene::Update(){
@@ -64,7 +70,18 @@ void GameScene::Update(){
 
 	if (player_->IsSceneEnd() || boss_->IsSceneEnd())
 	{
+		fadeFlag = true;
 		isSceneEnd_ = true;
+	}
+
+	if (fadeFlag == false)
+	{
+		color.w -= fadeColor;
+		fadeOutSprite_->SetColor(color);
+	}
+	if (color.w <= 0 && fadeFlag == false)
+	{
+		fadeFlag = true;
 	}
 }
 

@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include "Sprite.h"
 #include "TextureManager.h"
 #include "Vector2.h"
@@ -16,22 +16,22 @@ public:
 	void Initialize(Input* input);
 	void Update();
 	void Draw();
-	void OnDamage(); // š ƒ_ƒ[ƒW‚ğó‚¯‚½‚Æ‚«‚ÉŒÄ‚ÔŠÖ”
+	void OnDamage(); // â˜… ãƒ€ãƒ¡ãƒ¼ã‚¸ã‚’å—ã‘ãŸã¨ãã«å‘¼ã¶é–¢æ•°
 
-	void TakeDamage(int damage);  // ƒ_ƒ[ƒW‚ğó‚¯‚é
+	void TakeDamage(int damage);  // ãƒ€ãƒ¡ãƒ¼ã‚¸ã‚’å—ã‘ã‚‹
 	int GetHp() const { return currentHp_; }
 
 	bool IsSceneEnd() { return isSceneEnd_; }
 
-	BossType type_;   // Œ»İ‚Ìƒ{ƒXƒ^ƒCƒv
+	BossType type_;   // ç¾åœ¨ã®ãƒœã‚¹ã‚¿ã‚¤ãƒ—
 	BossType GetType() const { return type_; }
 
 private:
 	Input* input_ = nullptr;
-	//ƒeƒNƒXƒ`ƒƒƒnƒ“ƒhƒ‹
+	//ãƒ†ã‚¯ã‚¹ãƒãƒ£ãƒãƒ³ãƒ‰ãƒ«
 	uint32_t bossTexture_ = 0;
 	uint32_t bossDamegeTexture_ = 0;
-	//ƒXƒvƒ‰ƒCƒg
+	//ã‚¹ãƒ—ãƒ©ã‚¤ãƒˆ
 	std::unique_ptr<Sprite> bossSprite_ = nullptr;
 	std::unique_ptr<Sprite> bossDamegeSprite_ = nullptr;
 
@@ -41,11 +41,11 @@ private:
 	bool isSceneEnd_;
 	Vector2 gameButtonPos;
 
-	Vector2 basePos_ = { 540.0f, 40.0f }; // Œ³‚ÌÀ•W
+	Vector2 basePos_ = { 540.0f, 40.0f }; // å…ƒã®åº§æ¨™
 	bool isShaking_ = false;
 	int shakeTimer_ = 0;
-	float shakeStrength_ = 5.0f; // —h‚ê‚Ì‹­‚³
-private://HPƒQ[ƒW
+	float shakeStrength_ = 5.0f; // æºã‚Œã®å¼·ã•
+private://HPã‚²ãƒ¼ã‚¸
 	uint32_t hpBackTex_ = 0u;
 	uint32_t hpGaugeTex_ = 0u;
 	uint32_t gameClearText_;
@@ -53,8 +53,8 @@ private://HPƒQ[ƒW
 	std::unique_ptr<Sprite> hpGaugeSprite_;
 	std::unique_ptr<Sprite> gameClearSprite_;
 	bool isDebugdamage_ = false;
-	int maxHp_ = 100;        // Å‘åHP
-	int currentHp_ = 100;    // Œ»İHP
-	bool isDead_ = false;    // €–Sƒtƒ‰ƒO
+	int maxHp_ = 100;        // æœ€å¤§HP
+	int currentHp_ = 100;    // ç¾åœ¨HP
+	bool isDead_ = false;    // æ­»äº¡ãƒ•ãƒ©ã‚°
 };
 

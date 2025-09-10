@@ -69,6 +69,13 @@ class GameScene {
 	std::unique_ptr<Field> field_;
 	std::unique_ptr<DamageText> damageText_;
 
+	uint32_t fadeOutTexture;
+	std::unique_ptr<Sprite> fadeOutSprite_;
+	Vector4 color;
+	float fadeColor;
+	bool isFade;
+	bool fadeFlag;
+
 	int testDamage = 0;
 
 	bool isSceneEnd_;

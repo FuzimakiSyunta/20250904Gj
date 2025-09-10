@@ -1,8 +1,8 @@
-#include "Billiardstable.h"
+﻿#include "Billiardstable.h"
 
 void Billiardstable::Initialize() {
-	#pragma region �摜
-	//�摜�̓ǂݍ���
+	#pragma region 画像
+	//画像の読み込み
 	billiardstableTexture_ = TextureManager::Load("Billiards.png");
 	billiardstableSprite_.reset(Sprite::Create(billiardstableTexture_, pos));
 	billiardstableSprite_->SetPosition(pos);

@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include "Audio.h"
 #include "DirectXCommon.h"
 #include "DebugText.h"
@@ -13,32 +13,32 @@ class GameExplanation
 {
 public:
 	/// <summary>
-	/// ƒRƒ“ƒXƒgƒ‰ƒNƒ^
+	/// ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 	/// </summary>
 	GameExplanation();
 
 	/// <summary>
-	/// ƒfƒXƒgƒ‰ƒNƒ^
+	/// ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 	/// </summary>
 	~GameExplanation();
 
 	/// <summary>
-	/// ‰Šú‰»
+	/// åˆæœŸåŒ–
 	/// </summary>
 	void Initialize();
 
 	/// <summary>
-	/// XV
+	/// æ›´æ–°
 	/// </summary>
 	void Update();
 
 	/// <summary>
-	/// •`‰æ
+	/// æç”»
 	/// </summary>
 	void Draw();
 
 	/// <summary>
-	/// ƒŠƒZƒbƒg
+	/// ãƒªã‚»ãƒƒãƒˆ
 	/// </summary>
 	void Reset();
 
@@ -65,6 +65,6 @@ private:
 	bool isFade;
 	bool fadeFlag;
 
-	int sceneCooltime; //ƒV[ƒ“‚ÉˆÚ‚è•Ï‚í‚Á‚½ˆêu‚¾‚¯ƒN[ƒ‹ƒ^ƒCƒ€‚ğ—pˆÓ‚µ˜A‘±‚ÅˆÚ‚è•Ï‚í‚ç‚È‚¢‚æ‚¤‚É‚·‚é
+	int sceneCooltime; //ã‚·ãƒ¼ãƒ³ã«ç§»ã‚Šå¤‰ã‚ã£ãŸæ™‚ä¸€ç¬ã ã‘ã‚¯ãƒ¼ãƒ«ã‚¿ã‚¤ãƒ ã‚’ç”¨æ„ã—é€£ç¶šã§ç§»ã‚Šå¤‰ã‚ã‚‰ãªã„ã‚ˆã†ã«ã™ã‚‹
 };
 
