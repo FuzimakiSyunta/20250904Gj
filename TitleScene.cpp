@@ -18,15 +18,16 @@ void TitleScene::Initialize()
 	titleButton[0] = TextureManager::Load("TitleButton.png");
 	titleButton[1] = TextureManager::Load("mouseOk.png");
 	//‰æ‘œ‚ÌÀ•W
-<<<<<<< HEAD
+
 	//pos = { 640,400 };
 	titleSprite = Sprite::Create(textureTitle, pos, { 1,1,1,1 } );
-	titleButtonSprite = Sprite::Create(titleButton, { 0,0 }, { 1,1,1,1 });
-=======
+	titleButtonSprite[2] = Sprite::Create(titleButton[2], {0,0}, {1,1,1,1});
+
 	pos = { 640,400 };
 	titleSprite = Sprite::Create(textureTitle, pos, { 1,1,1,1 }, { 0.5f,0.5f });
 	titleButtonSprite[0] = Sprite::Create(titleButton[0], {0,0}, {1,1,1,1}, {0.0f,0.0f});
 	titleButtonSprite[1] = Sprite::Create(titleButton[1], { 0,0 }, { 1,1,1,1 }, { 0.0f,0.0f });
+
 	isSceneEnd_ = false;
 
 	color = { 0,0,0,0 };
