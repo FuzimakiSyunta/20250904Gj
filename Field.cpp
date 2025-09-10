@@ -186,134 +186,181 @@ void Field::GenerateRandomNumber()
 //この関数は上記にあるareaNumberの値を見てどこに画像を描画するかを決める処理AreaNumberについては順番に描画されるように0～3を設定する
 void Field::AreaDraw(int number,int AreaNumber)
 {
-	//ナンバーが25以下の場合の処理(確率25%)
-	if (number <= 20 )
+	//ドラゴン
+	if (!isDragon_)
 	{
-		if (AreaNumber == 0)
+		//ナンバーが25以下の場合の処理(確率25%)
+		if (number <= 20)
 		{
-			//左上の画像
-			pos[0] = { 430,376 };
-			testSprite[0]->SetPosition(pos[0]);
-			testSprite[0]->Draw();
-			areaCaunter[0] = number;
-		}
-		if(AreaNumber==1)
-		{
-			//左下の画像
-			pos[1] = { 430,586 };
-			testSprite[1]->SetPosition(pos[1]);
-			testSprite[1]->Draw();
-			areaCaunter[1] = number;
-		}
+			if (AreaNumber == 0)
+			{
+				//左上の画像
+				pos[0] = { 430,376 };
+				testSprite[0]->SetPosition(pos[0]);
+				testSprite[0]->Draw();
+				areaCaunter[0] = number;
+			}
+			if (AreaNumber == 1)
+			{
+				//左下の画像
+				pos[1] = { 430,586 };
+				testSprite[1]->SetPosition(pos[1]);
+				testSprite[1]->Draw();
+				areaCaunter[1] = number;
+			}
 
-		if (AreaNumber == 2)
-		{
-			//右下の画像
-			pos[2] = { 848,586 };
-			testSprite[2]->SetPosition(pos[2]);
-			testSprite[2]->Draw();
-			areaCaunter[2] = number;
-		}
+			if (AreaNumber == 2)
+			{
+				//右下の画像
+				pos[2] = { 848,586 };
+				testSprite[2]->SetPosition(pos[2]);
+				testSprite[2]->Draw();
+				areaCaunter[2] = number;
+			}
 
-		if (AreaNumber == 3)
-		{
-			//右上の画像
-			pos[3] = { 848,376 };
-			testSprite[3]->SetPosition(pos[3]);
-			testSprite[3]->Draw();
-			areaCaunter[3] = number;
+			if (AreaNumber == 3)
+			{
+				//右上の画像
+				pos[3] = { 848,376 };
+				testSprite[3]->SetPosition(pos[3]);
+				testSprite[3]->Draw();
+				areaCaunter[3] = number;
+			}
+
 		}
-		
+		//ナンバーが25から50の場合の処理(確率25%)
+		else if (number >= 20 && number <= 65)
+		{
+			if (AreaNumber == 0)
+			{
+				pos[4] = { 430,376 };
+				testSprite[4]->SetPosition(pos[4]);
+				testSprite[4]->Draw();
+				areaCaunter[0] = number;
+			}
+			if (AreaNumber == 1)
+			{
+				pos[5] = { 430,586 };
+				testSprite[5]->SetPosition(pos[5]);
+				testSprite[5]->Draw();
+				areaCaunter[1] = number;
+			}
+
+			if (AreaNumber == 2)
+			{
+				pos[6] = { 848,586 };
+				testSprite[6]->SetPosition(pos[6]);
+				testSprite[6]->Draw();
+				areaCaunter[2] = number;
+			}
+
+			if (AreaNumber == 3)
+			{
+				pos[7] = { 848,376 };
+				testSprite[7]->SetPosition(pos[7]);
+				testSprite[7]->Draw();
+				areaCaunter[3] = number;
+			}
+		}
+		//ナンバーが50から75の時の処理(確率25%)
+		else if (number >= 65 && number <= 75)
+		{
+			if (AreaNumber == 0)
+			{
+				pos[8] = { 430,376 };
+				testSprite[8]->SetPosition(pos[8]);
+				testSprite[8]->Draw();
+				areaCaunter[0] = number;
+			}
+			if (AreaNumber == 1)
+			{
+				pos[9] = { 430,586 };
+				testSprite[9]->SetPosition(pos[9]);
+				testSprite[9]->Draw();
+				areaCaunter[1] = number;
+			}
+
+			if (AreaNumber == 2)
+			{
+				pos[10] = { 848,586 };
+				testSprite[10]->SetPosition(pos[10]);
+				testSprite[10]->Draw();
+				areaCaunter[2] = number;
+			}
+
+			if (AreaNumber == 3)
+			{
+				pos[11] = { 848,376 };
+				testSprite[11]->SetPosition(pos[11]);
+				testSprite[11]->Draw();
+				areaCaunter[3] = number;
+			}
+		}
+		else if (number >= 75)
+		{
+			if (AreaNumber == 0)
+			{
+				areaCaunter[0] = number;
+			}
+			if (AreaNumber == 1)
+			{
+				areaCaunter[1] = number;
+			}
+
+			if (AreaNumber == 2)
+			{
+				areaCaunter[2] = number;
+			}
+
+			if (AreaNumber == 3)
+			{
+				areaCaunter[3] = number;
+			}
+		}
 	}
-	//ナンバーが25から50の場合の処理(確率25%)
-	else if (number >= 20 && number <= 65 )
-	{
-		if (AreaNumber == 0)
-		{
-			pos[4] = { 430,376 };
-			testSprite[4]->SetPosition(pos[4]);
-			testSprite[4]->Draw();
-			areaCaunter[0] = number;
-		}
-		if (AreaNumber == 1)
-		{
-			pos[5] = { 430,586 };
-			testSprite[5]->SetPosition(pos[5]);
-			testSprite[5]->Draw();
-			areaCaunter[1] = number;
-		}
 
-		if (AreaNumber == 2)
-		{
-			pos[6] = { 848,586 };
-			testSprite[6]->SetPosition(pos[6]);
-			testSprite[6]->Draw();
-			areaCaunter[2] = number;
-		}
+	//if (isDragon_)
+	//{
+	//	if (number <= 40)
+	//	{
+	//		if (AreaNumber == 0)
+	//		{
+	//			//左上の画像
+	//			pos[0] = { 430,376 };
+	//			testSprite[0]->SetPosition(pos[0]);
+	//			testSprite[0]->Draw();
+	//			areaCaunter[0] = number;
+	//		}
+	//		if (AreaNumber == 1)
+	//		{
+	//			//左下の画像
+	//			pos[1] = { 430,586 };
+	//			testSprite[1]->SetPosition(pos[1]);
+	//			testSprite[1]->Draw();
+	//			areaCaunter[1] = number;
+	//		}
 
-		if (AreaNumber == 3)
-		{
-			pos[7] = { 848,376 };
-			testSprite[7]->SetPosition(pos[7]);
-			testSprite[7]->Draw();
-			areaCaunter[3] = number;
-		}
-	}
-	//ナンバーが50から75の時の処理(確率25%)
-	else if (number >= 65 && number <= 75 )
-	{
-		if (AreaNumber == 0)
-		{
-			pos[8] = { 430,376 };
-			testSprite[8]->SetPosition(pos[8]);
-			testSprite[8]->Draw();
-			areaCaunter[0] = number;
-		}
-		if (AreaNumber == 1)
-		{
-			pos[9] = { 430,586 };
-			testSprite[9]->SetPosition(pos[9]);
-			testSprite[9]->Draw();
-			areaCaunter[1] = number;
-		}
+	//		if (AreaNumber == 2)
+	//		{
+	//			//右下の画像
+	//			pos[2] = { 848,586 };
+	//			testSprite[2]->SetPosition(pos[2]);
+	//			testSprite[2]->Draw();
+	//			areaCaunter[2] = number;
+	//		}
 
-		if (AreaNumber == 2)
-		{
-			pos[10] = { 848,586 };
-			testSprite[10]->SetPosition(pos[10]);
-			testSprite[10]->Draw();
-			areaCaunter[2] = number;
-		}
+	//		if (AreaNumber == 3)
+	//		{
+	//			//右上の画像
+	//			pos[3] = { 848,376 };
+	//			testSprite[3]->SetPosition(pos[3]);
+	//			testSprite[3]->Draw();
+	//			areaCaunter[3] = number;
+	//		}
 
-		if (AreaNumber == 3)
-		{
-			pos[11] = { 848,376 };
-			testSprite[11]->SetPosition(pos[11]);
-			testSprite[11]->Draw();
-			areaCaunter[3] = number;
-		}
-	}
-	else if (number >= 75 )
-	{
-		if (AreaNumber == 0)
-		{
-			areaCaunter[0] = number;
-		}
-		if (AreaNumber == 1)
-		{
-			areaCaunter[1] = number;
-		}
+	//	}
+	//}
 
-		if (AreaNumber == 2)
-		{
-			areaCaunter[2] = number;
-		}
-
-		if (AreaNumber == 3)
-		{
-			areaCaunter[3] = number;
-		}
-    }
 }
 
 
