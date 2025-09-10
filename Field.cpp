@@ -55,11 +55,21 @@ void Field::Update()
 
 void Field::Draw()
 {
-	//画像を描画。値についてはランダムに変わる変数と順番に描画していく数(0から始まる)
-	AreaDraw(areaNumber[0], 0);
-	AreaDraw(areaNumber[1], 1);
-	AreaDraw(areaNumber[2], 2);
-	AreaDraw(areaNumber[3], 3);
+	if (boss_ && boss_->GetType() == BossType::SlimeKing)
+	{
+		//画像を描画。値についてはランダムに変わる変数と順番に描画していく数(0から始まる)
+		AreaDraw(areaNumber[0], 0);
+		AreaDraw(areaNumber[1], 1);
+		AreaDraw(areaNumber[2], 2);
+		AreaDraw(areaNumber[3], 3);
+	}
+	else if (boss_ && boss_->GetType() == BossType::Dragon)
+	{
+		DragoAreaDraw(areaNumber[0], 0);
+		DragoAreaDraw(areaNumber[1], 1);
+		DragoAreaDraw(areaNumber[2], 2);
+		DragoAreaDraw(areaNumber[3], 3);
+	}
 }
 
 
@@ -184,10 +194,11 @@ void Field::GenerateRandomNumber()
 }
 
 //この関数は上記にあるareaNumberの値を見てどこに画像を描画するかを決める処理AreaNumberについては順番に描画されるように0～3を設定する
+//ボスがスライムキングの時の確率
 void Field::AreaDraw(int number,int AreaNumber)
 {
 	//ナンバーが25以下の場合の処理(確率25%)
-	if (number <= 20 )
+	if (number <= 20)
 	{
 		if (AreaNumber == 0)
 		{
@@ -197,7 +208,7 @@ void Field::AreaDraw(int number,int AreaNumber)
 			testSprite[0]->Draw();
 			areaCaunter[0] = number;
 		}
-		if(AreaNumber==1)
+		if (AreaNumber == 1)
 		{
 			//左下の画像
 			pos[1] = { 430,586 };
@@ -223,10 +234,10 @@ void Field::AreaDraw(int number,int AreaNumber)
 			testSprite[3]->Draw();
 			areaCaunter[3] = number;
 		}
-		
+
 	}
 	//ナンバーが25から50の場合の処理(確率25%)
-	else if (number >= 20 && number <= 65 )
+	else if (number >= 20 && number <= 65)
 	{
 		if (AreaNumber == 0)
 		{
@@ -260,7 +271,7 @@ void Field::AreaDraw(int number,int AreaNumber)
 		}
 	}
 	//ナンバーが50から75の時の処理(確率25%)
-	else if (number >= 65 && number <= 75 )
+	else if (number >= 65 && number <= 75)
 	{
 		if (AreaNumber == 0)
 		{
@@ -293,7 +304,7 @@ void Field::AreaDraw(int number,int AreaNumber)
 			areaCaunter[3] = number;
 		}
 	}
-	else if (number >= 75 )
+	else if (number >= 75)
 	{
 		if (AreaNumber == 0)
 		{
@@ -313,7 +324,136 @@ void Field::AreaDraw(int number,int AreaNumber)
 		{
 			areaCaunter[3] = number;
 		}
-    }
+	}
+}
+//ボスがドラゴンの時の確率処理
+void Field::DragoAreaDraw(int number, int AreaNumber)
+{
+	if (number <= 30)
+	{
+		if (AreaNumber == 0)
+		{
+			pos[8] = { 430,376 };
+			testSprite[8]->SetPosition(pos[8]);
+			testSprite[8]->Draw();
+			areaCaunter[0] = number;
+		}
+		if (AreaNumber == 1)
+		{
+			pos[9] = { 430,586 };
+			testSprite[9]->SetPosition(pos[9]);
+			testSprite[9]->Draw();
+			areaCaunter[1] = number;
+		}
+
+		if (AreaNumber == 2)
+		{
+			pos[10] = { 848,586 };
+			testSprite[10]->SetPosition(pos[10]);
+			testSprite[10]->Draw();
+			areaCaunter[2] = number;
+		}
+
+		if (AreaNumber == 3)
+		{
+			pos[11] = { 848,376 };
+			testSprite[11]->SetPosition(pos[11]);
+			testSprite[11]->Draw();
+			areaCaunter[3] = number;
+		}
+
+	}
+	else if (number > 30 && number <= 50)
+	{
+		if (AreaNumber == 0)
+		{
+			pos[4] = { 430,376 };
+			testSprite[4]->SetPosition(pos[4]);
+			testSprite[4]->Draw();
+			areaCaunter[0] = number;
+		}
+		if (AreaNumber == 1)
+		{
+			pos[5] = { 430,586 };
+			testSprite[5]->SetPosition(pos[5]);
+			testSprite[5]->Draw();
+			areaCaunter[1] = number;
+		}
+
+		if (AreaNumber == 2)
+		{
+			pos[6] = { 848,586 };
+			testSprite[6]->SetPosition(pos[6]);
+			testSprite[6]->Draw();
+			areaCaunter[2] = number;
+		}
+
+		if (AreaNumber == 3)
+		{
+			pos[7] = { 848,376 };
+			testSprite[7]->SetPosition(pos[7]);
+			testSprite[7]->Draw();
+			areaCaunter[3] = number;
+		}
+	}
+	else if (number > 50 && number <= 60)
+	{
+		if (AreaNumber == 0)
+		{
+			//左上の画像
+			pos[0] = { 430,376 };
+			testSprite[0]->SetPosition(pos[0]);
+			testSprite[0]->Draw();
+			areaCaunter[0] = number;
+		}
+		if (AreaNumber == 1)
+		{
+			//左下の画像
+			pos[1] = { 430,586 };
+			testSprite[1]->SetPosition(pos[1]);
+			testSprite[1]->Draw();
+			areaCaunter[1] = number;
+		}
+
+		if (AreaNumber == 2)
+		{
+			//右下の画像
+			pos[2] = { 848,586 };
+			testSprite[2]->SetPosition(pos[2]);
+			testSprite[2]->Draw();
+			areaCaunter[2] = number;
+		}
+
+		if (AreaNumber == 3)
+		{
+			//右上の画像
+			pos[3] = { 848,376 };
+			testSprite[3]->SetPosition(pos[3]);
+			testSprite[3]->Draw();
+			areaCaunter[3] = number;
+		}
+	}
+	else if (number >= 60)
+	{
+		if (AreaNumber == 0)
+		{
+			areaCaunter[0] = number;
+		}
+		if (AreaNumber == 1)
+		{
+			areaCaunter[1] = number;
+		}
+
+		if (AreaNumber == 2)
+		{
+			areaCaunter[2] = number;
+		}
+
+		if (AreaNumber == 3)
+		{
+			areaCaunter[3] = number;
+		}
+	}
 }
 
 
@@ -324,14 +464,14 @@ int Field::AreaProcess(int number) {
 			hpDown = true;
 			isDamage = true;
 		}
-		//else if (number > 30 && number <= 50 && !isDamage) {
-		//	damage_ *= 2; // バフ
-		//	isDamage = true;
-		//}
-		//else if (number > 50 && number <= 60 && !isDamage) {
-		//	damage_ /= 2; // デバフ
-		//	isDamage = true;
-		//}
+		else if (number > 30 && number <= 50 && !isDamage) {
+			damage_ *= 2; // バフ
+			isDamage = true;
+		}
+		else if (number > 50 && number <= 60 && !isDamage) {
+			damage_ /= 2; // デバフ
+			isDamage = true;
+		}
 		else if (number > 60 && !isDamage) {
 			damage_ = damage_; // 何もなし
 			isDamage = true;

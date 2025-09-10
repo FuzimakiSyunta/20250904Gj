@@ -27,10 +27,6 @@ void TitleScene::Initialize()
 	titleSprite = Sprite::Create(textureTitle, pos, { 1,1,1,1 }, { 0.5f,0.5f });
 	titleButtonSprite[0] = Sprite::Create(titleButton[0], {0,0}, {1,1,1,1}, {0.0f,0.0f});
 	titleButtonSprite[1] = Sprite::Create(titleButton[1], { 0,0 }, { 1,1,1,1 }, { 0.0f,0.0f });
-<<<<<<< HEAD
->>>>>>> origin/フィールド効极E
-=======
->>>>>>> origin/フィールド効极E
 	isSceneEnd_ = false;
 
 	color = { 0,0,0,0 };

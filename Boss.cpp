@@ -46,8 +46,8 @@ void Boss::Initialize(Input* input) {
     gameClearText_ = TextureManager::Load("YOUWIN.png");
     gameClearSprite_.reset(Sprite::Create(gameClearText_, { 640,370 }, { 1,1,1,1 }, { 0.5f,0.5f }));
 
-    gameButton = TextureManager::Load("TitleButton.png");
-    gameButtonSprite.reset(Sprite::Create(gameButton, { 1040,470 }, { 1,1,1,1 }, { 0.5f,0.5f }));
+    gameButton = TextureManager::Load("Back.png");
+    gameButtonSprite.reset(Sprite::Create(gameButton, { 0,0 }, { 1,1,1,1 }, { 0.0f,0.0f }));
 
     isSceneEnd_ = false;
 }
