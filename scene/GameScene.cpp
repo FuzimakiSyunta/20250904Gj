@@ -142,10 +142,7 @@ void GameScene::Draw() {
 	/// <summary>
 	/// ここに前景スプライトの描画処理を追加できる
 	/// </summary>
-	    if (player_->GetHp() >= 1 && boss_->GetHp() >= 1)
-	    {
-		player_->Draw();
-	    }
+	   
 		if (player_->GetHp() <= 1 && boss_->GetHp() >= 1)
 		{
 
@@ -154,6 +151,10 @@ void GameScene::Draw() {
 		if (player_->GetHp() >= 1 && boss_->GetHp()>=1)
 		{
 			ball_->Draw();
+		}
+		if (player_->GetHp() >= 1 && boss_->GetHp() >= 1)
+		{
+			player_->Draw();
 		}
 	boss_->Draw();
 	fadeOutSprite_->Draw();
