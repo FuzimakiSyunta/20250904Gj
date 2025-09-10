@@ -2,6 +2,7 @@
 #include <Vector2.h>
 #include <Sprite.h>
 #include "Input.h"
+#include "Boss.h"
 
 class Player;
 class Ball;
@@ -40,6 +41,8 @@ public:
 
 	void ReviveBall();
 
+	void SetBoss(Boss* boss) { boss_ = boss; }
+
 
 private:
 	int areaNumber[4]{ 0,0,0,0 };  //ポケットに入れるたびに変数を変更させている
@@ -48,6 +51,8 @@ private:
 	
 	bool isDamage; //一回でも発動したか
 	int damage_;
+
+	Boss* boss_ = nullptr;
 
 	
 	Ball* balls_=nullptr;  //ボール
