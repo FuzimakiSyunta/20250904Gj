@@ -30,6 +30,8 @@ public:
 
 	void AreaDraw(int number, int AreaNumber);
 
+	void DragoAreaDraw(int number, int AreaNumber);
+
 	int AreaProcess(int number);
 
 	int GetDamage() { return damage_; }

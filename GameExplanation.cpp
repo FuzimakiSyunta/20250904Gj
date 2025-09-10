@@ -23,6 +23,16 @@ void GameExplanation::Initialize()
 	sceneCooltime = 0;
 
 	isSceneEnd_ = false;
+
+	color = { 0,0,0,1 };
+
+	fadeInTexture = TextureManager::Load("uvChecker.png");
+	fadeInSprite.reset(Sprite::Create(fadeInTexture, { 640,370 }, color, { 0.5f,0.5f }));
+
+	fadeInSprite->SetSize({ 1280,820 });
+
+	fadeColor = 0.01f;
+	fadeFlag = false;
 }
 
 void GameExplanation::Update()
@@ -32,7 +42,15 @@ void GameExplanation::Update()
 	HWND hwnd = WinApp::GetInstance()->GetHwnd();
 	ScreenToClient(hwnd, &mousePosition);
 	//--------------------//
-	
+	if (fadeFlag == false)
+	{
+		color.w -= fadeColor;
+		fadeInSprite->SetColor(color);
+	}
+	if (color.w <= 0&&fadeFlag==false)
+	{
+		fadeFlag = true;
+	}
 	//すぐにシーンに移らないようにする処理
 	if (isSceneEnd_ == false)
 	{
@@ -42,6 +60,19 @@ void GameExplanation::Update()
 	if (input_->PushKey(DIK_SPACE)&&sceneCooltime>10||
 		mousePosition.x >= 990 && mousePosition.x <= 1220 && mousePosition.y >= 675 && mousePosition.y <= 760 && input_->IsPressMouse(WM_LBUTTONDOWN == 0)&&sceneCooltime>10)
 	{
+		fadeFlag = true;
+		isFade = true;
+	}
+
+	if (isFade == true)
+	{
+		color.w += fadeColor;
+		fadeInSprite->SetColor(color);
+	}
+
+	if (color.w >= 1)
+	{
+		isFade = false;
 		isSceneEnd_ = true;
 	}
 }
@@ -60,6 +91,8 @@ void GameExplanation::Draw()
 	/// </summary>
 	explanationSprite->Draw();
 	explanationButtonSprite->Draw();
+
+	fadeInSprite->Draw();
 	// スプライト描画後処理
 	Sprite::PostDraw();
 	// 深度バッファクリア

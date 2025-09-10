@@ -56,14 +56,14 @@ private:
 	//タイトルで使う画像
 	Sprite* titleSprite = nullptr;
 	Vector2 pos; //画像の座標
-	uint32_t titleButton;
-	Sprite* titleButtonSprite = nullptr;
+	uint32_t titleButton[2];
+	Sprite* titleButtonSprite[2];
 	POINT mousePosition; //マウスの座標
 	uint32_t fadeInTexture;
 	std::unique_ptr<Sprite> fadeInSprite;
 	Vector4 color;
 	float fadeColor;
-	bool 
+	bool isFade;
 
 	int sceneCooltime; //シーンに移り変わった時一瞬だけクールタイムを用意し連続で移り変わらないようにする
 };

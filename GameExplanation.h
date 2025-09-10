@@ -58,6 +58,13 @@ private:
 	bool isSceneEnd_ = false;
 	POINT mousePosition;
 
+	uint32_t fadeInTexture;
+	std::unique_ptr<Sprite> fadeInSprite;
+	Vector4 color;
+	float fadeColor;
+	bool isFade;
+	bool fadeFlag;
+
 	int sceneCooltime; //シーンに移り変わった時一瞬だけクールタイムを用意し連続で移り変わらないようにする
 };
 
