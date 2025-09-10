@@ -96,6 +96,9 @@ class GameScene {
 
 	bool isSceneEnd_;
 
+	bool wasHitBall_ = false;    // 前フレームでボール同士が衝突していたか
+	bool wasHitPlayer_ = false;  // 前フレームでプレイヤーと衝突していたか
+	bool wasHitPocket_ = false;
 
 	Ball* ball_ = nullptr;
 	uint32_t textureHandle_ = 0;
