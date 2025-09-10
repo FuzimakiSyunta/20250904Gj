@@ -15,7 +15,7 @@ void Boss::Initialize(Input* input) {
         bossTexture_ = TextureManager::Load("slimeKing.png");
         bossDamegeTexture_ = TextureManager::Load("slimeKing_Dmaege.png");
         bossDownTexture_ = TextureManager::Load("slimeDown.png");
-        maxHp_ = 1; // HP少なめ
+        maxHp_ = 100; // HP少なめ
     }
     else {
         // ドラゴン
@@ -23,7 +23,7 @@ void Boss::Initialize(Input* input) {
         bossTexture_ = TextureManager::Load("dragon.png");
         bossDamegeTexture_ = TextureManager::Load("dragon_Damege.png");
         bossDownTexture_ = TextureManager::Load("dragonDown.png");
-        maxHp_ = 5; // HP多め
+        maxHp_ = 500; // HP多め
     }
    
     // === HPゲージ ===

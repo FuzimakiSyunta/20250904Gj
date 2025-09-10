@@ -113,12 +113,12 @@ void Player::Update() {
    
         Vector2 mousePos = input_->GetMousePosition();
 
-        // --- WASDで移動 ---
-        const float accel = 0.5f;
-        if (input_->PushKey(DIK_W)) vel_.y -= accel;
-        if (input_->PushKey(DIK_S)) vel_.y += accel;
-        if (input_->PushKey(DIK_A)) vel_.x -= accel;
-        if (input_->PushKey(DIK_D)) vel_.x += accel;
+        //// --- WASDで移動 ---
+        //const float accel = 0.5f;
+        //if (input_->PushKey(DIK_W)) vel_.y -= accel;
+        //if (input_->PushKey(DIK_S)) vel_.y += accel;
+        //if (input_->PushKey(DIK_A)) vel_.x -= accel;
+        //if (input_->PushKey(DIK_D)) vel_.x += accel;
 
         // --- ボールがすべて停止している場合のみドラッグ処理 ---
 
@@ -154,7 +154,9 @@ void Player::Update() {
                 const float power = 0.1f;
                 vel_.x = diff.x * power;
                 vel_.y = diff.y * power;
-
+                nextStriket_ = { -400,400 };
+                strikeWaitTimer_ = 60; // 60フレーム(=約1秒)待機
+                NextStop = true;
             }
         }
 
@@ -254,6 +256,30 @@ void Player::Draw() {
         {
             nextStrikeSprite_->Draw();
         }
+    }
+
+    // --- nextStriket_ の動き制御 ---
+    if (!strikeWaiting_ && ballspeed0 == true && IsStopped() == true) {
+        // 動かす
+        nextStriket_.x += nextStriketSpeed;
+
+        // 特定座標に到達したら待機開始
+        if (nextStriket_.x >= strikeTargetX_ && NextStop == true) {
+            nextStriket_.x = strikeTargetX_; // 位置をピッタリ固定
+            strikeWaiting_ = true;
+            strikeWaitTimer_ = 60;
+            NextStop = false;
+
+        }
+    }
+    else {
+        // 待機中
+        strikeWaitTimer_--;
+        if (strikeWaitTimer_ <= 0) {
+            strikeWaiting_ = false; // 待機終了 → 動き出す
+        }
+
+
     }
 }
 
@@ -418,32 +444,10 @@ void Player::GameOver()
         }
     }
 
-    if (boss_->GetHp() >= 1)
-    {
-        // --- nextStriket_ の動き制御 ---
-        if (!strikeWaiting_ && ballspeed0 == true && IsStopped() == true) {
-            // 動かす
-            nextStriket_.x += nextStriketSpeed;
-
-            // 特定座標に到達したら待機開始
-            if (nextStriket_.x >= strikeTargetX_ && NextStop == true) {
-                nextStriket_.x = strikeTargetX_; // 位置をピッタリ固定
-                strikeWaiting_ = true;
-                strikeWaitTimer_ = 60;
-                NextStop = false;
-
-            }
-        }
-        else {
-            // 待機中
-            strikeWaitTimer_--;
-            if (strikeWaitTimer_ <= 0) {
-                strikeWaiting_ = false; // 待機終了 → 動き出す
-            }
-
-
-        }
-    }
+    
+    
+        
+    
 }
 
 void Player::GameDraw()
