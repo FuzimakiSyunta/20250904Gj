@@ -72,6 +72,12 @@ class GameScene {
 	Audio* audio_ = nullptr;
 	DebugText* debugText_ = nullptr;
 
+	uint32_t ballCollideHandle_;
+	uint32_t fallPocketHandle_;
+	uint32_t playSound_;
+	uint32_t playfallSound_;
+	uint32_t backSoundHandle_;
+
 	std::unique_ptr<Player> player_;
 	std::unique_ptr<Billiardstable> billiardstable_;
 	std::unique_ptr<Boss> boss_;
