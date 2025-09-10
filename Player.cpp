@@ -231,6 +231,7 @@ void Player::Update() {
         strikeWaitTimer_ = 60; // 60フレーム(=約1秒)待機
         NextStop = true;
         isChange = false;  //このフラグを削除するとターンごとにエリアを変える処理の一部がなくなります
+
     }
     //このフラグを削除するとターンごとにエリアを変える処理の一部がなくなります
     if (ballspeed0 == true && IsStopped() == true&&isChange==false)
