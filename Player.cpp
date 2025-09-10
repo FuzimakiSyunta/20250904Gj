@@ -88,8 +88,8 @@ void Player::Initialize(Input* input, const Vector2& startPos, float radius) {
     gameOverText = TextureManager::Load("GAMEOVER.png");
     gameOverSprite = Sprite::Create(gameOverText, { 640,370 }, { 1,1,1,1 }, { 0.5f,0.5f });
 
-    gameButton = TextureManager::Load("TitleButton.png");
-    gameButtonSprite.reset(Sprite::Create(gameButton, { 1040,470 }, { 1,1,1,1 }, { 0.5f,0.5f }));
+    gameButton = TextureManager::Load("Back.png");
+    gameButtonSprite.reset(Sprite::Create(gameButton, { 0,0 }, { 1,1,1,1 }, { 0.0f,0.0f }));
 
     isSceneEnd_ = false;
 }
@@ -399,7 +399,7 @@ void Player::CheckPocketCollision() {
 
         if (distSq < pocketRadius * pocketRadius) {
             // ★ ダメージを受ける
-            TakeDamage(1);
+            TakeDamage(1000);
             invincibleTimer_ = 60; // 約1秒の無敵時間（60fps想定）
             isDamage = true;
             // ★ ランダムで別のポケットを選択

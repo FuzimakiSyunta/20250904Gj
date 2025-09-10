@@ -46,6 +46,8 @@ void GameScene::Initialize() {
 	fadeFlag = false;
 	fadeOutTexture = TextureManager::Load("uvChecker.png");
 	fadeOutSprite_.reset(Sprite::Create(fadeOutTexture, { 640,420 }, color, { 0.5f,0.5f }));
+	fadeOutSprite_->SetSize({ 1280,820 });
+	isFade = false;
 }
 
 void GameScene::Update(){
@@ -70,8 +72,7 @@ void GameScene::Update(){
 
 	if (player_->IsSceneEnd() || boss_->IsSceneEnd())
 	{
-		fadeFlag = true;
-		isSceneEnd_ = true;
+		isFade = true;
 	}
 
 	if (fadeFlag == false)
@@ -82,6 +83,16 @@ void GameScene::Update(){
 	if (color.w <= 0 && fadeFlag == false)
 	{
 		fadeFlag = true;
+	}
+
+	if (isFade == true)
+	{
+		color.w += fadeColor;
+		fadeOutSprite_->SetColor(color);
+	}
+	if (color.w >= 1 && isFade == true)
+	{
+		isSceneEnd_ = true;
 	}
 }
 
@@ -131,7 +142,7 @@ void GameScene::Draw() {
 		ball_->Draw();
 	}
 	boss_->Draw();
-
+	fadeOutSprite_->Draw();
 	// デバッグテキストの描画
 	debugText_->DrawAll(commandList);
 	
