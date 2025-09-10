@@ -59,6 +59,11 @@ private:
 	uint32_t titleButton;
 	Sprite* titleButtonSprite = nullptr;
 	POINT mousePosition; //マウスの座標
+	uint32_t fadeInTexture;
+	std::unique_ptr<Sprite> fadeInSprite;
+	Vector4 color;
+	float fadeColor;
+	bool 
 
 	int sceneCooltime; //シーンに移り変わった時一瞬だけクールタイムを用意し連続で移り変わらないようにする
 };

@@ -319,47 +319,47 @@ void Field::AreaDraw(int number,int AreaNumber)
 		}
 	}
 
-	//if (isDragon_)
-	//{
-	//	if (number <= 40)
-	//	{
-	//		if (AreaNumber == 0)
-	//		{
-	//			//左上の画像
-	//			pos[0] = { 430,376 };
-	//			testSprite[0]->SetPosition(pos[0]);
-	//			testSprite[0]->Draw();
-	//			areaCaunter[0] = number;
-	//		}
-	//		if (AreaNumber == 1)
-	//		{
-	//			//左下の画像
-	//			pos[1] = { 430,586 };
-	//			testSprite[1]->SetPosition(pos[1]);
-	//			testSprite[1]->Draw();
-	//			areaCaunter[1] = number;
-	//		}
+	if (isDragon_)
+	{
+		if (number <= 40)
+		{
+			if (AreaNumber == 0)
+			{
+				//左上の画像
+				pos[0] = { 430,376 };
+				testSprite[0]->SetPosition(pos[0]);
+				testSprite[0]->Draw();
+				areaCaunter[0] = number;
+			}
+			if (AreaNumber == 1)
+			{
+				//左下の画像
+				pos[1] = { 430,586 };
+				testSprite[1]->SetPosition(pos[1]);
+				testSprite[1]->Draw();
+				areaCaunter[1] = number;
+			}
 
-	//		if (AreaNumber == 2)
-	//		{
-	//			//右下の画像
-	//			pos[2] = { 848,586 };
-	//			testSprite[2]->SetPosition(pos[2]);
-	//			testSprite[2]->Draw();
-	//			areaCaunter[2] = number;
-	//		}
+			if (AreaNumber == 2)
+			{
+				//右下の画像
+				pos[2] = { 848,586 };
+				testSprite[2]->SetPosition(pos[2]);
+				testSprite[2]->Draw();
+				areaCaunter[2] = number;
+			}
 
-	//		if (AreaNumber == 3)
-	//		{
-	//			//右上の画像
-	//			pos[3] = { 848,376 };
-	//			testSprite[3]->SetPosition(pos[3]);
-	//			testSprite[3]->Draw();
-	//			areaCaunter[3] = number;
-	//		}
+			if (AreaNumber == 3)
+			{
+				//右上の画像
+				pos[3] = { 848,376 };
+				testSprite[3]->SetPosition(pos[3]);
+				testSprite[3]->Draw();
+				areaCaunter[3] = number;
+			}
 
-	//	}
-	//}
+		}
+	}
 
 }
 

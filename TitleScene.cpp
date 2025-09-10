@@ -22,8 +22,16 @@ void TitleScene::Initialize()
 	titleButtonSprite = Sprite::Create(titleButton, { 0,0 }, { 1,1,1,1 }, { 0.0f,0.0f });
 	isSceneEnd_ = false;
 
+	color = { 0,0,0,1 };
+
+	fadeInTexture = TextureManager::Load("uvChecker.png");
+	fadeInSprite.reset(Sprite::Create(fadeInTexture, { 640,370 }, color, { 0.5f,0.5f }));
+
+	fadeInSprite->SetSize({1280,820});
 	//すぐにシーンに移らないためのクールタイム初期化
 	sceneCooltime = 0;
+
+	fadeColor = 0.01f;
 }
 
 void TitleScene::Update()
@@ -44,9 +52,13 @@ void TitleScene::Update()
 	if (input_->PushKey(DIK_SPACE)&&  sceneCooltime > 10||
 		mousePosition.x >= 80 && mousePosition.x <= 366 && mousePosition.y >= 370 && mousePosition.y <= 500 && input_->IsPressMouse(WM_LBUTTONDOWN == 0) && sceneCooltime > 10)
 	{
-		isSceneEnd_ = true;
+		color.w -= fadeColor;
 	}
 
+	if (color.w <= 0)
+	{
+		isSceneEnd_ = true;
+	}
 
 }
 
@@ -64,6 +76,8 @@ void TitleScene::Draw()
 	/// </summary>
 	titleSprite->Draw();
 	titleButtonSprite->Draw();
+
+	fadeInSprite->Draw();
 	// スプライト描画後処理
 	Sprite::PostDraw();
 	// 深度バッファクリア
