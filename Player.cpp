@@ -151,7 +151,7 @@ void Player::Update() {
             const float power = 0.1f;
             vel_.x = diff.x * power;
             vel_.y = diff.y * power;
-
+			nextStriket_ = { -400,400 };
         }
     }
 
@@ -191,6 +191,30 @@ void Player::Update() {
         if (hpBarShakeTimer_ <= 0) {
             hpBarShaking_ = false;
         }
+    }
+
+    // --- nextStriket_ の動き制御 ---
+    if (!strikeWaiting_ && ballspeed0 == true && IsStopped() == true) {
+        // 動かす
+        nextStriket_.x += nextStriketSpeed;
+
+        // 特定座標に到達したら待機開始
+        if (nextStriket_.x >= strikeTargetX_ && NextStop == true) {
+            nextStriket_.x = strikeTargetX_; // 位置をピッタリ固定
+            strikeWaiting_ = true;
+            strikeWaitTimer_ = 60;
+            NextStop = false;
+
+        }
+    }
+    else {
+        // 待機中
+        strikeWaitTimer_--;
+        if (strikeWaitTimer_ <= 0) {
+            strikeWaiting_ = false; // 待機終了 → 動き出す
+        }
+
+
     }
 
     playerSprite_->SetPosition(pos);
@@ -386,33 +410,6 @@ void Player::GameOver()
         if (mousePosition.x >= 480 && mousePosition.x <= 765 && mousePosition.y >= 420 && mousePosition.y <= 560 && input_->IsPressMouse(WM_LBUTTONDOWN == 0))
         {
             isSceneEnd_ = true;
-        }
-    }
-
-    if (boss_->GetHp() >= 1)
-    {
-        // --- nextStriket_ の動き制御 ---
-        if (!strikeWaiting_ && ballspeed0 == true && IsStopped() == true) {
-            // 動かす
-            nextStriket_.x += nextStriketSpeed;
-
-            // 特定座標に到達したら待機開始
-            if (nextStriket_.x >= strikeTargetX_ && NextStop == true) {
-                nextStriket_.x = strikeTargetX_; // 位置をピッタリ固定
-                strikeWaiting_ = true;
-                strikeWaitTimer_ = 60;
-                NextStop = false;
-
-            }
-        }
-        else {
-            // 待機中
-            strikeWaitTimer_--;
-            if (strikeWaitTimer_ <= 0) {
-                strikeWaiting_ = false; // 待機終了 → 動き出す
-            }
-
-
         }
     }
 }
