@@ -96,6 +96,10 @@ class GameScene {
 
 	bool isSceneEnd_;
 
+	bool hitBall = false;
+	bool hitPlayer = false;
+	bool fallPocket = false;
+
 	bool wasHitBall_ = false;    // 前フレームでボール同士が衝突していたか
 	bool wasHitPlayer_ = false;  // 前フレームでプレイヤーと衝突していたか
 	bool wasHitPocket_ = false;
