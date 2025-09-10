@@ -109,8 +109,9 @@ void GameScene::Draw() {
 	/// </summary>
 	if (player_->GetHp()>=1 ||boss_->GetHp()>=1 )
 	{
-		player_->Draw();
+	
 		ball_->Draw();
+		player_->Draw();
 	}
 	boss_->Draw();
 
