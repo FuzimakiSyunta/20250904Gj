@@ -21,7 +21,7 @@ void TitleScene::Initialize()
 	pos = { 640,400 };
 	titleSprite = Sprite::Create(textureTitle, pos, { 1,1,1,1 }, { 0.5f,0.5f });
 	titleButtonSprite[0] = Sprite::Create(titleButton[0], {0,0}, {1,1,1,1}, {0.0f,0.0f});
-	titleButtonSprite[1] = Sprite::Create(titleButton[1], { 0,0 }, { 1,1,1,1 }, { 0.0f,0.0f });
+	titleButtonSprite[1] = Sprite::Create(titleButton[1], { 0,-30 }, { 1,1,1,1 }, { 0.0f,0.0f });
 	isSceneEnd_ = false;
 
 	color = { 0,0,0,0 };

@@ -3,8 +3,8 @@
 #include <cmath>
 #include "DamageText.h"
 #include"imgui/imgui.h"
-
-
+#include "Boss.h"
+#include "Field.h"
 void Player::Initialize(Input* input, const Vector2& startPos, float radius) {
     input_ = input;
     pos = startPos;
@@ -78,7 +78,18 @@ void Player::Initialize(Input* input, const Vector2& startPos, float radius) {
     gameButton = TextureManager::Load("Back.png");
     gameButtonSprite.reset(Sprite::Create(gameButton, { 0,0 }, { 1,1,1,1 }, { 0.0f,0.0f }));
 
+    //ボスに応じてプレイヤーのダメージに変化をもたらす時はここのplayerDamageをいじれば変わる
+    if (boss_ && boss_->GetType() == BossType::SlimeKing)
+    {
+        playerDamage = slimeDamage;
+    }
+    else if (boss_ && boss_->GetType() == BossType::Dragon)
+    {
+        playerDamage = dragonDamage;
+    }
+
     isSceneEnd_ = false;
+    isChange = false;
 }
 
 void Player::TakeDamage(int damage) {
@@ -192,7 +203,7 @@ void Player::Update() {
     if (!strikeWaiting_&&ballspeed0 == true && IsStopped() == true) {
         // 動かす
         nextStriket_.x += nextStriketSpeed;
-
+       
         // 特定座標に到達したら待機開始
         if (nextStriket_.x >= strikeTargetX_&& NextStop == true) {
             nextStriket_.x = strikeTargetX_; // 位置をピッタリ固定
@@ -221,6 +232,11 @@ void Player::Update() {
         NextStop = true;
     }
    
+    if (ballspeed0 == true && IsStopped() == true&&isChange==false)
+    {
+        field_->GenerateRandomNumber();
+        isChange = true;
+    }
 }
 
 
@@ -286,7 +302,6 @@ void Player::DamageTextDraw()
             damageSprite[10 + tens]->Draw();
         }
     }
-
  
     if (damageCooltime >= 50)
     {
@@ -324,7 +339,7 @@ void Player::CheckPocketCollision() {
 
         if (distSq < pocketRadius * pocketRadius) {
             // ★ ダメージを受ける
-            TakeDamage(1);
+            TakeDamage(playerDamage);
             invincibleTimer_ = 60; // 約1秒の無敵時間（60fps想定）
             isDamage = true;
             // ★ ランダムで別のポケットを選択

@@ -3,6 +3,8 @@
 #include "Vector2.h"
 #include "Input.h"
 #include "WinApp.h"
+class Boss;
+class Field;
 class Player
 {
 public:
@@ -29,6 +31,8 @@ public:
 	// Setter
 	void SetBallSpeed0(bool value) { ballspeed0 = value; }
 	void SetIsDamage() { isDamage = true; }
+	void SetBoss(Boss* boss) { boss_ = boss; }
+	void SetField(Field* field) { field_ = field; }
 	// Getter
 	bool GetBallSpeed0() const { return  ballspeed0; }
 
@@ -97,7 +101,14 @@ private:
 	POINT mousePosition;
 	bool isSceneEnd_;
 	int damage_;
+	
+	int playerDamage; //プレイヤーがポケットに入った時に食らうダメージ
+	Boss* boss_;
+	Field* field_=nullptr;
+	bool isChange;
 
+	int slimeDamage = 10;  //スライムのダメージ
+	int dragonDamage = 20;  //ドラゴンのダメージ
 	
 	int nextStriketstop = 0;
 	float barWidth;

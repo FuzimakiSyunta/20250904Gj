@@ -52,6 +52,16 @@ class GameScene {
 	/// </summary>
 	void Reset();
 
+	/// <summary>
+	/// フェードアウト
+	/// </summary>
+	void FadeOut();
+
+	/// <summary>
+	/// ターンが変わるごとにエリアを変える
+	/// </summary>
+	void turnChange();
+
 	bool IsSceneEnd() { return isSceneEnd_; }
 
 	Scene::SceneType NextScene() { return Scene::SceneType::kTitle; }
