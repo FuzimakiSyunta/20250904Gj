@@ -34,7 +34,7 @@ void GameScene::Initialize() {
 	fallPocketHandle_ = audio_->LoadWave("/sound/SE/fallsound.wav");
 
 	backSoundHandle_ = audio_->LoadWave("/sound/SE/backMusic.mp3");
-
+	audio_->PlayWave(backSoundHandle_, true, 1.0f);
 	//フィールドのエリア
 	field_ = std::make_unique<Field>();
 	field_->Initialize();
