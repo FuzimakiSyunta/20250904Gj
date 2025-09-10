@@ -17,9 +17,9 @@ void TitleScene::Initialize()
 	uint32_t textureTitle = TextureManager::Load("Title.png");
 	titleButton = TextureManager::Load("TitleButton.png");
 	//画像の座標
-	pos = { 640,400 };
-	titleSprite = Sprite::Create(textureTitle, pos, { 1,1,1,1 }, { 0.5f,0.5f });
-	titleButtonSprite = Sprite::Create(titleButton, { 0,0 }, { 1,1,1,1 }, { 0.0f,0.0f });
+	//pos = { 640,400 };
+	titleSprite = Sprite::Create(textureTitle, pos, { 1,1,1,1 } );
+	titleButtonSprite = Sprite::Create(titleButton, { 0,0 }, { 1,1,1,1 });
 	isSceneEnd_ = false;
 
 	//すぐにシーンに移らないためのクールタイム初期化
