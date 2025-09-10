@@ -15,15 +15,31 @@ void TitleScene::Initialize()
 	audio_ = Audio::GetInstance();
 	//背景の画像のデータ取得
 	uint32_t textureTitle = TextureManager::Load("Title.png");
-	titleButton = TextureManager::Load("TitleButton.png");
+	titleButton[0] = TextureManager::Load("TitleButton.png");
+	titleButton[1] = TextureManager::Load("mouseOk.png");
 	//画像の座標
+<<<<<<< HEAD
 	//pos = { 640,400 };
 	titleSprite = Sprite::Create(textureTitle, pos, { 1,1,1,1 } );
 	titleButtonSprite = Sprite::Create(titleButton, { 0,0 }, { 1,1,1,1 });
+=======
+	pos = { 640,400 };
+	titleSprite = Sprite::Create(textureTitle, pos, { 1,1,1,1 }, { 0.5f,0.5f });
+	titleButtonSprite[0] = Sprite::Create(titleButton[0], {0,0}, {1,1,1,1}, {0.0f,0.0f});
+	titleButtonSprite[1] = Sprite::Create(titleButton[1], { 0,0 }, { 1,1,1,1 }, { 0.0f,0.0f });
+>>>>>>> origin/繝輔ぅ繝ｼ繝ｫ繝牙柑譫・
 	isSceneEnd_ = false;
 
+	color = { 0,0,0,0 };
+
+	fadeInTexture = TextureManager::Load("uvChecker.png");
+	fadeInSprite.reset(Sprite::Create(fadeInTexture, { 640,370 }, color, { 0.5f,0.5f }));
+
+	fadeInSprite->SetSize({1280,820});
 	//すぐにシーンに移らないためのクールタイム初期化
 	sceneCooltime = 0;
+
+	fadeColor = 0.01f;
 }
 
 void TitleScene::Update()
@@ -44,9 +60,20 @@ void TitleScene::Update()
 	if (input_->PushKey(DIK_SPACE)&&  sceneCooltime > 10||
 		mousePosition.x >= 80 && mousePosition.x <= 366 && mousePosition.y >= 370 && mousePosition.y <= 500 && input_->IsPressMouse(WM_LBUTTONDOWN == 0) && sceneCooltime > 10)
 	{
-		isSceneEnd_ = true;
+		isFade = true;
 	}
 
+	if (isFade==true)
+	{
+		color.w += fadeColor;
+		fadeInSprite->SetColor(color);
+	}
+
+	if (color.w >= 1)
+	{
+		isFade = false;
+		isSceneEnd_ = true;
+	}
 
 }
 
@@ -63,7 +90,10 @@ void TitleScene::Draw()
 	/// ここに背景スプライトの描画処理を追加できる
 	/// </summary>
 	titleSprite->Draw();
-	titleButtonSprite->Draw();
+	titleButtonSprite[0]->Draw();
+	titleButtonSprite[1]->Draw();
+
+	fadeInSprite->Draw();
 	// スプライト描画後処理
 	Sprite::PostDraw();
 	// 深度バッファクリア
