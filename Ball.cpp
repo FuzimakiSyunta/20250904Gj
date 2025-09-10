@@ -291,7 +291,7 @@ bool Ball::CheckPocketCollisions() {
             }
         }
     }
-    return hit; // ★衝突があれば true を返す
+   // return hit; // ★衝突があれば true を返す
     return totalDamage; // ★ 複数分まとめて返す
 }
 
