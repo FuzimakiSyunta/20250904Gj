@@ -30,6 +30,11 @@ void GameScene::Initialize() {
 	player_->SetBoss(boss_.get());
 	player_->Initialize(input_, { 300.0f, 450.0f }, 32.0f);
 
+	ballCollideHandle_ = audio_->LoadWave("/sound/SE/collide_ball.wav");
+	fallPocketHandle_ = audio_->LoadWave("/sound/SE/fallsound.wav");
+
+	backSoundHandle_ = audio_->LoadWave("/sound/SE/backMusic.mp3");
+
 	//フィールドのエリア
 	field_ = std::make_unique<Field>();
 	field_->Initialize();
