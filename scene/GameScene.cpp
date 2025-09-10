@@ -79,6 +79,32 @@ void GameScene::Update(){
 	//turnChange();  //ターンが変わるごとにエリアを変える
 	FadeOut(); //シーン遷移する時の演出をする処理
 	
+	// 衝突判定
+	//hitBall = ball_->CheckCollisions();
+	//hitPlayer = ball_->CheckPlayerCollision(*player_);
+	//fallPocket = ball_->CheckPocketCollisions();
+
+	//// === 衝突の「瞬間」だけ音を鳴らす ===
+	//if (hitBall && !wasHitBall_) {
+	//	audio_->PlayWave(ballCollideHandle_, false, 1.0f);
+	//}
+	//if (hitPlayer && !wasHitPlayer_) {
+	//	audio_->PlayWave(ballCollideHandle_, false, 1.0f);
+	//}
+	//if (fallPocket && !wasHitPocket_) {
+	//	audio_->PlayWave(fallPocketHandle_, false, 1.0f);
+	//}
+
+	// 状態を保存
+	wasHitBall_ = hitBall;
+	wasHitPlayer_ = hitPlayer;
+	wasHitPocket_ = fallPocket;
+
+	// ★ 衝突が終わったらリセット
+	if (!hitBall)   wasHitBall_ = false;
+	if (!hitPlayer) wasHitPlayer_ = false;
+	if (!fallPocket) wasHitPocket_ = false;
+
 }
 
 void GameScene::Draw() {
