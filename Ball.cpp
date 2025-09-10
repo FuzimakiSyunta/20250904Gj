@@ -53,8 +53,8 @@ void Ball::Initialize(uint32_t) {
         }
     }
     const float ballRadius = 16.0f; // 32x32 の半分
-   
 
+    hit = false;
 }
 
 void Ball::Update() {
@@ -147,28 +147,29 @@ void Ball::MoveBalls() {
     }
 }
 
-void Ball::CheckCollisions() {
+bool Ball::CheckCollisions() {
     const float radius = 16.0f;
     const float minDist = radius * 2.0f;
-    const float friction = 0.99f; // 摩擦係数（0.0～1.0）
+    const float friction = 0.99f;
+
+    hit = false;  // ★ここで毎回初期化する
 
     for (int i = 0; i < kBallCount; i++) {
-
         if (!isAlive_[i]) {
-            // ★ 消えたボールは移動を止める
-            vel_[i].x = 0.0f;
-            vel_[i].y = 0.0f;
+            vel_[i] = { 0.0f, 0.0f };
             continue;
         }
 
         for (int j = i + 1; j < kBallCount; j++) {
-            if (!isAlive_[j]) continue; // ★ 消えてるボールは無視
+            if (!isAlive_[j]) continue;
 
             float dx = pos_[j].x - pos_[i].x;
             float dy = pos_[j].y - pos_[i].y;
             float distSq = dx * dx + dy * dy;
 
             if (distSq < minDist * minDist) {
+                hit = true;  // ★衝突フラグを立てる
+
                 float dist = std::sqrt(distSq);
                 if (dist < 0.0001f) dist = 0.0001f;
                 float nx = dx / dist;
@@ -179,14 +180,13 @@ void Ball::CheckCollisions() {
                 float vn = rvx * nx + rvy * ny;
 
                 if (vn < 0.0f) {
-                    float impulse = -vn * 1.0f; // 弾き返し
+                    float impulse = -vn;
                     vel_[i].x -= impulse * nx;
                     vel_[i].y -= impulse * ny;
                     vel_[j].x += impulse * nx;
                     vel_[j].y += impulse * ny;
                 }
 
-                // めり込み解消
                 float overlap = (minDist - dist) * 0.5f;
                 pos_[i].x -= nx * overlap;
                 pos_[i].y -= ny * overlap;
@@ -195,26 +195,23 @@ void Ball::CheckCollisions() {
             }
         }
 
-        // 摩擦で減速
         vel_[i].x *= friction;
         vel_[i].y *= friction;
-
-        // 速度が小さすぎる場合は止める
         if (std::abs(vel_[i].x) < 0.01f) vel_[i].x = 0.0f;
         if (std::abs(vel_[i].y) < 0.01f) vel_[i].y = 0.0f;
     }
+
+    return hit; // ★衝突があれば true を返す
 }
 
 
-
-
-void Ball::CheckPlayerCollision(Player& player) {
+bool Ball::CheckPlayerCollision(Player& player) {
     const float ballRadius = 16.0f;
     const float ballFriction = 0.99f; // 摩擦係数
 
     Vector2 playerPos = player.GetPos();
     float playerRadius = player.GetRadius();
-
+    
     // === プレイヤーとの衝突処理 ===
     for (int i = 0; i < kBallCount; i++) {
         if (!isAlive_[i]) continue; // ★ 消えたボールは無視
@@ -225,6 +222,7 @@ void Ball::CheckPlayerCollision(Player& player) {
         float minDist = ballRadius + playerRadius;
 
         if (distSq < minDist * minDist) {
+			collided = true; // ★ 衝突フラグを立てる
             float dist = std::sqrt(distSq);
             if (dist < 0.0001f) dist = 0.0001f;
 
@@ -255,12 +253,16 @@ void Ball::CheckPlayerCollision(Player& player) {
             pos_[i].x += nx * overlap;
             pos_[i].y += ny * overlap;
             player.SetPos(playerPos.x - nx * overlap, playerPos.y - ny * overlap);
+
+            return true;  // ★衝突あり
         }
     }
+    return false; // ★衝突なし
 }
 
 
-int Ball::CheckPocketCollisions() {
+bool Ball::CheckPocketCollisions() {
+    hit = false;  // ★ここで毎回初期化する
     Vector2 pockets[6] = {
        { 242, 293 },   // 左上
        { 1039, 293 },  // 右上
@@ -282,14 +284,14 @@ int Ball::CheckPocketCollisions() {
             float distSq = dx * dx + dy * dy;
 
             if (distSq < pocketRadius * pocketRadius) {
+				hit = true;  // ★ ポケットに入ったフラグを立てる
                 isAlive_[i] = false;
-               
                 totalDamage += damage_[i]; // ★ ダメージを加算
                 break;
             }
         }
     }
-
+    return hit; // ★衝突があれば true を返す
     return totalDamage; // ★ 複数分まとめて返す
 }
 

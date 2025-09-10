@@ -3,6 +3,7 @@
 #include "Vector2.h"
 #include "Input.h"
 #include "WinApp.h"
+#include "Audio.h"
 class Player
 {
 public:
@@ -38,9 +39,9 @@ private:
 
 
 private:
-#pragma region �摜�ǂݍ���
+#pragma region 
 	Input* input_ = nullptr;
-	
+	Audio* audio_ = nullptr;
 	uint32_t playerTexture_ = 0;
 	uint32_t playerArrowTexture = 0;
 	

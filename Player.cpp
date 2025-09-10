@@ -92,6 +92,7 @@ void Player::Initialize(Input* input, const Vector2& startPos, float radius) {
     gameButtonSprite.reset(Sprite::Create(gameButton, { 1040,470 }, { 1,1,1,1 }, { 0.5f,0.5f }));
 
     isSceneEnd_ = false;
+	
 }
 
 void Player::TakeDamage(int damage) {
